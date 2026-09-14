@@ -10,6 +10,7 @@ import ShopLayOut from './LayOut/ShopLayOut'
 import Shop from './Components/Shop/Shop'
 import VendorformLayout from './LayOut/VendorformLayout'
 import Vendor from './Components/Vendor/Vendor'
+import Personal_Info from './Components/Personal_Info/Personal_Info'
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
         </Route>
         <Route path='/vendor' element={<VendorformLayout/>}>
           <Route path='/vendor' element={<Vendor/>}/>
+          <Route path='/vendor-personal-info' element={<Personal_Info/>}/>
         </Route>
       </Routes>
      </BrowserRouter>
