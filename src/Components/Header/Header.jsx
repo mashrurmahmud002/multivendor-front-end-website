@@ -10,7 +10,7 @@ import { Link, NavLink } from "react-router-dom";
 const navLinks = [
   { label: "SHOP", to: "/shop" },
   { label: "VENDORS", to: "/vendor/vendor-register" },
-  { label: "DEALS", to: "#" },
+  { label: "DEALS", to: "/deals/deals-products" },
   { label: "NEW ARRIVALS", to: "#" },
   { label: "ABOUT", to: "#" },
 ];
@@ -49,12 +49,12 @@ const Header = () => {
             HELP
           </a>
 
-          <a
+          <NavLink to="/auth/signin"
             href="#"
             className="text-[10px] font-medium tracking-[1.5px] hover:text-gray-500"
           >
             SIGN IN
-          </a>
+          </NavLink>
         </div>
       </div>
 

@@ -96,6 +96,16 @@ const Details = () => {
   )
 
 
+  const handleSubmitForm = async()=>{
+     const finalData = {
+       businessInfo,
+       storeInfo,
+       personalInfo,
+       payoutInfo
+     }
+  }
+
+
  console.log(storeValidInfo,"this is store valid info")
     return (
         <>

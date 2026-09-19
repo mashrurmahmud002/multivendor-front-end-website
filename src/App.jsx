@@ -10,6 +10,11 @@ import ShopLayOut from './LayOut/ShopLayOut'
 import Shop from './Components/Shop/Shop'
 import VendorformLayout from './LayOut/VendorformLayout'
 import Details from './Components/VendorRegister/VendorForm'
+import DealsLayOut from './LayOut/DealsLayOut'
+import Deals from './Components/Deals/Deals'
+import MarketoLogin from './Components/SignIn/Sign'
+import AuthLayOut from './LayOut/AuthLayOut'
+import MarketoSignup from './Components/SignUp/SignUp'
 
 
 
@@ -35,6 +40,15 @@ function App() {
          
          
         </Route>
+        <Route path='/deals' element={<DealsLayOut/>} >
+        <Route path='/deals/deals-products' element={<Deals/>}/>
+          
+        </Route>    
+         {/* auth  */}
+         <Route path="/auth" element={<AuthLayOut/>}>
+          <Route path="/auth/signin" element={<MarketoLogin/>}/>
+          <Route path='/auth/signup' element={<MarketoSignup/>}/>
+         </Route>
       </Routes>
      </BrowserRouter>
      </>
