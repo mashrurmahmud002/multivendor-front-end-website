@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { VendorContext } from "../VendorProviderContext/VendorProviderContext";
 
 export default function Vendor_Product_Upload_Banner() {
+   const {activeState, setActiveState} = useContext(VendorContext) ;
+   console.log(activeState, "In vendor product banner"); 
   const [status, setStatus] = useState("DRAFT");
 
   const statuses = ["DRAFT", "ACTIVE", "SCHEDULED"];
@@ -23,54 +26,22 @@ export default function Vendor_Product_Upload_Banner() {
         {/* Right Side */}
         <div className="flex border border-black">
           <button
-            className="
-              h-9
-              border-r border-black
-              bg-black
-              px-5
-              text-[9px]
-              font-bold
-              uppercase
-              tracking-[0.15em]
-              text-white
-            "
+            onClick={() => setActiveState(1)}
+            className={`${activeState === 1 ?"h-9 border-r bg-black  px-5 text-[9px] font-medium uppercase tracking-[0.15em] text-white transition ": "h-9 border-r  bg-white px-5 text-[9px] font-medium uppercase tracking-[0.15em] text-black transition"}`}
           >
             Draft
           </button>
 
           <button
-            className="
-              h-9
-              border-r border-black
-              bg-transparent
-              px-5
-              text-[9px]
-              font-medium
-              uppercase
-              tracking-[0.15em]
-              text-black
-              transition
-              hover:bg-black
-              hover:text-white
-            "
+            onClick={() => setActiveState(2)}
+            className={`${activeState === 2 ?"h-9 border-r bg-black  px-5 text-[9px] font-medium uppercase tracking-[0.15em] text-white transition ": "h-9 border-r  bg-white  px-5 text-[9px] font-medium uppercase tracking-[0.15em] text-black transition"}`}
           >
             Active
           </button>
 
           <button
-            className="
-              h-9
-              bg-transparent
-              px-5
-              text-[9px]
-              font-medium
-              uppercase
-              tracking-[0.15em]
-              text-black
-              transition
-              hover:bg-black
-              hover:text-white
-            "
+          onClick={()=>setActiveState(3)}
+             className={`${activeState === 3 ?"h-9 border-r bg-black  px-5 text-[9px] font-medium uppercase tracking-[0.15em] text-white transition ": "h-9 border-r bg-white  px-5 text-[9px] font-medium uppercase tracking-[0.15em] text-black transition"}`}
           >
             Scheduled
           </button>

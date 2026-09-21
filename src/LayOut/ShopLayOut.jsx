@@ -8,6 +8,7 @@ const ShopLayOut = () => {
         <div>
             <Header/>
             <Outlet></Outlet> 
+            
             <Footer/>
         </div>
     );

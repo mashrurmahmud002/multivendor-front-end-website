@@ -29,6 +29,8 @@ const ImageUpload = ({setImage}) => {
     
     }
 
+    
+
    const  handleTriggerFilePicker = ()=>{
          fileInputRef.current.click();
         
