@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { ProvideContext } from "./ProductContextProvider";
 
 export default function InventoryCard() {
-  const [trackInventory, setTrackInventory] = useState(true);
-  const [allowBackorders, setAllowBackorders] = useState(false);
-  const [quantity, setQuantity] = useState("");
-  const [lowStockAlert, setLowStockAlert] = useState("5");
+  const {quantity, setquantity, lowstock, setLowStock,allowBackdors , setallowBackdors,trackInventory, setTrackInventory} = useContext(ProvideContext);
+
 
   return (
     <div className="w-full  mx-auto border border-gray-200 rounded-md overflow-hidden bg-white">
@@ -47,7 +46,7 @@ export default function InventoryCard() {
               type="text"
               inputMode="numeric"
               value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
+              onChange={(e) => setquantity(e.target.value)}
               placeholder="0"
               className="mt-2 w-full px-3 py-3 text-sm border border-gray-300 rounded-md text-gray-800 placeholder-gray-400 outline-none focus:border-gray-500"
             />
@@ -61,8 +60,8 @@ export default function InventoryCard() {
               <input
                 type="text"
                 inputMode="numeric"
-                value={lowStockAlert}
-                onChange={(e) => setLowStockAlert(e.target.value)}
+                value={lowstock}
+                onChange={(e) => setLowStock(e.target.value)}
                 className="w-full px-3 py-3 text-sm text-gray-800 outline-none"
               />
               <span className="flex items-center px-4 bg-gray-100 text-gray-400 text-sm">
@@ -74,14 +73,14 @@ export default function InventoryCard() {
           <div className="flex items-center gap-2 pb-3">
             <button
               type="button"
-              onClick={() => setAllowBackorders(!allowBackorders)}
+              onClick={() => setallowBackdors(!allowBackdors)}
               className={`w-4 h-4 border rounded-sm flex items-center justify-center transition-colors ${
-                allowBackorders
+                allowBackdors
                   ? "bg-black border-black"
                   : "bg-white border-gray-400"
               }`}
             >
-              {allowBackorders && (
+              {allowBackdors && (
                 <svg
                   viewBox="0 0 12 12"
                   className="w-3 h-3 text-white"

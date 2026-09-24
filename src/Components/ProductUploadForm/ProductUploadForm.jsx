@@ -11,12 +11,16 @@ import ReadinessCard from "./Readiness";
 import { VendorContext } from "../VendorProviderContext/VendorProviderContext";
 import ActivePublishCard from "./ActivePublishCard";
 import PublishScheduledCard from "./SchedulePublishCard";
+import VariantsSection from "./VarientSection";
+import ProductContextProvider from "./ProductContextProvider";
 
 export default function ProductUploadForm() {
   const [image, setImage] = useState(null);
 
 
   const {activeState, setActiveState} = useContext(VendorContext);
+  const[category, setCategory] = useState(["electronics", "fashion_apparel","home-garden","sports-outdoors","beauty-wellness","food-drink","book-media","other"]);
+  const[subcategory, setSubCategory] = useState("");
 
 
 
@@ -25,9 +29,10 @@ export default function ProductUploadForm() {
     <>
        <form action="" className="flex gap-1 min-h-screen">
          <div className="w-[80%]">
-          <ImageUpload setImage={setImage}/>
+          <ProductContextProvider>
+            <ImageUpload setImage={setImage}/>
           <br />
-          <BasicInformation/>
+          <BasicInformation category={category} setCategory={setCategory} subcategory={subcategory} setSubCategory={setSubCategory}/>
           <br />
           <DescriptionCopyCard/>
           <br />
@@ -35,23 +40,26 @@ export default function ProductUploadForm() {
           <br />
           <InventoryCard/>
           <br />
+          <VariantsSection/>
+          <br />
           <ShippingDimensionsCard/>
           <br />
+          </ProductContextProvider>
           
          </div>
          <div className="w-[20%]  min-h-screen ">
            <div className="sticky top-0 right-0">
              {
              
-               activeState === 1 &&  <PublishCard />
+               activeState === 1 &&  <PublishCard category={category} setCategory={setCategory} subcategory={subcategory} setSubCategory={setSubCategory}/>
 
              }     
 
              {
-                activeState === 2 && <ActivePublishCard/>
+                activeState === 2 && <ActivePublishCard category={category} setCategory={setCategory} subcategory={subcategory} setSubCategory={setSubCategory}/>
              } 
              {
-                activeState === 3 && <PublishScheduledCard/>
+                activeState === 3 && <PublishScheduledCard category={category} setCategory={setCategory} subcategory={subcategory} setSubCategory={setSubCategory}/>
              }
             
             <br />

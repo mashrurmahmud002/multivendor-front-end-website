@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { ProvideContext } from "./ProductContextProvider";
 
 function PriceInput({ value, onChange, placeholder = "0.00" }) {
   return (
@@ -19,10 +20,7 @@ function PriceInput({ value, onChange, placeholder = "0.00" }) {
 }
 
 export default function PricingCard() {
-  const [salePrice, setSalePrice] = useState("");
-  const [compareAtPrice, setCompareAtPrice] = useState("");
-  const [costPerItem, setCostPerItem] = useState("");
-  const [chargeTax, setChargeTax] = useState(false);
+  const {sale, setSale, compareSale, setCompareSale, cost, setCost, tax,setTax} = useContext(ProvideContext);
 
   return (
     <div className="w-full  mx-auto border border-gray-200 rounded-md overflow-hidden bg-white">
@@ -45,7 +43,7 @@ export default function PricingCard() {
               Sale Price <span className="text-red-500">*</span>
             </label>
             <div className="mt-2">
-              <PriceInput value={salePrice} onChange={setSalePrice} />
+              <PriceInput value={sale} onChange={setSale} />
             </div>
           </div>
 
@@ -54,7 +52,7 @@ export default function PricingCard() {
               Compare-at Price
             </label>
             <div className="mt-2">
-              <PriceInput value={compareAtPrice} onChange={setCompareAtPrice} />
+              <PriceInput value={compareSale} onChange={setCompareSale} />
             </div>
             <p className="mt-1 text-xs text-blue-400">
               Shown as original / crossed-out price
@@ -66,7 +64,7 @@ export default function PricingCard() {
               Cost Per Item
             </label>
             <div className="mt-2">
-              <PriceInput value={costPerItem} onChange={setCostPerItem} />
+              <PriceInput value={cost} onChange={setCompareSale} />
             </div>
             <p className="mt-1 text-xs text-gray-400">Not shown to buyers</p>
           </div>
@@ -76,14 +74,14 @@ export default function PricingCard() {
         <div className="flex items-center gap-3">
           <button
             type="button"
-            onClick={() => setChargeTax(!chargeTax)}
+            onClick={() => setTax(!tax)}
             className={`relative w-10 h-5 rounded-full transition-colors ${
-              chargeTax ? "bg-black" : "bg-gray-300"
+              tax ? "bg-black" : "bg-gray-300"
             }`}
           >
             <span
               className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${
-                chargeTax ? "translate-x-5" : "translate-x-0"
+                tax? "translate-x-5" : "translate-x-0"
               }`}
             />
           </button>

@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { ProvideContext } from "./ProductContextProvider";
 
 const WEIGHT_UNITS = ["KG", "LB", "G", "OZ"];
 
 export default function ShippingDimensionsCard() {
+
+  const {shippingClass, setShippingClass,weight, setWeight,weightUnit, setWeightUnit} = useContext(ProvideContext);
   const [freeShipping, setFreeShipping] = useState(false);
-  const [weight, setWeight] = useState("");
-  const [weightUnit, setWeightUnit] = useState("KG");
-  const [shippingClass, setShippingClass] = useState("Standard");
+  
+ 
+  
   const [length, setLength] = useState("");
   const [width, setWidth] = useState("");
   const [height, setHeight] = useState("");

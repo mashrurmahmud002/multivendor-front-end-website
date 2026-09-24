@@ -1,10 +1,27 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { ProvideContext } from "./ProductContextProvider";
 
-const BasicInformation = () => {
+const BasicInformation = ({category, subcategory, setCategory, setSubCategory}) => {
+  const{title , setTitle, tagn, setTag,generateSKu, setGenerateSKu} = useContext(ProvideContext);
   const [tags, setTags] = useState([]);
   const [tagInput, setTagInput] = useState("");
-  const [generateSKu, setGenerateSKu] = useState('');
+  
+  const [electronics, setElectronics] = useState(["Audio", "Cameras", "Computers", "Phones", "Wearables", "Other"]);
+  const [fashion_apparel, setfashion_apparel] = useState(["Apparel", "Shoes", "Accessories", "Other"]);
+  const [homeandGardern, setHomeandGarden] = useState(["Furniture", "Decor", "Kitchen", "Bedding", "Garden"]);
+  const [sportsOutdoors , setsportsOutdoors] = useState(["Running", "Cycling", "Yoga", "Camping", "Water Sports"]);
+  const [beauty_wellness, setbeauty_wellness] = useState(["Skincare", "Haircare", "Supplements", "Fragrance"]);
+  const [food_drink, setFood_drink] = useState(["Coffee & Tea", "Snacks", "Condiments", "Beverages"]);
+  const [bookMedia, setBokkMedia] = useState(["Books", "Music", "Film", "Games"]);
+  const [other, setOthers] = useState(['general', "select-sub-categories"]);
+  const [select, setSelect] = useState(null);
+
+
+  console.log(category)
+
+
+  console.log(select)
 
   const handleAddTag = () => {
     const tag = tagInput.trim();
@@ -25,6 +42,29 @@ const BasicInformation = () => {
         console.log(err)
     }
      
+
+  }
+
+  const handleCategory = (e)=>{
+    setCategory(e.target.value);
+
+  }
+   const handleSubCategory = (e)=>{
+    setSubCategory(e.target.value);
+    
+  }
+
+
+  const habndleSubCategoryChange = (e)=>{
+    console.log("Variable added");
+
+    const trimo = e.trim()
+
+    console.log("selected value", e);
+    setSelect(trimo);
+
+   
+
 
   }
 
@@ -61,6 +101,7 @@ const BasicInformation = () => {
 
           <input
             type="text"
+            onChange={(e)=>setTitle(e.target.value)}
             placeholder="e.g. Ceramic Pour-Over Coffee Set"
             className="h-[43px] w-full border border-black px-4 text-sm outline-none placeholder:text-[#9ca3af] focus:ring-1 focus:ring-black"
           />
@@ -115,16 +156,21 @@ const BasicInformation = () => {
             </label>
 
             <select
+            
+              onChange={(e) => habndleSubCategoryChange(e.target.value)}
               defaultValue=""
               className="h-[43px] w-full appearance-none border border-black bg-white px-4 text-sm outline-none focus:ring-1 focus:ring-black"
             >
               <option value="" disabled>
                 Select category...
               </option>
-              <option value="electronics">Electronics</option>
-              <option value="fashion">Fashion</option>
-              <option value="home">Home & Living</option>
-              <option value="beauty">Beauty</option>
+              
+               {
+                 category.map((item, index)=>(
+                   
+                   <option key={index} value={item}>{item}</option>
+                 ))
+               }
             </select>
           </div>
 
@@ -135,15 +181,57 @@ const BasicInformation = () => {
             </label>
 
             <select
+              disabled={select===null}
               defaultValue=""
-              className="h-[43px] w-full appearance-none border border-black bg-[#f3f3f3] px-4 text-sm text-[#9ca3af] outline-none focus:ring-1 focus:ring-black"
+              className="h-[43px] disabled:cursor-not-allowed disabled:bg-red-600 w-full appearance-none border border-black bg-[#f3f3f3] px-4 text-sm text-[#9ca3af] outline-none focus:ring-1 focus:ring-black"
+              onChange={(e) => handleSubCategory(e.target.value)}
             >
               <option value="" disabled>
                 Select sub-category...
               </option>
-              <option value="coffee">Coffee</option>
-              <option value="kitchen">Kitchen</option>
-              <option value="office">Office</option>
+               {
+                  select === "fashion_apparel" && fashion_apparel.map((item, index)=>(
+                     <option key={index} value={item}>{item}</option>
+                  ))
+               }
+               {
+                  select === "home-garden" && homeandGardern.map((item, index)=>(
+                    <option key={index} value={item}>{item}</option>
+                    
+                  ))
+               }
+               {
+                  select === "sports-outdoors" && sportsOutdoors.map((item, index)=>(
+                     <option key={index} value={item}>{item}</option>
+                    
+                  ))
+               }
+               {
+                  select === "beauty-wellness" && beauty_wellness.map((item, index)=>(
+                     <option key={index} value={item}>{item}</option>
+                  ))
+               }
+               {
+                  select === "food-drink" && food_drink.map((item, index)=>(
+                     <option key={index} value={item}>{item}</option>
+                  ))
+               }
+               {
+                  select === "book-media" && bookMedia.map((item, index)=>(
+                     <option key={index} value={item}>{item}</option>
+                  ))
+               }
+               {
+                 select === "electronics" && electronics.map((item, index)=>(
+                     <option key={index} value={item}>{item}</option>
+                  ))
+               }
+               {
+                  select === "other" && other.map((item, index)=>(
+                     <option key={index} value={item}>{item}</option>
+                  ))
+               }
+             
             </select>
           </div>
         </div>
@@ -157,8 +245,8 @@ const BasicInformation = () => {
           <div className="flex gap-2">
             <input
               type="text"
-              value={tagInput}
-              onChange={(e) => setTagInput(e.target.value)}
+              value={tagn}
+              onChange={(e) => setTag(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Type a tag and press Enter"
               className="h-[43px] min-w-0 flex-1 border border-black px-4 text-sm outline-none placeholder:text-[#9ca3af] focus:ring-1 focus:ring-black"

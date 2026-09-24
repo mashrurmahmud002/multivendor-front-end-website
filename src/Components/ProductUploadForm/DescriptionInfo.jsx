@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { ProvideContext } from "./ProductContextProvider";
 
 const TOOLBAR_BUTTONS = ["B", "I", "U", "—", "H2", "UL", "OL", "🔗"];
 const FULL_DESC_MAX = 5000;
 const SHORT_DESC_MAX = 160;
 
 export default function DescriptionCopyCard() {
-  const [fullDescription, setFullDescription] = useState("");
-  const [shortDescription, setShortDescription] = useState("");
+   const {description, setDescription, shortDescription, setShortDescription} = useContext(ProvideContext);
+   console.log(description)
 
   return (
     <div className="w-full  mx-auto border border-gray-200 rounded-md overflow-hidden bg-white">
@@ -43,8 +44,8 @@ export default function DescriptionCopyCard() {
 
             {/* Textarea */}
             <textarea
-              value={fullDescription}
-              onChange={(e) => setFullDescription(e.target.value)}
+              
+              onChange={(e)=>setDescription(e.target.value)}
               maxLength={FULL_DESC_MAX}
               placeholder="Describe your product in detail — materials, dimensions, use cases, care instructions..."
               rows={6}
@@ -53,7 +54,7 @@ export default function DescriptionCopyCard() {
           </div>
 
           <div className="mt-1 text-right text-xs text-blue-500">
-            {fullDescription.length} chars
+            {description.length} chars
           </div>
         </div>
 

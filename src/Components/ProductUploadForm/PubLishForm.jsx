@@ -9,6 +9,7 @@ export default function PublishCard() {
       <div className="bg-gray-100 border-b border-gray-300 px-5 py-3">
         <h2 className="text-xs font-bold tracking-widest uppercase text-gray-800">
           Publish
+
         </h2>
       </div>
 
@@ -47,6 +48,7 @@ export default function PublishCard() {
 
         {/* Save as draft button */}
         <button
+        
           type="button"
           className="w-full py-3 border border-gray-300 text-gray-800 text-xs font-bold tracking-widest uppercase hover:bg-gray-50 transition-colors"
         >
