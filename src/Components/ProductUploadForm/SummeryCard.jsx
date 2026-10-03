@@ -1,14 +1,19 @@
-const SUMMARY_ROWS = [
-  { label: "Title", value: "—" },
-  { label: "SKU", value: "—" },
-  { label: "Category", value: "—" },
-  { label: "Price", value: "—" },
-  { label: "Stock", value: "0 units" },
-  { label: "Images", value: "None" },
-  { label: "Tags", value: "—" },
-];
+import { useContext } from "react";
+import { ProvideContext } from "./ProductContextProvider";
+
+
 
 export default function SummaryCard() {
+  const {title,generateSKu,category, setCategory, price,weightUnit, tagn, image} = useContext(ProvideContext);
+  const SUMMARY_ROWS = [
+  { label: "Title", value: title },
+  { label: "SKU", value: generateSKu },
+  { label: "Category", value: category },
+  { label: "Price", value: price },
+  { label: "Stock", value: weightUnit },
+  { label: "Images", value: "None" },
+  { label: "Tags", value: "" },
+];
   return (
     <div className="w-full max-w-xs border border-gray-300 rounded-md overflow-hidden bg-white">
       {/* Header */}

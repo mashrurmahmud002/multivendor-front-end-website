@@ -2,9 +2,20 @@
 
 import { useContext, useState } from "react";
 import { VendorContext } from "../VendorProviderContext/VendorProviderContext";
+import { ProvideContext } from "./ProductContextProvider";
+import { useFormContext } from "react-hook-form";
 
 export default function PublishCard() {
   const [isDraft, setIsDraft] = useState(false);
+  const {setValue, handleSubmit}= useFormContext();
+
+ 
+  const handleDraftSubmit = (e) => {
+    e.preventDefault();
+    setValue("status", "draft");
+    // Trigger submit manually or let the main form handle it
+  };
+     
    
   return (
     <div className="w-full max-w-xs border border-gray-300 rounded-md overflow-hidden bg-white">
@@ -42,7 +53,8 @@ export default function PublishCard() {
 
         {/* Publish button */}
         <button
-          type="button"
+         
+          type="submit"
           className="w-full py-3 bg-black text-white text-xs font-bold tracking-widest uppercase hover:bg-gray-800 transition-colors"
         >
           Publish Product →
@@ -51,6 +63,7 @@ export default function PublishCard() {
         {/* Save as draft button */}
         <button
           type="button"
+          onClick={handleDraftSubmit}
           className="w-full py-3 border border-gray-300 text-gray-800 text-xs font-bold tracking-widest uppercase hover:bg-gray-50 transition-colors"
         >
           Save as Draft

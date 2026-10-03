@@ -1,8 +1,10 @@
 import { useContext, useState } from "react";
 import { ProvideContext } from "./ProductContextProvider";
+import { useFormContext } from "react-hook-form";
 
 export default function InventoryCard() {
   const {quantity, setquantity, lowstock, setLowStock,allowBackdors , setallowBackdors,trackInventory, setTrackInventory} = useContext(ProvideContext);
+  const {register, formState:{errors}} = useFormContext()
 
 
   return (
@@ -16,6 +18,7 @@ export default function InventoryCard() {
       </div>
 
       <div className="p-5 space-y-5">
+      
         {/* Track inventory toggle */}
         <div className="flex items-center gap-3">
           <button
@@ -45,11 +48,14 @@ export default function InventoryCard() {
             <input
               type="text"
               inputMode="numeric"
-              value={quantity}
+              {...register("quantity", {required: true})}
               onChange={(e) => setquantity(e.target.value)}
               placeholder="0"
               className="mt-2 w-full px-3 py-3 text-sm border border-gray-300 rounded-md text-gray-800 placeholder-gray-400 outline-none focus:border-gray-500"
             />
+            {
+              errors.quantity && <span className="text-red-500 text-xs">Quantity is required</span>
+            }
           </div>
 
           <div className="w-full sm:w-64">
@@ -60,10 +66,10 @@ export default function InventoryCard() {
               <input
                 type="text"
                 inputMode="numeric"
-                value={lowstock}
-                onChange={(e) => setLowStock(e.target.value)}
+                {...register("lowstock", {required: "lowstock must be required"})}
                 className="w-full px-3 py-3 text-sm text-gray-800 outline-none"
               />
+              {errors?.lowstock && <span className="text-red-500 text-xs">{errors?.lowstock?.message}</span>}
               <span className="flex items-center px-4 bg-gray-100 text-gray-400 text-sm">
                 units
               </span>

@@ -1,9 +1,13 @@
 import axios from 'axios';
 import React, { useRef, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
-const ImageUpload = ({setImage}) => {
+const ImageUpload = ({setImage,imageerror}) => {
     const [isDragging, setIsDragging] = useState(false);
      const fileInputRef = useRef(null); // ← ref to the hidden input
+
+     const {register, formState:{errors}} = useFormContext();
+     const[error, setError] = useState(null);
    
      
 
@@ -13,15 +17,21 @@ const ImageUpload = ({setImage}) => {
        const imageKey = import.meta.env.VITE_IMGBB_API_KEY;
        const formData = new FormData();
 
-       formData.append('image',files);
+       try{
+        formData.append('image',files);
 
-       const url = `https://api.imgbb.com/1/upload?expiration=600&key=${imageKey}`;
+       const url = `https://api.imgbb.com/1/upload?key=${imageKey}`;
 
        const uploadImage = await  axios.post(url,formData);
 
        console.log(uploadImage?.data?.data?.display_url);
 
        setImage(uploadImage?.data?.data?.display_url);
+       }catch(err){
+          setError("Image upload failed");
+       }
+
+
 
      
        
@@ -32,7 +42,7 @@ const ImageUpload = ({setImage}) => {
     
 
    const  handleTriggerFilePicker = ()=>{
-         fileInputRef.current.click();
+         document.getElementById("div-hidden-file-input").click();
         
        
        
@@ -120,15 +130,17 @@ const ImageUpload = ({setImage}) => {
         {/* Hidden file input */}
         <input
           type="file"
-          id="file"
-          name="file"
-          multiple
+          id="div-hidden-file-input"
+        
+         
           accept=".png,.jpg,.jpeg,.webp"
           className="hidden"
           ref={fileInputRef}
           onChange={handleFileImage}
         
         />
+        {imageerror && <p className="text-red-500">{imageerror}</p>}
+        
       </div>
     </div>
     );

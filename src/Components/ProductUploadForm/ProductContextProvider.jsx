@@ -12,6 +12,8 @@ import React, { createContext, useState } from 'react';
  export const ProvideContext = createContext()
 
 const ProductContextProvider = ({children}) => {
+
+    
     const [title , setTitle] = useState('');
     const [sale, setSale] = useState('');
     const [description, setDescription] = useState('');
@@ -37,6 +39,9 @@ const ProductContextProvider = ({children}) => {
     const [weight, setWeight] = useState(0);
     const [weightUnit, setWeightUnit]= useState("KG");
     const [brand, setBrand] = useState('');
+    const [ category, setCategory] = useState(null);
+    const[varient_image, setvarient_image] = useState([]);
+
 
   
     const [varient, seVarient] = useState([
@@ -46,13 +51,13 @@ const ProductContextProvider = ({children}) => {
       price: "0.00",
       stock: "0",
       color: "",
-      image: image,
+      image: varient_image,
     
     },
   ]);
     
 
-    
+    console.log(generateSKu, "I am sku generateSku from product context provider");
 
    const balance = {
        title,
@@ -106,7 +111,11 @@ const ProductContextProvider = ({children}) => {
        weightUnit,
        setWeightUnit,
        brand,
-       setBrand
+       setBrand,
+       category,
+       setCategory,
+       varient_image,
+       setvarient_image
    }
    
     return <ProvideContext.Provider value={balance}>

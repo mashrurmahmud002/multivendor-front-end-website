@@ -1,11 +1,14 @@
 import { useContext, useState } from "react";
 import { ProvideContext } from "./ProductContextProvider";
+import { useFormContext } from "react-hook-form";
+import { maxLength } from "zod";
 
 const TOOLBAR_BUTTONS = ["B", "I", "U", "—", "H2", "UL", "OL", "🔗"];
 const FULL_DESC_MAX = 5000;
 const SHORT_DESC_MAX = 160;
 
 export default function DescriptionCopyCard() {
+   const {register, formState:{errors}} = useFormContext()
    const {description, setDescription, shortDescription, setShortDescription} = useContext(ProvideContext);
    console.log(description)
 
@@ -45,8 +48,10 @@ export default function DescriptionCopyCard() {
             {/* Textarea */}
             <textarea
               
-              onChange={(e)=>setDescription(e.target.value)}
-              maxLength={FULL_DESC_MAX}
+             {...register("description", {required:true})}
+              
+             
+              
               placeholder="Describe your product in detail — materials, dimensions, use cases, care instructions..."
               rows={6}
               className="w-full px-4 py-3 text-sm text-gray-800 placeholder-gray-400 outline-none resize-none"
@@ -69,12 +74,10 @@ export default function DescriptionCopyCard() {
 
           <input
             type="text"
-            value={shortDescription}
-            onChange={(e) =>
-              e.target.value.length <= SHORT_DESC_MAX &&
-              setShortDescription(e.target.value)
-            }
-            maxLength={SHORT_DESC_MAX}
+            {...register("shortDescription", {required:true})}
+           
+            
+           
             placeholder="One-line summary shown in search results and cards (max 160 chars)"
             className="mt-2 w-full px-4 py-3 text-sm border border-gray-300 rounded-md text-gray-800 placeholder-gray-400 outline-none focus:border-gray-500"
           />

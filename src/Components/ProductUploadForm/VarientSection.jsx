@@ -1,13 +1,32 @@
 import { useContext, useRef, useState } from "react";
 import { ProvideContext } from "./ProductContextProvider";
+import { useFieldArray, useFormContext } from "react-hook-form";
+import { set } from "zod";
+import axios from "axios";
+import { required } from "zod/mini";
 
 const VariantsSection = () => {
 
-    const { varient, seVarient, Values, setValues, price, setPrice, size, setSize, stock, setStock, image, setImage } = useContext(ProvideContext);
+    const {varient, seVarient, Values, setValues, price, setPrice, size, varient_image,setvarient_image,  setSize, stock, setStock, image, setImage } = useContext(ProvideContext);
     const [hasVariants, setHasVariants] = useState(false);
-
-
+   
     const fileInputRef = useRef(null);
+
+    const {register, formState:{errors}, control} = useFormContext();
+
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: "varient",
+    });
+
+    const [selectedImages, setSelectedImages] = useState([]);
+    const [error, setError] = useState("");
+    
+
+    
+    
+   console.log(varient_image,"varient image");
+    
 
 
     const [variantOptions, setVariantOptions] = useState([
@@ -17,24 +36,88 @@ const VariantsSection = () => {
             price: "0.00",
             stock: "0",
             color: "",
-            image: image,
+            image: varient_image,
 
         },
     ]);
 
     const handleTriggerImage = () => {
-        fileInputRef.current.click();
+        document.getElementById("images_multiple_file").click();
+
+
+    }
+
+    const handleSelectedImages = async(files) => {
+        console.log(files);
+        const formdata = new FormData();
+
+        try{
+           for(const imgo of files){
+               formdata.append("image",imgo);
+               const response = await axios.post(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API_KEY}`,formdata);
+               console.log(response);
+               const updateUrl = response?.data?.data?.display_url;
+                console.log(updateUrl);
+            
+
+               setvarient_image((prev) => [...prev, updateUrl]);
+               console.log(varient_image,"tumer image");
+           }
+
+        }catch(error){
+            console.log(error);
+        }
+
+
+        
+    }
+
+    console.log("i am ",varient);
+
+    console.log(selectedImages,"selected images");
+
+    const handleImageChange = async(e)=>{
+        const files = e.target.files;
+        
+      
+        console.log(files);
+        console.log("tumi ki aikane", files.length);
+
+        if(files && files.length > 0){
+            
+          
+        const fileArray = Array.from(files);
+        const isTooLarge = fileArray.some((file) => file.size > 5 * 1024 * 1024);
+        if (isTooLarge) {
+                
+           setError("One or more images exceed the 5MB size limit.");
+            return;
+         }
+
+         console.log("Tumi ki baire")
+         setSelectedImages(fileArray);
+
+        await handleSelectedImages(fileArray);
+        
+        }
+        
+
+       
+
     }
     // Add new variant option
     const handleAddVariant = () => {
-        seVarient((prev) => [
+        setVariantOptions((prev) => [
             ...prev,
-            {
-                optionName: "",
-                values: "",
-                price: "0.00",
-                stock: "0",
-            },
+           {
+            optionName: "Size",
+            values: "S, M, L, XL",
+            price: "0.00",
+            stock: "0",
+            color: "",
+            image: varient_image,
+
+        },
         ]);
     };
 
@@ -56,6 +139,8 @@ const VariantsSection = () => {
 
     // Remove variant option
     const handleRemove = (index) => {
+        console.log(index);
+        console.log("Hello office")
         setVariantOptions((prev) =>
             prev.filter((_, i) => i !== index)
         );
@@ -149,26 +234,33 @@ const VariantsSection = () => {
 
                         <div className="space-y-3">
 
-                            {varient.map((variant, index) => (
+                            {variantOptions.map((variant, index) => (
                                 <div key={index} className="grid grid-cols-3 items-center gap-2">
                                     {/* 1. Option Name */}
                                     <div>
                                         <label>Option</label>
                                         <input
                                             type="text"
-                                            name="optionName"
-                                            value={variant.optionName}
-                                            onChange={(e) => handleChange(index, e)}
+                                           
+                                            {...register(`varient.${index}.optionName`, { required: true })}
+                                           
                                             placeholder="Size"
                                             className="h-[38px] w-full border border-black px-3 text-[12px] text-gray-700 outline-none focus:bg-gray-50"
                                         />
+                                        {errors?.varient?.[index]?.optionName && (
+                                            <span className="text-xs text-red-500">
+                                               {errors.varient?.[index]?.optionName.message || "Option name is required"}
+                                            </span>
+                                        )}
                                     </div>
+                                    
 
                                     {/* 2. Image Upload */}
                                     <div>
                                         <label>Image Upload</label>
                                         <label onClick={handleTriggerImage} className="group flex h-[38px] cursor-pointer items-center justify-center border border-black bg-white transition-colors hover:bg-black">
                                             <svg
+                                                
                                                 className="h-4 w-4 stroke-2 text-black transition-colors group-hover:text-white"
                                                 fill="none"
                                                 stroke="currentColor"
@@ -180,13 +272,19 @@ const VariantsSection = () => {
                                                     d="M12 4.5v15m7.5-7.5h-15"
                                                 />
                                             </svg>
-                                            <input
+                                             <input
                                                 type="file"
-                                                name="file"
+                                                id="images_multiple_file"
                                                 accept="image/*"
-                                                onChange={(e) => handleChange(index, e)}
+                                                multiple
                                                 className="hidden"
-                                            />
+                                                {...register(`varient.${index}.images`, {
+                                                  validate: (fileList) =>
+                                                    Array.from(fileList || []).every((f) => f.size <= 5 * 1024 * 1024) ||
+                                                    "Each image must be under 5MB",
+                                                })}
+                                              />
+                                            {error && <span className="text-red-500">{error}</span>}
                                         </label>
                                     </div>
 
@@ -195,12 +293,19 @@ const VariantsSection = () => {
                                         <label>Values</label>
                                         <input
                                             type="text"
-                                            name="values"
-                                            value={variant.values}
-                                            onChange={(e) => handleChange(index, e)}
+                                           
+                                            {...register(`varient.${index}.valuess`, { required: true })}
+                                           
                                             placeholder="S, M, L, XL"
                                             className="h-[38px] w-full border border-black px-3 text-[12px] text-gray-700 outline-none focus:bg-gray-50"
                                         />
+                                        {
+                                            errors?.varient?.[index] && (
+                                                <span className="text-xs text-red-500">
+                                                    {errors.varient?.[index].valuess?.message || "values is required"}
+                                                </span>
+                                            )
+                                        }
                                     </div>
 
                                     {/* 4. Price */}
@@ -212,12 +317,20 @@ const VariantsSection = () => {
                                             </span>
                                             <input
                                                 type="number"
-                                                name="price"
-                                                value={variant.price}
-                                                onChange={(e) => handleChange(index, e)}
+                                                
+                                                {...register(`varient.${index}.price`, { required: true })}
+                                                
                                                 className="w-full min-w-0 px-2 text-[12px] outline-none"
                                             />
+                                           
                                         </div>
+                                         {
+                                                errors?.varient?.[index]?.price && (
+                                                    <span className="text-xs text-red-500">
+                                                        {errors?.varient?.[index]?.price?.message || "price is required"}
+                                                    </span>
+                                                )
+                                            }
                                     </div>
 
                                     {/* 5. Stock */}
@@ -225,11 +338,18 @@ const VariantsSection = () => {
                                         <label>Stock</label>
                                         <input
                                             type="number"
-                                            name="stock"
-                                            value={variant.stock}
-                                            onChange={(e) => handleChange(index, e)}
+                                           
+                                            {...register(`varient.${index}.stock`, { required: true })}
+                                          
                                             className="h-[38px] w-full border border-black px-3 text-[12px] outline-none"
                                         />
+                                        {
+                                            errors?.varient?.[index]?.stock && (
+                                                <span className="text-xs text-red-500">
+                                                  {errors.varient?.[index].stock.message || "stock is required"}
+                                                </span>
+                                            )
+                                        }
                                     </div>
 
                                     {/* 6. Remove */}

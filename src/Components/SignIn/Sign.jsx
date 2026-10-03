@@ -1,10 +1,50 @@
 
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useState } from "react";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { loginUser } from "../../../Api";
+import Swal from "sweetalert2";
+import { AuthContext } from "../AuthContext/AuthContextProvider";
 
 export default function MarketoLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
+  const {user, setUser} = useContext(AuthContext);
+  const navigate = useNavigate()
+
+  const {register, handleSubmit, formState:{errors}} = useForm();
+
+  const onsubmit = async(data)=>{
+   
+     console.log(data);
+
+
+     try{
+        const response = await loginUser(data);
+
+        console.log(response)
+        Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: response?.data?.message,
+        showConfirmButton: false,
+        timer: 1500
+        });
+        
+        setUser(response?.data?.data?.user);
+        navigate("/");
+
+     }catch(err){
+        console.log(err);
+     }
+
+
+     
+  }
+
+  const onError = async(data)=>{
+    console.log(data);
+  }
 
   return (
     <div className="min-h-screen flex flex-col lg:flex-row">
@@ -70,7 +110,7 @@ export default function MarketoLogin() {
           <p className="text-gray-500 mb-8">Sign in to your account</p>
 
           {/* Form */}
-          <form className="space-y-5">
+          <form onSubmit={handleSubmit(onsubmit, onError)} className="space-y-5">
             {/* Email */}
             <div>
               <label className="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1.5">
@@ -78,9 +118,13 @@ export default function MarketoLogin() {
               </label>
               <input
                 type="email"
+                {...register("email", { required: true })}
                 placeholder="you@example.com"
                 className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition"
               />
+              {
+                errors.email && <span className="text-red-600 text-xs">Email is required</span>
+              }
             </div>
 
             {/* Password */}
@@ -97,6 +141,7 @@ export default function MarketoLogin() {
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
+                  {...register("password", { required: true })}
                   className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition pr-16"
                 />
                 <button

@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { ProvideContext } from "./ProductContextProvider";
+import { useFormContext } from "react-hook-form";
 
 const WEIGHT_UNITS = ["KG", "LB", "G", "OZ"];
 
@@ -7,6 +8,7 @@ export default function ShippingDimensionsCard() {
 
   const {shippingClass, setShippingClass,weight, setWeight,weightUnit, setWeightUnit} = useContext(ProvideContext);
   const [freeShipping, setFreeShipping] = useState(false);
+  const {register, formState:{errors}} = useFormContext()
   
  
   
@@ -63,11 +65,11 @@ export default function ShippingDimensionsCard() {
               <input
                 type="text"
                 inputMode="decimal"
-                value={weight}
-                onChange={(e) => setWeight(e.target.value)}
+                {...register("weight", { required:"Weight must be required"})}
                 placeholder="0.00"
                 className="w-full px-3 py-3 text-sm text-gray-800 placeholder-gray-400 outline-none"
               />
+              
               <div className="flex">
                 {WEIGHT_UNITS.map((unit) => (
                   <button
@@ -85,6 +87,9 @@ export default function ShippingDimensionsCard() {
                 ))}
               </div>
             </div>
+            {
+              errors?.weight && <span className="text-red-500">{errors.weight.message}</span>
+            }
           </div>
 
           <div>
@@ -111,33 +116,39 @@ export default function ShippingDimensionsCard() {
               <input
                 type="text"
                 inputMode="numeric"
-                value={length}
-                onChange={(e) => setLength(e.target.value)}
+                {...register("length", { required:"Length must be required"})}
                 placeholder="0"
                 className="block w-full mt-1 text-sm font-medium text-gray-500 placeholder-gray-400 outline-none"
               />
+              {
+                errors?.length && <span className="text-red-500">{errors.length.message}</span>
+              }
             </div>
             <div className="px-4 py-3">
               <span className="text-xs text-gray-400">Width</span>
               <input
                 type="text"
                 inputMode="numeric"
-                value={width}
-                onChange={(e) => setWidth(e.target.value)}
+                {...register("width", { required:"Width must be required"})}
                 placeholder="0"
                 className="block w-full mt-1 text-sm font-medium text-gray-500 placeholder-gray-400 outline-none"
               />
+              {
+                errors?.width && <span className="text-red-500">{errors.width.message}</span>
+              }
             </div>
             <div className="px-4 py-3">
               <span className="text-xs text-gray-400">Height</span>
               <input
                 type="text"
                 inputMode="numeric"
-                value={height}
-                onChange={(e) => setHeight(e.target.value)}
+                {...register("height", { required:"Height must be required"})}
                 placeholder="0"
                 className="block w-full mt-1 text-sm font-medium text-gray-500 placeholder-gray-400 outline-none"
               />
+              {
+                errors?.height && <span className="text-red-500">{errors.height.message}</span>
+              }
             </div>
           </div>
         </div>

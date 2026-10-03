@@ -1,26 +1,12 @@
 import { useContext, useState } from "react";
 import { ProvideContext } from "./ProductContextProvider";
+import { useFormContext } from "react-hook-form";
 
-function PriceInput({ value, onChange, placeholder = "0.00" }) {
-  return (
-    <div className="flex border border-gray-300 rounded-md overflow-hidden">
-      <span className="flex items-center justify-center w-10 bg-gray-100 text-gray-500 text-sm border-r border-gray-300">
-        $
-      </span>
-      <input
-        type="text"
-        inputMode="decimal"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        className="w-full px-3 py-3 text-sm text-gray-800 placeholder-gray-400 outline-none"
-      />
-    </div>
-  );
-}
+
 
 export default function PricingCard() {
   const {sale, setSale, compareSale, setCompareSale, cost, setCost, tax,setTax} = useContext(ProvideContext);
+  const {register, formState:{errors}} = useFormContext()
 
   return (
     <div className="w-full  mx-auto border border-gray-200 rounded-md overflow-hidden bg-white">
@@ -43,7 +29,20 @@ export default function PricingCard() {
               Sale Price <span className="text-red-500">*</span>
             </label>
             <div className="mt-2">
-              <PriceInput value={sale} onChange={setSale} />
+              <div className="flex border border-gray-300 rounded-md overflow-hidden">
+      
+         <span className="flex items-center justify-center w-10 bg-gray-100 text-gray-500 text-sm border-r border-gray-300">
+        $
+         </span>
+        <input
+        type="text"
+        
+       
+        {...register("price")}
+        placeholder=""
+        className="w-full px-3 py-3 text-sm text-gray-800 placeholder-gray-400 outline-none"
+      />
+      </div>
             </div>
           </div>
 
@@ -52,7 +51,20 @@ export default function PricingCard() {
               Compare-at Price
             </label>
             <div className="mt-2">
-              <PriceInput value={compareSale} onChange={setCompareSale} />
+               <div className="flex border border-gray-300 rounded-md overflow-hidden">
+      
+      <span className="flex items-center justify-center w-10 bg-gray-100 text-gray-500 text-sm border-r border-gray-300">
+        $
+      </span>
+      <input
+        type="text"
+        
+       
+        {...register("comparePrice")}
+        placeholder=""
+        className="w-full px-3 py-3 text-sm text-gray-800 placeholder-gray-400 outline-none"
+      />
+    </div>
             </div>
             <p className="mt-1 text-xs text-blue-400">
               Shown as original / crossed-out price
@@ -64,7 +76,20 @@ export default function PricingCard() {
               Cost Per Item
             </label>
             <div className="mt-2">
-              <PriceInput value={cost} onChange={setCompareSale} />
+              <div className="flex border border-gray-300 rounded-md overflow-hidden">
+      
+      <span className="flex items-center justify-center w-10 bg-gray-100 text-gray-500 text-sm border-r border-gray-300">
+        $
+      </span>
+      <input
+        type="text"
+        
+       
+        {...register("cost")}
+        placeholder=""
+        className="w-full px-3 py-3 text-sm text-gray-800 placeholder-gray-400 outline-none"
+      />
+    </div>
             </div>
             <p className="mt-1 text-xs text-gray-400">Not shown to buyers</p>
           </div>

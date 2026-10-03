@@ -17,6 +17,8 @@ import AuthLayOut from './LayOut/AuthLayOut'
 import MarketoSignup from './Components/SignUp/SignUp'
 import VendorUplodedProductLayout from './LayOut/VendorUplodedProductLayout'
 import ProductUploadForm from './Components/ProductUploadForm/ProductUploadForm'
+import ProductContextProvider from './Components/ProductUploadForm/ProductContextProvider'
+import AuthContextProvider from './Components/AuthContext/AuthContextProvider'
 
 
 
@@ -49,12 +51,12 @@ function App() {
         </Route>    
         {/* vendor uploaded product layOut */}
         <Route path="/vendor-upload-product-form" element={<VendorUplodedProductLayout/>}>
-         <Route path="/vendor-upload-product-form" element={<ProductUploadForm/>}/>
+         <Route path="/vendor-upload-product-form" element={<ProductContextProvider><ProductUploadForm/></ProductContextProvider>}/>
         </Route>
          {/* auth  */}
          <Route path="/auth" element={<AuthLayOut/>}>
-          <Route path="/auth/signin" element={<MarketoLogin/>}/>
-          <Route path='/auth/signup' element={<MarketoSignup/>}/>
+          <Route path="/auth/signin" element={<AuthContextProvider><MarketoLogin/></AuthContextProvider>}/>
+          <Route path='/auth/signup' element={<AuthContextProvider><MarketoSignup/></AuthContextProvider>}/>
          </Route>
       </Routes>
      </BrowserRouter>

@@ -1,11 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useFormContext } from "react-hook-form";
 
 const META_DESC_MAX = 160;
 
 export default function SeoDiscoverabilityCard() {
-  const [seoTitle, setSeoTitle] = useState("");
-  const [metaDescription, setMetaDescription] = useState("");
-  const [urlSlug, setUrlSlug] = useState("");
+  
+ 
+  
+  const {register, formState:{errors}, watch, setValue} = useFormContext();
+   
+  const seotitle = watch("seoTitle");
+  const seoLength = seotitle?.length || 0;
+  const metaDescription = watch("metaDescription") ;
+  const metaLength = metaDescription?.length || 0;
+  const urlSlug = watch("urlSlug"); 
+
+  
 
   return (
     <div className="w-full mx-auto border border-gray-200 rounded-md overflow-hidden bg-white">
@@ -27,14 +37,16 @@ export default function SeoDiscoverabilityCard() {
           </label>
           <input
             type="text"
-            value={seoTitle}
-            onChange={(e) => setSeoTitle(e.target.value)}
+            {...register("seoTitle", { required: "Seo must be required" })}
             placeholder="Optimised page title for search engines"
             className="mt-2 w-full px-4 py-3 text-sm border border-gray-300 rounded-md text-gray-800 placeholder-gray-400 outline-none focus:border-gray-500"
           />
+          {
+            errors.seoTitle && <span className="text-red-500">{errors.seoTitle.message}</span>
+          }
           <div className="mt-1 flex justify-between text-xs">
             <span className="text-orange-400">Recommended: 50–60 characters</span>
-            <span className="text-gray-400">{seoTitle.length}</span>
+            <span className="text-gray-400">{seoLength}</span>
           </div>
         </div>
 
@@ -44,12 +56,9 @@ export default function SeoDiscoverabilityCard() {
             Meta Description
           </label>
           <textarea
-            value={metaDescription}
-            onChange={(e) =>
-              e.target.value.length <= META_DESC_MAX &&
-              setMetaDescription(e.target.value)
-            }
-            maxLength={META_DESC_MAX}
+            {...register("metaDescription", { required: "Meta must be required" })}
+            
+          
             placeholder="Brief description shown in search results (max 160 chars)"
             rows={4}
             className="mt-2 w-full px-4 py-3 text-sm border border-gray-300 rounded-md text-gray-800 placeholder-gray-400 outline-none resize-none focus:border-gray-500"
@@ -57,7 +66,7 @@ export default function SeoDiscoverabilityCard() {
           <div className="mt-1 flex justify-between text-xs">
             <span className="text-orange-400">Recommended: 120–155 characters</span>
             <span className="text-blue-400">
-              {metaDescription.length} / {META_DESC_MAX}
+             {metaLength} / {META_DESC_MAX}
             </span>
           </div>
         </div>
@@ -73,11 +82,15 @@ export default function SeoDiscoverabilityCard() {
             </span>
             <input
               type="text"
-              value={urlSlug}
-              onChange={(e) => setUrlSlug(e.target.value)}
+              {...register("urlSlug", { required: "Slug must be required",  })}
+            
               className="w-full px-4 py-3 text-sm text-gray-800 outline-none"
             />
+            
           </div>
+          {
+              errors.urlSlug && <span className="text-red-500">{errors.urlSlug.message}</span>
+            }
         </div>
       </div>
     </div>

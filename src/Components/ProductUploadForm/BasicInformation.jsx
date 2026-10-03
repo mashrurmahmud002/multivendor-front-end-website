@@ -1,34 +1,74 @@
 import axios from "axios";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ProvideContext } from "./ProductContextProvider";
+import { useFormContext } from "react-hook-form";
 
-const BasicInformation = ({category, subcategory, setCategory, setSubCategory}) => {
-  const{title , setTitle, tagn, setTag,generateSKu, setGenerateSKu} = useContext(ProvideContext);
-  const [tags, setTags] = useState([]);
+const BasicInformation = ({categories, subcategory, setCategories, setSubCategory}) => {
+  console.log("yes i am ",categories)
+  const{title , setTitle, tagn, setTag,generateSKu, setGenerateSKu,category, setCategory} = useContext(ProvideContext);
+  const {register, formState:{errors}, watch, setValue} = useFormContext({})
+ 
   const [tagInput, setTagInput] = useState("");
+  const [tags, setTags] = useState([]);
   
-  const [electronics, setElectronics] = useState(["Audio", "Cameras", "Computers", "Phones", "Wearables", "Other"]);
-  const [fashion_apparel, setfashion_apparel] = useState(["Apparel", "Shoes", "Accessories", "Other"]);
-  const [homeandGardern, setHomeandGarden] = useState(["Furniture", "Decor", "Kitchen", "Bedding", "Garden"]);
-  const [sportsOutdoors , setsportsOutdoors] = useState(["Running", "Cycling", "Yoga", "Camping", "Water Sports"]);
-  const [beauty_wellness, setbeauty_wellness] = useState(["Skincare", "Haircare", "Supplements", "Fragrance"]);
-  const [food_drink, setFood_drink] = useState(["Coffee & Tea", "Snacks", "Condiments", "Beverages"]);
-  const [bookMedia, setBokkMedia] = useState(["Books", "Music", "Film", "Games"]);
-  const [other, setOthers] = useState(['general', "select-sub-categories"]);
-  const [select, setSelect] = useState(null);
+  const [electronics] = useState(["Audio", "Cameras", "Computers", "Phones", "Wearables", "Other"]);
+  const [fashion_apparel] = useState(["Apparel", "Shoes", "Accessories", "Other"]);
+  const [homeandGardern] = useState(["Furniture", "Decor", "Kitchen", "Bedding", "Garden"]);
+  const [sportsOutdoors] = useState(["Running", "Cycling", "Yoga", "Camping", "Water Sports"]);
+  const [beauty_wellness] = useState(["Skincare", "Haircare", "Supplements", "Fragrance"]);
+  const [food_drink] = useState(["Coffee & Tea", "Snacks", "Condiments", "Beverages"]);
+  const [bookMedia] = useState(["Books", "Music", "Film", "Games"]);
+  const [other] = useState(['general', "select-sub-categories"]);
+ 
 
 
-  console.log(category)
+   const subCategoryLookup = {
+    fashion_apparel: fashion_apparel,
+    "home-garden": homeandGardern,
+    "sports-outdoors": sportsOutdoors,
+    "beauty-wellness": beauty_wellness,
+    "food-drink": food_drink,
+    "book-media": bookMedia,
+    electronics: electronics,
+    other: other,
+  };
+  console.log(generateSKu, "I am sku generator")
+  const selectedCategory = watch("category");
+   const currentSubCategories = subCategoryLookup[selectedCategory] || [];
+
+   const selectedTag = watch('tags');
+
+   console.log("selected tag", selectedTag, tags);
+
+   
 
 
-  console.log(select)
+  useEffect(()=>{
+    setValue('subcategory', '',{
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true
+    });
+  },[selectedCategory, setValue]);
 
+
+  useState(()=>{
+    setValue('tags', [],{
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true
+    });
+  })
+
+
+  
   const handleAddTag = () => {
+    
     const tag = tagInput.trim();
 
     if (!tag) return;
 
-    setTags((prev) => [...prev, tag]);
+    setValue('tags', [...selectedTag, tag]);
     setTagInput("");
   };
 
@@ -37,7 +77,7 @@ const BasicInformation = ({category, subcategory, setCategory, setSubCategory}) 
     try{
          const  response = await axios.get('http://localhost:5000/api/generate-sku');
          console.log(response)
-     setGenerateSKu(response.data.sku);
+        setGenerateSKu(response.data.sku);
     }catch(err){
         console.log(err)
     }
@@ -50,7 +90,7 @@ const BasicInformation = ({category, subcategory, setCategory, setSubCategory}) 
 
   }
    const handleSubCategory = (e)=>{
-    setSubCategory(e.target.value);
+    setSubCategory(e);
     
   }
 
@@ -61,7 +101,7 @@ const BasicInformation = ({category, subcategory, setCategory, setSubCategory}) 
     const trimo = e.trim()
 
     console.log("selected value", e);
-    setSelect(trimo);
+    setCategory(trimo);
 
    
 
@@ -101,10 +141,13 @@ const BasicInformation = ({category, subcategory, setCategory, setSubCategory}) 
 
           <input
             type="text"
-            onChange={(e)=>setTitle(e.target.value)}
+            {...register("title", {required: "Title is required"})}
             placeholder="e.g. Ceramic Pour-Over Coffee Set"
             className="h-[43px] w-full border border-black px-4 text-sm outline-none placeholder:text-[#9ca3af] focus:ring-1 focus:ring-black"
           />
+          {
+            errors.title && <p className="text-red-600">{errors.title.message}</p>
+          }
         </div>
 
         {/* SKU + Brand */}
@@ -122,6 +165,7 @@ const BasicInformation = ({category, subcategory, setCategory, setSubCategory}) 
                 
                 className="h-[43px] w-full max-w-[173px] border border-black px-4 text-xs text-[#9ca3af] outline-none"
               />
+
 
               <button
                 onClick={handleGenerateSku}
@@ -141,9 +185,13 @@ const BasicInformation = ({category, subcategory, setCategory, setSubCategory}) 
 
             <input
               type="text"
+              {...register("brand", {required: "Brand is required"})}
               placeholder="Brand or manufacturer"
               className="h-[43px] w-full border border-black px-4 text-sm outline-none placeholder:text-[#9ca3af] focus:ring-1 focus:ring-black"
             />
+            {
+              errors.brand && <p className="text-red-600">{errors.brand.message}</p>
+            }
           </div>
         </div>
 
@@ -157,7 +205,8 @@ const BasicInformation = ({category, subcategory, setCategory, setSubCategory}) 
 
             <select
             
-              onChange={(e) => habndleSubCategoryChange(e.target.value)}
+              {...register("category", {required: "Category is required"})}
+              
               defaultValue=""
               className="h-[43px] w-full appearance-none border border-black bg-white px-4 text-sm outline-none focus:ring-1 focus:ring-black"
             >
@@ -166,7 +215,7 @@ const BasicInformation = ({category, subcategory, setCategory, setSubCategory}) 
               </option>
               
                {
-                 category.map((item, index)=>(
+                 categories.map((item, index)=>(
                    
                    <option key={index} value={item}>{item}</option>
                  ))
@@ -181,56 +230,20 @@ const BasicInformation = ({category, subcategory, setCategory, setSubCategory}) 
             </label>
 
             <select
-              disabled={select===null}
-              defaultValue=""
-              className="h-[43px] disabled:cursor-not-allowed disabled:bg-red-600 w-full appearance-none border border-black bg-[#f3f3f3] px-4 text-sm text-[#9ca3af] outline-none focus:ring-1 focus:ring-black"
-              onChange={(e) => handleSubCategory(e.target.value)}
+              disabled={!selectedCategory}
+              {...register("subcategory", {required: "Sub-category is required"})}
+              className="h-[43px] disabled:cursor-not-allowed disabled:text-red-600 disabled:bg-[#f3f3f3] w-full appearance-none border  border-black bg-[#f3f3f3] px-4 text-sm  outline-none focus:ring-1 focus:ring-black"
+            
             >
               <option value="" disabled>
                 Select sub-category...
               </option>
-               {
-                  select === "fashion_apparel" && fashion_apparel.map((item, index)=>(
-                     <option key={index} value={item}>{item}</option>
-                  ))
-               }
-               {
-                  select === "home-garden" && homeandGardern.map((item, index)=>(
-                    <option key={index} value={item}>{item}</option>
-                    
-                  ))
-               }
-               {
-                  select === "sports-outdoors" && sportsOutdoors.map((item, index)=>(
-                     <option key={index} value={item}>{item}</option>
-                    
-                  ))
-               }
-               {
-                  select === "beauty-wellness" && beauty_wellness.map((item, index)=>(
-                     <option key={index} value={item}>{item}</option>
-                  ))
-               }
-               {
-                  select === "food-drink" && food_drink.map((item, index)=>(
-                     <option key={index} value={item}>{item}</option>
-                  ))
-               }
-               {
-                  select === "book-media" && bookMedia.map((item, index)=>(
-                     <option key={index} value={item}>{item}</option>
-                  ))
-               }
-               {
-                 select === "electronics" && electronics.map((item, index)=>(
-                     <option key={index} value={item}>{item}</option>
-                  ))
-               }
-               {
-                  select === "other" && other.map((item, index)=>(
-                     <option key={index} value={item}>{item}</option>
-                  ))
-               }
+
+              {
+                currentSubCategories?.map((item, index)=>(
+                  <option key={index} value={item}>{item}</option>
+                ))
+              }
              
             </select>
           </div>
@@ -245,8 +258,13 @@ const BasicInformation = ({category, subcategory, setCategory, setSubCategory}) 
           <div className="flex gap-2">
             <input
               type="text"
-              value={tagn}
-              onChange={(e) => setTag(e.target.value)}
+              value={tagInput}
+
+              {...register("tags")}
+
+              onChange={(e) => setTagInput(e.target.value)}
+              
+              
               onKeyDown={handleKeyDown}
               placeholder="Type a tag and press Enter"
               className="h-[43px] min-w-0 flex-1 border border-black px-4 text-sm outline-none placeholder:text-[#9ca3af] focus:ring-1 focus:ring-black"
@@ -262,9 +280,9 @@ const BasicInformation = ({category, subcategory, setCategory, setSubCategory}) 
           </div>
 
           {/* Added Tags */}
-          {tags.length > 0 && (
+          {selectedTag.length > 0 && (
             <div className="mt-3 flex flex-wrap gap-2">
-              {tags.map((tag, index) => (
+              {selectedTag.map((tag, index) => (
                 <span
                   key={index}
                   className="border border-black px-3 py-1 text-xs"
