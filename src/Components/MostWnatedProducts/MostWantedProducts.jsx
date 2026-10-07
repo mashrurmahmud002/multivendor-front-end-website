@@ -2,51 +2,7 @@ import { Heart } from "lucide-react";
 import { useGetProducts } from "../../../Hook";
 
 
-// const products = [
-//   {
-//     brand: "KINFOLK STUDIO",
-//     name: "Ceramic Pour-Over Set",
-//     price: "$64",
-//     badge: "NEW",
-//     image: "https://i.ibb.co.com/Ps3NtC5M/pexels-thomas-plets-1139798-4425744.jpg",
-//   },
-//   {
-//     brand: "ATELIER NORD",
-//     name: "Wool Merino Overshirt",
-//     price: "$128",
-//     oldPrice: "$180",
-//     badge: "SALE",
-//     image: "https://i.ibb.co.com/DD7BBXLH/The-Merino-Wool-Overshirt-AW24-183-M-PEARL-Artknitstudios-2-01001d3a-0bd2-480d-8c7e-73ca94c3b8cb.webp",
-//   },
-//   {
-//     brand: "VOLT ELECTRONICS",
-//     name: "Compact Air Purifier",
-//     price: "$219",
-//     image: "https://i.ibb.co.com/1ffgq5sJ/pexels-catscoming-2123430.jpg",
-//   },
-//   {
-//     brand: "ROOTS & REMEDY",
-//     name: "Ashwagandha Extract",
-//     price: "$38",
-//     badge: "BESTSELLER",
-//     image: "https://i.ibb.co.com/3mD1DGc3/pexels-jonathanborba-17820710.jpg",
-//   },
-//   {
-//     brand: "KINFOLK STUDIO",
-//     name: "Linen Napkin Set ×6",
-//     price: "$42",
-//     oldPrice: "$60",
-//     badge: "SALE",
-//     image: "https://i.ibb.co.com/3mJybGPz/pexels-tima-miroshnichenko-4794881.jpg",
-//     wishlist: true,
-//   },
-//   {
-//     brand: "VOLT ELECTRONICS",
-//     name: "Wireless Earbuds Pro",
-//     price: "$149",
-//     image: "https://i.ibb.co.com/XZ4SRrrk/pexels-wolfgang-weiser-467045605-18475528.jpg",
-//   },
-// ];
+
 
 
 
@@ -56,7 +12,7 @@ const MostWanted = () => {
 
   const {data} = useGetProducts();
 
-  console.log(data?.data?.products)
+  
 
   
   return (
@@ -191,7 +147,7 @@ const MostWanted = () => {
               {/* Brand */}
               <p
                 className="
-                  text-[9px]
+                  text-[15px]
                   font-medium
                   uppercase
                   tracking-[1px]
@@ -205,7 +161,7 @@ const MostWanted = () => {
               <h3
                 className="
                   mt-1
-                  text-[9px]
+                  text-[20px]
                   font-bold
                   leading-tight
                   text-black
@@ -231,11 +187,12 @@ const MostWanted = () => {
 
                 <button
                   className="
-                    h-[22px]
-                    min-w-[47px]
+                    h-[24px]
+                    min-w-[147px]
                     border
                     border-black
                     px-2
+                   
                     text-[9px]
                     font-semibold
                     uppercase

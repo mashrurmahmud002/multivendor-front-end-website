@@ -20,6 +20,7 @@ import ProductUploadForm from './Components/ProductUploadForm/ProductUploadForm'
 import ProductContextProvider from './Components/ProductUploadForm/ProductContextProvider'
 import AuthContextProvider from './Components/AuthContext/AuthContextProvider'
 import ProductDetails from './Components/ProductDetails/ProductDetails'
+import About from './Components/About/About'
 
 
 
@@ -34,6 +35,7 @@ function App() {
       <Routes>
         <Route path='/' element={<HomeLayOut/>} >
           <Route path='/' element={<Home/>} />
+          <Route path='/about' element={<About/>}/>
            
         </Route>
         <Route path="/shop" element={<ShopLayOut/>} >

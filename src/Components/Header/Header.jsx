@@ -12,7 +12,7 @@ const navLinks = [
   { label: "VENDORS", to: "/vendor/vendor-register" },
   { label: "DEALS", to: "/deals/deals-products" },
   { label: "NEW ARRIVALS", to: "#" },
-  { label: "ABOUT", to: "#" },
+  { label: "ABOUT", to: "/about" },
 ];
 
 const Header = () => {
