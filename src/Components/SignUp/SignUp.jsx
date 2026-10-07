@@ -21,12 +21,12 @@ export default function MarketoSignup() {
   const navigate = useNavigate();
 
   const onsubmit = async (data) => {
-    console.log(data);
+    
 
     try {
       const response = await createUser(data);
 
-      console.log(response);
+      
 
       Swal.fire({
         position: "center",
@@ -40,12 +40,12 @@ export default function MarketoSignup() {
 
       navigate("/");
     } catch (err) {
-      console.log(err);
+      
     }
   };
 
   const onError = async (data) => {
-    console.log(data);
+    
   };
 
   return (
@@ -53,38 +53,39 @@ export default function MarketoSignup() {
 
       {/* ================= LEFT PANEL ================= */}
       <div
-        className="
-          relative
-          w-full
-          lg:w-1/2
-          min-h-[260px]
-          sm:min-h-[320px]
-          lg:min-h-screen
-          bg-black
-          overflow-hidden
-        "
-      >
+    className="
+      relative
+      w-full
+      lg:w-1/2
+      min-h-[280px]
+      sm:min-h-[360px]
+      md:min-h-[420px]
+      lg:min-h-screen
+      bg-black
+      overflow-hidden
+    "
+  >
         {/* Phone image */}
         <img
-          src="https://images.unsplash.com/photo-1512428559087-560fa5ceab42?w=800&q=80"
-          alt="Hands holding smartphone"
-          className="
-            absolute
-            right-0
-            top-1/2
-            -translate-y-1/2
-            h-full
-            sm:h-[85%]
-            lg:h-[80%]
-            w-auto
-            max-w-[65%]
-            sm:max-w-[55%]
-            lg:max-w-none
-            object-cover
-            grayscale
-            opacity-70
-          "
-        />
+  
+  className="
+    absolute
+    right-0
+    top-1/2
+    -translate-y-1/2
+    h-full
+    sm:h-[90%]
+    lg:h-[80%]
+    w-auto
+    max-w-[75%]
+    sm:max-w-[60%]
+    md:max-w-[55%]
+    lg:max-w-none
+    object-cover
+    grayscale
+    opacity-70
+  "
+/>
 
         {/* Gradient */}
         <div
@@ -99,59 +100,61 @@ export default function MarketoSignup() {
         />
 
         {/* Stats */}
-        <div
-          className="
-            relative
-            z-10
-            flex
-            items-center
-            h-full
-            p-6
-            sm:p-10
-            lg:p-16
-          "
-        >
+       <div
+  className="
+    relative
+    z-10
+    flex
+    items-center
+    h-full
+    p-5
+    sm:p-8
+    md:p-10
+    lg:p-16
+  "
+>
           <div
-            className="
-              flex
-              flex-row
-              lg:flex-col
-              gap-6
-              sm:gap-10
-              lg:gap-14
-              w-full
-            "
-          >
+    className="
+      flex
+      flex-row
+      lg:flex-col
+      gap-5
+      sm:gap-8
+      md:gap-10
+      lg:gap-14
+      w-full
+    "
+  >
 
             {/* Stat 1 */}
             <div>
-              <p className="text-white text-3xl sm:text-4xl lg:text-6xl font-extrabold tracking-tight">
+          <p className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-extrabold tracking-tight">
                 $0
               </p>
 
-              <p className="text-white/60 text-[10px] sm:text-sm lg:text-base font-semibold uppercase tracking-[0.15em] lg:tracking-[0.2em] mt-1">
+              <p className="text-white/60 text-[9px] sm:text-[10px] md:text-sm lg:text-base font-semibold uppercase tracking-[0.12em] lg:tracking-[0.2em] mt-1">
                 To Join
               </p>
             </div>
 
             {/* Stat 2 */}
             <div>
-              <p className="text-white text-3xl sm:text-4xl lg:text-6xl font-extrabold tracking-tight">
+              <p className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-extrabold tracking-tight">
                 84K+
               </p>
 
-              <p className="text-white/60 text-[10px] sm:text-sm lg:text-base font-semibold uppercase tracking-[0.15em] lg:tracking-[0.2em] mt-1">
+            <p className="text-white/60 text-[9px] sm:text-[10px] md:text-sm lg:text-base font-semibold uppercase tracking-[0.12em] lg:tracking-[0.2em] mt-1">
                 Vendors
               </p>
             </div>
 
             {/* Stat 3 */}
             <div>
-              <p className="text-white text-3xl sm:text-4xl lg:text-6xl font-extrabold tracking-tight">
+              <p className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-extrabold tracking-tight">
                 2.1M
               </p>
 
-              <p className="text-white/60 text-[10px] sm:text-sm lg:text-base font-semibold uppercase tracking-[0.15em] lg:tracking-[0.2em] mt-1">
+              <p className="text-white/60 text-[9px] sm:text-[10px] md:text-sm lg:text-base font-semibold uppercase tracking-[0.12em] lg:tracking-[0.2em] mt-1">
                 Products
               </p>
             </div>
@@ -163,17 +166,18 @@ export default function MarketoSignup() {
       {/* ================= RIGHT PANEL ================= */}
       <div
         className="
-          flex-1
-          flex
-          items-center
-          justify-center
-          px-5
-          py-8
-          sm:px-8
-          sm:py-10
-          lg:px-16
-          lg:py-16
-          bg-white
+           flex-1
+           flex
+           items-center
+           justify-center
+           px-4
+           py-8
+           sm:px-6
+           sm:py-10
+           md:px-10
+           lg:px-16
+           lg:py-16
+           bg-white
         "
       >
         <div className="w-full max-w-md">

@@ -10,7 +10,7 @@ const SHORT_DESC_MAX = 160;
 export default function DescriptionCopyCard() {
    const {register, formState:{errors}} = useFormContext()
    const {description, setDescription, shortDescription, setShortDescription} = useContext(ProvideContext);
-   console.log(description)
+   
 
   return (
     <div className="w-full  mx-auto border border-gray-200 rounded-md overflow-hidden bg-white">

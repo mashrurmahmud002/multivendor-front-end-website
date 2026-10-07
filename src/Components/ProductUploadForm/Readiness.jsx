@@ -11,6 +11,7 @@ const CHECKLIST_ITEMS = [
 ];
 
 export default function ReadinessCard() {
+  
   const [checked, setChecked] = useState(Array(CHECKLIST_ITEMS.length).fill(false));
 
   const toggle = (i) =>

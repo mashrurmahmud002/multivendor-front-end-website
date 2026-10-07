@@ -9,7 +9,8 @@ export const categories = async()=>{
         return response
 
     }catch(error){
-        console.log(error)
+        console.log(error);
+        
     }
 }
 
@@ -19,7 +20,8 @@ export const productUpload = async(data)=>{
         const response = await productInstance.post("/product-upload",data);
         return response
     }catch(error){
-        console.log(error)
+        console.log(error);
+        
     }
 }
 
@@ -28,7 +30,8 @@ export const createUser = async(data)=>{
         const response = await authInstance.post("/create-account",data);
         return response
     }catch(error){
-       console.log(error)
+        console.log(error);
+       
     }
 
 
@@ -40,6 +43,18 @@ export const loginUser = async(data)=>{
         const response = await authInstance.post("/login",data);
         return response
     }catch(error){
-        console.log(error)
+       console.log(error); 
     }
 }
+
+
+export const getProducts = async()=>{
+    try{
+        const response = await productInstance.get("/products");
+        console.log(response,"the response from api.js");
+        return response
+    }catch(error){
+        console.log(error);
+    }
+ }
+

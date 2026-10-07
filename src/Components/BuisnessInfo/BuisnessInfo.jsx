@@ -19,10 +19,10 @@ const BusinessInfo = ({setActive, businessInfo, handleNext,setBusinessInfo,disab
   const [selectedType, setSelectedType] = useState(null);
   const [category, setCategory] = useState(null);
 
-  console.log(disabled)
+  
   
 
-  console.log(selectedType)
+  
 
   const handleChanged = async(e)=>{
      

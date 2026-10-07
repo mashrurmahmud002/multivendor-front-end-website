@@ -18,7 +18,7 @@ const Details = () => {
    const [disabled, setDisabled] = useState(true);
 
 
-   console.log("this is buisness info object",businessInfo);
+   
 
 
 
@@ -38,7 +38,7 @@ const Details = () => {
     personalInfo.confirmPassword === personalInfo.password;
 
 
-    console.log(personalInfoValid,"this is personal info valid")
+    
 
 
   const buisnessInfoValid = Boolean(
@@ -52,14 +52,14 @@ const Details = () => {
   businessInfo?.buisness_address);
 
 
-  console.log(buisnessInfoValid,"this is buisness info valid")
+  
 
 
 
   const handleChanged = async(e)=>{
 
        const firstName = e.target.firstName
-       console.log(firstName)
+       
 
       
         
@@ -106,7 +106,7 @@ const Details = () => {
   }
 
 
- console.log(storeValidInfo,"this is store valid info")
+ 
     return (
         <>
         

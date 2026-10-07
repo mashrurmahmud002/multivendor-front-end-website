@@ -38,8 +38,8 @@ const VendorSteps = ({activeStep, setActiveStep,disabled}) => {
         {steps.map((step) => {
           const active = activeStep === Number(step.number);
           const completed = Number(step.number) < activeStep;
-          console.log(activeStep)
-          console.log(completed)
+          
+          
 
           return (
             <button

@@ -4,7 +4,7 @@ import { ProvideContext } from "./ProductContextProvider";
 
 
 export default function SummaryCard() {
-  const {title,generateSKu,category, setCategory, price,weightUnit, tagn, image} = useContext(ProvideContext);
+  const {title,generateSKu,category, setCategory, price,weightUnit, tags, image} = useContext(ProvideContext);
   const SUMMARY_ROWS = [
   { label: "Title", value: title },
   { label: "SKU", value: generateSKu },
@@ -12,7 +12,7 @@ export default function SummaryCard() {
   { label: "Price", value: price },
   { label: "Stock", value: weightUnit },
   { label: "Images", value: "None" },
-  { label: "Tags", value: "" },
+  { label: "Tags", value: tags?.map((tag) => "#"+tag).join(", ") || "None"} ,
 ];
   return (
     <div className="w-full max-w-xs border border-gray-300 rounded-md overflow-hidden bg-white">

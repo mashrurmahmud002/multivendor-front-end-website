@@ -18,6 +18,7 @@ import SeoDiscoverabilityCard from "./SeoDisCoverBiliyinfo";
 import axios from "axios";
 import { productInstance } from "../../../client";
 import { ProvideContext } from "./ProductContextProvider";
+import Swal from "sweetalert2";
 
 export default function ProductUploadForm() {
 
@@ -33,7 +34,7 @@ export default function ProductUploadForm() {
 
   
 
-  const [image, setImage] = useState("");
+  
 
    const methods = useForm({
     defaultValues: {
@@ -51,10 +52,10 @@ export default function ProductUploadForm() {
   const [subcategory, setSubCategory] = useState("");
   const [imageerror, setimageError] = useState(null);
 
-   const {generateSKu } = useContext(ProvideContext);
+   const {generateSKu, imageArray,varient_image,variantOptions, tax,allowBackdors} = useContext(ProvideContext);
 
 
-
+  
 
 
 
@@ -72,46 +73,93 @@ export default function ProductUploadForm() {
 
 
   const onsubmit = async(data)=>{
-    console.log("I am right behind you");
-    console.log("motherfucker asshole");
 
 
-     const varient = await Promise.all(
-      (data.varient || []).map(async (v) => ({
-        ...v,
-        images: await Promise.all(Array.from(v.images || []).map(uploadImage)),
-      }))
+    console.log("hello")
+    
+    
+    
+
+   try {
+    // Safely map variants and process images
+   const  varient = await Promise.all(
+      (data?.varient || []).map(async (v) => {
+        const uploadedImages = await Promise.all(
+          Array.from(v?.images || []).map(async (img) => {
+            try {
+              return await uploadImage(img);
+            } catch (imgErr) {
+              console.error("Failed to upload image:", imgErr);
+              throw imgErr; // Re-throw to cancel the process, or return null/fallback
+            }
+          })
+        );
+
+        return {
+          ...v,
+          images: uploadedImages,
+        };
+      })
     );
+
+    console.log("Uploaded variants:", varient);
+  } catch (err) {
+    console.error("Error processing variants/images:", err);
+    Swal.fire({
+      icon: "error",
+      title: "Image Upload Failed",
+      text: "Something went wrong while uploading variant images.",
+    });
+    return; // Stop execution if variant image upload fails
+  }
+    
+
+  console.log("are you there")
 
 
      
     
 
     
-    if(!image){
-       setimageError("Image is required");
-       return
+  
 
-    }
+    console.log("I am here ")
     const finaldata = {
-       image,
+       imageArray,
        ...data,
        generateSKu,
+       tax,
+       allowBackdors,
        
-       varient
+
+       
+       
+       varient_image,
        
 
     };
+
+
+    console.log(finaldata)
 
     try{
 
       const response = await productInstance.post("/product-upload",finaldata);
       console.log(response);
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Product uploaded successfully",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      
     }catch(err){
-       console.log(err)
+      console.log(err);
+       
     }
 
-    console.log(finaldata)
+    
     
    
 
@@ -119,11 +167,13 @@ export default function ProductUploadForm() {
   
 
 
-  console.log(activeState, "I am activestate")
+  
 
     const onInvalid = (errors)=>{
-      console.log("I am invalid");
+
       console.log(errors);
+      
+      
 
     }
   
@@ -136,7 +186,7 @@ export default function ProductUploadForm() {
       
         <div className="w-[80%]">
           {/* done */}
-          <ImageUpload setImage={setImage} imageerror={imageerror} />                           
+          <ImageUpload  imageerror={imageerror} />                           
           <br />
           <BasicInformation categories={categories} setCategories={setCategories}   subcategory={setCategories} setSubCategory={setSubCategory} />
           <br />

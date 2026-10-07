@@ -1,5 +1,13 @@
+import { useNavigate } from 'react-router-dom';
 import CategoryCard from '../Categories/CategoryCard';
 const Banner = () => {
+  const navigate = useNavigate();
+
+  const handleGotoVendor = () => {
+
+     navigate("/vendor/vendor-register");
+      
+  }
   return (
     <section className="w-full bg-white px-4 sm:px-6 lg:px-8">
       <div className="grid grid-cols-1 gap-0 lg:min-h-[calc(100vh-106px)] lg:grid-cols-[2fr_0.9fr]">
@@ -51,6 +59,7 @@ const Banner = () => {
               </button>
 
               <button
+                onClick={handleGotoVendor}
                 className="
                   h-[31px]
                   border

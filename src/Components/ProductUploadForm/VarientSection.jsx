@@ -4,15 +4,24 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import { set } from "zod";
 import axios from "axios";
 import { required } from "zod/mini";
+import { CircularProgress } from "@mui/material";
+import { X } from "lucide-react";
 
 const VariantsSection = () => {
 
-    const {varient, seVarient, Values, setValues, price, setPrice, size, varient_image,setvarient_image,  setSize, stock, setStock, image, setImage } = useContext(ProvideContext);
+    const { seVarient, Values, setValues, price, setPrice, size, count , variantOptions, 
+       setVariantOptions,
+       setCount,   variant_image, setVariant_image,  setSize, stock, setStock, image, setImage } = useContext(ProvideContext);
     const [hasVariants, setHasVariants] = useState(false);
+    const [loading, setLoading] = useState(false);
    
     const fileInputRef = useRef(null);
 
-    const {register, formState:{errors}, control} = useFormContext();
+    
+
+    const {register, formState:{errors}, control, getValues, setValue} = useFormContext();
+   
+    
 
     const { fields, append, remove } = useFieldArray({
         control,
@@ -21,25 +30,31 @@ const VariantsSection = () => {
 
     const [selectedImages, setSelectedImages] = useState([]);
     const [error, setError] = useState("");
+
+    
+
+  
+
+
     
 
     
+
+    const changeId = ()=>{
+        const id = count + 1;
+        setCount(id);
+        return id;
+       
+       
+    }
     
-   console.log(varient_image,"varient image");
+       
     
 
 
-    const [variantOptions, setVariantOptions] = useState([
-        {
-            optionName: "Size",
-            values: "S, M, L, XL",
-            price: "0.00",
-            stock: "0",
-            color: "",
-            image: varient_image,
-
-        },
-    ]);
+   
+   console.log(variantOptions);
+    
 
     const handleTriggerImage = () => {
         document.getElementById("images_multiple_file").click();
@@ -47,41 +62,93 @@ const VariantsSection = () => {
 
     }
 
-    const handleSelectedImages = async(files) => {
-        console.log(files);
+    const handleSelectedImages = async(files, varientIndex) => {
+        
+        
+        
+        
         const formdata = new FormData();
+
+        const existingImage = getValues(`varient.${varientIndex}.images`) || [];
+        const newUploads = [];
+
+        
 
         try{
            for(const imgo of files){
                formdata.append("image",imgo);
+               setLoading(true);
                const response = await axios.post(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API_KEY}`,formdata);
-               console.log(response);
+               
+               setLoading(false);
                const updateUrl = response?.data?.data?.display_url;
-                console.log(updateUrl);
+
+               if(updateUrl){
+                  newUploads.push(updateUrl);
+               }
+               
+              setVariantOptions((prev) =>{
+
+                 return  prev.map((item,index)=>{
+
+                    
+                      
+                        return  varientIndex === index ? {...item, images: [...item.images, updateUrl]} : item
+                  })
+                    
+
+
+
+              }
+
+              
+              
+
+                
+                  
+              
+            );
+
+            setValue(`varient.${varientIndex}.images`, [...existingImage, ...newUploads]);
             
 
-               setvarient_image((prev) => [...prev, updateUrl]);
-               console.log(varient_image,"tumer image");
+               
+              
            }
 
         }catch(error){
             console.log(error);
+            
         }
 
 
         
     }
 
-    console.log("i am ",varient);
+    const removeCount = ()=>{
+        const id = count - 1;
+        setCount(id);
+       
+    }
 
-    console.log(selectedImages,"selected images");
+   
 
-    const handleImageChange = async(e)=>{
+    
+
+    const handleImageChange = async(e, index)=>{
+
+
+        console.log("index",index);
+        
+
+        
+
+       
         const files = e.target.files;
         
       
-        console.log(files);
-        console.log("tumi ki aikane", files.length);
+        
+        
 
         if(files && files.length > 0){
             
@@ -94,10 +161,11 @@ const VariantsSection = () => {
             return;
          }
 
-         console.log("Tumi ki baire")
+         
          setSelectedImages(fileArray);
 
-        await handleSelectedImages(fileArray);
+        await handleSelectedImages(fileArray, index);
+        
         
         }
         
@@ -107,18 +175,21 @@ const VariantsSection = () => {
     }
     // Add new variant option
     const handleAddVariant = () => {
+       
         setVariantOptions((prev) => [
             ...prev,
            {
+            id:changeId(),
             optionName: "Size",
             values: "S, M, L, XL",
             price: "0.00",
             stock: "0",
             color: "",
-            image: varient_image,
+            images: [],
 
         },
         ]);
+        
     };
 
     // Update variant field
@@ -139,12 +210,32 @@ const VariantsSection = () => {
 
     // Remove variant option
     const handleRemove = (index) => {
-        console.log(index);
-        console.log("Hello office")
+        
+        removeCount();
+        
         setVariantOptions((prev) =>
             prev.filter((_, i) => i !== index)
         );
+
     };
+
+    const handleRemoveImage = (i, variantIndex)=>{
+        
+
+       setVariantOptions((prev) =>
+            prev.map((item, index) =>
+                index === variantIndex
+                    ? {
+                          ...item,
+                          images: item.images.filter(
+                              (_, imageIndex) => i !== imageIndex
+                          ),
+                      }
+                    : item
+            )
+        );
+
+    }
 
     return (
         <div className="w-full border border-gray-300 bg-white">
@@ -209,26 +300,7 @@ const VariantsSection = () => {
 
                         {/* Column headings */}
 
-                        <div className="mb-3 grid grid-cols-[1.2fr_1.2fr_94px_94px_38px] gap-2">
-
-                            <p className="text-[9px] font-medium tracking-[2px] text-gray-500">
-                                OPTION NAME
-                            </p>
-
-                            <p className="text-[9px] font-medium tracking-[2px] text-gray-500">
-                                VALUES
-                            </p>
-
-                            <p className="text-[9px] font-medium tracking-[2px] text-gray-500">
-                                PRICE
-                            </p>
-
-                            <p className="text-[9px] font-medium tracking-[2px] text-gray-500">
-                                STOCK
-                            </p>
-
-                            <div />
-                        </div>
+                       
 
                         {/* Variant rows */}
 
@@ -247,7 +319,7 @@ const VariantsSection = () => {
                                             placeholder="Size"
                                             className="h-[38px] w-full border border-black px-3 text-[12px] text-gray-700 outline-none focus:bg-gray-50"
                                         />
-                                        {errors?.varient?.[index]?.optionName && (
+                                        {errors?.variant?.[index]?.optionName && (
                                             <span className="text-xs text-red-500">
                                                {errors.varient?.[index]?.optionName.message || "Option name is required"}
                                             </span>
@@ -258,7 +330,7 @@ const VariantsSection = () => {
                                     {/* 2. Image Upload */}
                                     <div>
                                         <label>Image Upload</label>
-                                        <label onClick={handleTriggerImage} className="group flex h-[38px] cursor-pointer items-center justify-center border border-black bg-white transition-colors hover:bg-black">
+                                        <label  className="group flex h-[38px] cursor-pointer items-center justify-center border relative border-black bg-white transition-colors hover:bg-black">
                                             <svg
                                                 
                                                 className="h-4 w-4 stroke-2 text-black transition-colors group-hover:text-white"
@@ -271,21 +343,39 @@ const VariantsSection = () => {
                                                     strokeLinejoin="round"
                                                     d="M12 4.5v15m7.5-7.5h-15"
                                                 />
+
+                                              
                                             </svg>
-                                             <input
+                                            <input
                                                 type="file"
-                                                id="images_multiple_file"
+                                                
                                                 accept="image/*"
                                                 multiple
                                                 className="hidden"
-                                                {...register(`varient.${index}.images`, {
-                                                  validate: (fileList) =>
-                                                    Array.from(fileList || []).every((f) => f.size <= 5 * 1024 * 1024) ||
-                                                    "Each image must be under 5MB",
-                                                })}
+                                                onChange={(e)=>handleImageChange(e, index)}
+                                              
+                                               
                                               />
                                             {error && <span className="text-red-500">{error}</span>}
+                                             
                                         </label>
+
+                                        <ul className="flex  gap-2">
+
+                                            
+
+                                            {
+                                                variant?.images?.map((image, i) => (
+                                                    
+                                                   loading ? <CircularProgress size={10} color="secondary" aria-label="Loading…" />: <div className="flex flex-row-reverse">
+                                                      <X size={12} onClick={() => handleRemoveImage(i, index)} />
+                                                     <img className="w-7 h-7 shadow-lg border-2 p-1" src={image} alt={`image -${i}`} />
+                                                   </div>
+                                                ))
+                                            }
+                                        </ul>
+                                   
+
                                     </div>
 
                                     {/* 3. Values */}

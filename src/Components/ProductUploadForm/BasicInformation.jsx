@@ -4,12 +4,12 @@ import { ProvideContext } from "./ProductContextProvider";
 import { useFormContext } from "react-hook-form";
 
 const BasicInformation = ({categories, subcategory, setCategories, setSubCategory}) => {
-  console.log("yes i am ",categories)
-  const{title , setTitle, tagn, setTag,generateSKu, setGenerateSKu,category, setCategory} = useContext(ProvideContext);
+  
+  const{title , setTitle,tags, setTags, tagn, setTag,generateSKu, setGenerateSKu,category, setCategory} = useContext(ProvideContext);
   const {register, formState:{errors}, watch, setValue} = useFormContext({})
  
   const [tagInput, setTagInput] = useState("");
-  const [tags, setTags] = useState([]);
+  
   
   const [electronics] = useState(["Audio", "Cameras", "Computers", "Phones", "Wearables", "Other"]);
   const [fashion_apparel] = useState(["Apparel", "Shoes", "Accessories", "Other"]);
@@ -32,13 +32,13 @@ const BasicInformation = ({categories, subcategory, setCategories, setSubCategor
     electronics: electronics,
     other: other,
   };
-  console.log(generateSKu, "I am sku generator")
+  
   const selectedCategory = watch("category");
    const currentSubCategories = subCategoryLookup[selectedCategory] || [];
 
    const selectedTag = watch('tags');
 
-   console.log("selected tag", selectedTag, tags);
+   
 
    
 
@@ -68,7 +68,7 @@ const BasicInformation = ({categories, subcategory, setCategories, setSubCategor
 
     if (!tag) return;
 
-    setValue('tags', [...selectedTag, tag]);
+    setTags((prev) => [...prev, tag]);
     setTagInput("");
   };
 
@@ -76,10 +76,10 @@ const BasicInformation = ({categories, subcategory, setCategories, setSubCategor
   const handleGenerateSku = async()=>{
     try{
          const  response = await axios.get('http://localhost:5000/api/generate-sku');
-         console.log(response)
+         
         setGenerateSKu(response.data.sku);
     }catch(err){
-        console.log(err)
+        
     }
      
 
@@ -96,11 +96,11 @@ const BasicInformation = ({categories, subcategory, setCategories, setSubCategor
 
 
   const habndleSubCategoryChange = (e)=>{
-    console.log("Variable added");
+    
 
     const trimo = e.trim()
 
-    console.log("selected value", e);
+    
     setCategory(trimo);
 
    
@@ -141,7 +141,10 @@ const BasicInformation = ({categories, subcategory, setCategories, setSubCategor
 
           <input
             type="text"
-            {...register("title", {required: "Title is required"})}
+            
+            {...register("title", {required: "Title is required",
+              onChange: (e) => setTitle(e.target.value),
+            })}
             placeholder="e.g. Ceramic Pour-Over Coffee Set"
             className="h-[43px] w-full border border-black px-4 text-sm outline-none placeholder:text-[#9ca3af] focus:ring-1 focus:ring-black"
           />
@@ -205,7 +208,9 @@ const BasicInformation = ({categories, subcategory, setCategories, setSubCategor
 
             <select
             
-              {...register("category", {required: "Category is required"})}
+              {...register("category", {required: "Category is required",
+              onChange: (e) => setCategory(e.target.value),
+              })}
               
               defaultValue=""
               className="h-[43px] w-full appearance-none border border-black bg-white px-4 text-sm outline-none focus:ring-1 focus:ring-black"
@@ -260,9 +265,12 @@ const BasicInformation = ({categories, subcategory, setCategories, setSubCategor
               type="text"
               value={tagInput}
 
-              {...register("tags")}
+              {...register("tags",{
+                
+                onChange: (e) => setTagInput(e.target.value)
+              })}
 
-              onChange={(e) => setTagInput(e.target.value)}
+              
               
               
               onKeyDown={handleKeyDown}
@@ -280,9 +288,9 @@ const BasicInformation = ({categories, subcategory, setCategories, setSubCategor
           </div>
 
           {/* Added Tags */}
-          {selectedTag.length > 0 && (
+          {tags.length > 0 && (
             <div className="mt-3 flex flex-wrap gap-2">
-              {selectedTag.map((tag, index) => (
+              {tags.map((tag, index) => (
                 <span
                   key={index}
                   className="border border-black px-3 py-1 text-xs"

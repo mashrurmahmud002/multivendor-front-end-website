@@ -9,6 +9,7 @@ import React, { createContext, useState } from 'react';
 
 
 
+
  export const ProvideContext = createContext()
 
 const ProductContextProvider = ({children}) => {
@@ -23,7 +24,7 @@ const ProductContextProvider = ({children}) => {
     const [length, setLength] = useState('');
     const [width, setWidth] = useState('');
     const [height, setHeight] = useState('');
-    const [tax, setTax] = useState(0);
+    const [tax, setTax] = useState(false);
     const [quantity, setquantity] = useState(0);
     const [stock, setStock] = useState(0);
     const [size, setSize] = useState('');
@@ -34,30 +35,54 @@ const ProductContextProvider = ({children}) => {
     const [allowBackdors , setallowBackdors] = useState(false);
     const [trackInventory, setTrackInventory] = useState(false);
     const[tagn, setTag] = useState([]);
+    const [tags, setTags] = useState([]);
     const [generateSKu, setGenerateSKu] = useState('');
     const [shippingClass, setShippingClass] = useState("Standard");
     const [weight, setWeight] = useState(0);
     const [weightUnit, setWeightUnit]= useState("KG");
     const [brand, setBrand] = useState('');
     const [ category, setCategory] = useState(null);
-    const[varient_image, setvarient_image] = useState([]);
+    const [count , setCount] = useState(0);
+    const [variant_image, setVariant_image] = useState([
+  {
+    id: crypto.randomUUID(),
+    image: null
+  }
+]);
+
+const [imageArray, setImageArray] = useState([]);
+
+   const [variantOptions, setVariantOptions] = useState([
+          {
+  
+              id:count,
+              optionName: "Size",
+              values: "S, M, L, XL",
+              price: "0.00",
+              stock: "0",
+              color: "",
+              images: [],
+          }
+          
+      ]);
 
 
   
     const [varient, seVarient] = useState([
     {
+      
       optionName: "Size",
       values: "S, M, L, XL",
       price: "0.00",
       stock: "0",
       color: "",
-      image: varient_image,
+      image: variant_image,
     
     },
   ]);
     
 
-    console.log(generateSKu, "I am sku generateSku from product context provider");
+    
 
    const balance = {
        title,
@@ -114,8 +139,16 @@ const ProductContextProvider = ({children}) => {
        setBrand,
        category,
        setCategory,
-       varient_image,
-       setvarient_image
+       variant_image,
+       setVariant_image,
+       count , 
+       setCount,
+       variantOptions, 
+       setVariantOptions,
+       tags,
+       setTags,
+       imageArray, 
+       setImageArray
    }
    
     return <ProvideContext.Provider value={balance}>

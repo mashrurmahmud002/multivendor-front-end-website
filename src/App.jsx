@@ -19,6 +19,7 @@ import VendorUplodedProductLayout from './LayOut/VendorUplodedProductLayout'
 import ProductUploadForm from './Components/ProductUploadForm/ProductUploadForm'
 import ProductContextProvider from './Components/ProductUploadForm/ProductContextProvider'
 import AuthContextProvider from './Components/AuthContext/AuthContextProvider'
+import ProductDetails from './Components/ProductDetails/ProductDetails'
 
 
 
@@ -37,6 +38,7 @@ function App() {
         </Route>
         <Route path="/shop" element={<ShopLayOut/>} >
          <Route path='/shop' element={<Shop/>}/>
+         <Route path='/shop/product-details/:id' element={<ProductDetails/>}/>
         
         </Route>
         <Route path='/vendor' element={<VendorformLayout/>}>

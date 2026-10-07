@@ -16,13 +16,13 @@ export default function MarketoLogin() {
 
   const onsubmit = async(data)=>{
    
-     console.log(data);
+     
 
 
      try{
         const response = await loginUser(data);
 
-        console.log(response)
+        
         Swal.fire({
         position: "top-end",
         icon: "success",
@@ -35,7 +35,7 @@ export default function MarketoLogin() {
         navigate("/");
 
      }catch(err){
-        console.log(err);
+        
      }
 
 
@@ -43,7 +43,7 @@ export default function MarketoLogin() {
   }
 
   const onError = async(data)=>{
-    console.log(data);
+    
   }
 
   return (
