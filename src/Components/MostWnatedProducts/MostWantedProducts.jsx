@@ -79,7 +79,7 @@ const MostWanted = () => {
 
               {/* Badge */}
               {
-                product?.isNewProduct && (
+                product?.isNewProduct===true && (
                     <span
                   className="
                     absolute
