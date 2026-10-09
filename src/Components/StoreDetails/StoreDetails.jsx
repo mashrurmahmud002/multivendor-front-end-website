@@ -1,16 +1,40 @@
 
-import React from "react";
+import React, { useEffect } from "react";
+import { useFormContext } from "react-hook-form";
+import { set } from "zod";
 
 
 
-const StoreDetails = ({ setActive,  handleNext,storeInfo ,setStoreInfo, disabled}) => {
+const StoreDetails = ({ setActive,  handleNext,storeInfo ,setStoreInfo, disabled, setDisabled}) => {
 
-
+  const {register , formState:{errors}, watch} = useFormContext();
 
   const handleChanged = async(e)=>[
      setStoreInfo({...storeInfo,[e.target.name]:e.target.value})
   ]
 
+  useEffect(()=>{
+     setDisabled(true);
+  },[disabled])
+
+  const website = watch("website");
+  const instagram = watch("instagram");
+  const storeDescription = watch("storeDescription");
+  const ships = watch("shipsFrom");
+  const processingTime = watch("processingTime");
+  const returnPolicy = watch("returnPolicy");
+
+
+
+
+
+  useEffect(()=>{
+    if(website && instagram && storeDescription && ships && processingTime && returnPolicy){
+      setDisabled(false);
+    }
+
+    
+  },[website, instagram, storeDescription, ships, processingTime, returnPolicy, disabled, setDisabled])
 
 
   return (
@@ -48,17 +72,17 @@ const StoreDetails = ({ setActive,  handleNext,storeInfo ,setStoreInfo, disabled
             tracking-[1px]
             text-black
           "
-          onChange={handleChanged}
+          
         >
           Store Description <span className="text-[#ed351d]">*</span>
         </label>
 
         <textarea
           id="storeDescription"
-          name="storeDescription"
+          
           
          
-          required
+          {...register("storeDescription", { required: true })}
           rows={4}
           placeholder="Tell buyers about your store — what you sell, your story, what makes you unique..."
           className="
@@ -79,7 +103,7 @@ const StoreDetails = ({ setActive,  handleNext,storeInfo ,setStoreInfo, disabled
             focus:ring-1
             focus:ring-black
           "
-          onChange={handleChanged}
+          
         />
 
         <div className="flex justify-end">
@@ -110,9 +134,9 @@ const StoreDetails = ({ setActive,  handleNext,storeInfo ,setStoreInfo, disabled
 
           <input
             id="website"
-            name="website"
+            {...register("website", { required: true })}
             type="url"
-            onChange={handleChanged}
+         
             
             placeholder="https://yoursite.com"
             className="
@@ -129,6 +153,13 @@ const StoreDetails = ({ setActive,  handleNext,storeInfo ,setStoreInfo, disabled
               focus:ring-black
             "
           />
+          {
+            errors.website && (
+              <span className="text-[10px] text-[#ed351d]">
+                Website is required
+              </span>
+            )
+          }
         </div>
 
         {/* Instagram */}
@@ -151,9 +182,9 @@ const StoreDetails = ({ setActive,  handleNext,storeInfo ,setStoreInfo, disabled
 
           <input
             id="instagram"
-            name="instagram"
+            {...register("instagram", { required: true })}
             type="text"
-            onChange={handleChanged}
+           
             
             placeholder="@yourstore"
             className="
@@ -170,6 +201,11 @@ const StoreDetails = ({ setActive,  handleNext,storeInfo ,setStoreInfo, disabled
               focus:ring-black
             "
           />
+          {errors.instagram && (
+            <span className="text-[10px] text-[#ed351d]">
+              Instagram is required
+            </span>
+          )}
         </div>
       </div>
 
@@ -213,11 +249,11 @@ const StoreDetails = ({ setActive,  handleNext,storeInfo ,setStoreInfo, disabled
 
           <input
             id="shipsFrom"
-            name="shipsFrom"
+          
             type="text"
-            onChange={handleChanged}
+            {...register("shipsFrom", { required: true })}
            
-            required
+           
             placeholder="New York, US"
             className="
               h-[28px]
@@ -233,6 +269,13 @@ const StoreDetails = ({ setActive,  handleNext,storeInfo ,setStoreInfo, disabled
               focus:ring-black
             "
           />
+          {
+            errors.shipsFrom && (
+              <span className="text-[10px] text-[#ed351d]">
+                Ships from is required
+              </span>
+            )
+          }
         </div>
 
         {/* Processing Time */}
@@ -253,10 +296,11 @@ const StoreDetails = ({ setActive,  handleNext,storeInfo ,setStoreInfo, disabled
 
           <input
             id="processingTime"
-            name="processingTime"
+            {...register("processingTime", { required: true })}
             type="text"
           
-            required
+          
+            
             placeholder="3-5 business days"
             className="
               h-[28px]
@@ -271,8 +315,15 @@ const StoreDetails = ({ setActive,  handleNext,storeInfo ,setStoreInfo, disabled
               focus:ring-1
               focus:ring-black
             "
-            onChange={handleChanged}
+            
           />
+          {
+            errors.processingTime && (
+              <span className="text-[10px] text-[#ed351d]">
+                Processing time is required
+              </span>
+            )
+          }
         </div>
       </div>
 
@@ -294,9 +345,9 @@ const StoreDetails = ({ setActive,  handleNext,storeInfo ,setStoreInfo, disabled
 
         <textarea
           id="returnPolicy"
-          name="returnPolicy"
+          {...register("returnPolicy", { required: true })}
         
-          required
+         
           rows={3}
           placeholder="Describe your return and refund policy..."
           className="
@@ -316,8 +367,15 @@ const StoreDetails = ({ setActive,  handleNext,storeInfo ,setStoreInfo, disabled
             focus:ring-1
             focus:ring-black
           "
-          onChange={handleChanged}
+         
         />
+        {
+          errors.returnPolicy && (
+            <span className="text-[10px] text-[#ed351d]">
+              Return policy is required
+            </span>
+          )
+        }
       </div>
 
       {/* ================= BUTTON AREA ================= */}
@@ -363,7 +421,7 @@ const StoreDetails = ({ setActive,  handleNext,storeInfo ,setStoreInfo, disabled
             ${disabled && "bg-gray-300"}`
           }
             
-                  >
+          >
           Continue →
         </button>
 

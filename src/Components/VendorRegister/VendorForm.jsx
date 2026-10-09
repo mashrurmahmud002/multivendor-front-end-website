@@ -4,6 +4,7 @@ import Personal_info from "../Details/personal_info/Personal_info";
 import PayoutSetup from "../PayOutDetails/PayOutDetails";
 import StoreDetails from "../StoreDetails/StoreDetails";
 import VendorSteps from "./VendorSteps";
+import { FormProvider, useForm } from "react-hook-form";
 
 
 
@@ -16,6 +17,7 @@ const Details = () => {
    const[active, setActive] = useState('personal_info');
    const [activeStep, setActiveStep] = useState(1);
    const [disabled, setDisabled] = useState(true);
+   const method = useForm();
 
 
    
@@ -96,13 +98,15 @@ const Details = () => {
   )
 
 
-  const handleSubmitForm = async()=>{
-     const finalData = {
-       businessInfo,
-       storeInfo,
-       personalInfo,
-       payoutInfo
-     }
+  
+
+  const onsubmit = async(data)=>{
+    console.log(data);
+
+  }
+
+  const onError = async(err)=>{
+      console.log(err);    
   }
 
 
@@ -111,25 +115,28 @@ const Details = () => {
         <>
         
          <VendorSteps activeStep={activeStep} setActiveStep={setActiveStep} disabled={disabled} />
-          <form action="" onSubmit={handleSubmit}>
+          <FormProvider {...method}>
+          <form action="" onSubmit={method.handleSubmit(onsubmit, onError)}>
+           
               
            {
-             activeStep === 1 && <Personal_info disabled={!personalInfoValid} setDisabled={setDisabled} setActive={setActive} handleNext={handleNext} handleChanged={handleChanged}/>
+             activeStep === 1 && <Personal_info disabled={disabled} setDisabled={setDisabled} setActive={setActive} handleNext={handleNext} handleChanged={handleChanged}/>
            }
            {
-             activeStep === 2 && <BusinessInfo disabled={!buisnessInfoValid} setActiveStep={setActiveStep} handleNext={handleNext} setBusinessInfo={setBusinessInfo} businessInfo={businessInfo}   />
+             activeStep === 2 && <BusinessInfo disabled={disabled} setActiveStep={setActiveStep} handleNext={handleNext} setBusinessInfo={setBusinessInfo} businessInfo={businessInfo} setDisabled={setDisabled}  />
            }
            {
-            activeStep === 3 && <StoreDetails disabled={!storeValidInfo} storeInfo={storeInfo} setStoreInfo={setStoreInfo} setActive={setActive} setActiveStep={setActiveStep} handleNext={handleNext} />
+            activeStep === 3 && <StoreDetails disabled={disabled}  setActive={setActive} setActiveStep={setActiveStep} handleNext={handleNext} setDisabled={setDisabled} storeInfo={storeInfo} setStoreInfo={setStoreInfo} />
            }
            {
-            activeStep === 4 && <PayoutSetup storeInfo={storeInfo} buisnessInfo={businessInfo} personalInfo={personalInfo} setActive={setActive} setActiveStep={setActiveStep} handleChanged={handleChanged}/>
+            activeStep === 4 && <PayoutSetup   setActive={setActive} setActiveStep={setActiveStep} handleChanged={handleChanged}/>
            }
            
 
           
            
           </form>
+          </FormProvider>
         </>
          
     );

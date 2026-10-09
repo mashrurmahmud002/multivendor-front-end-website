@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 
 const PayoutSetup = ({ setActive, personalInfo, buisnessInfo}) => {
 
-  const [payment, setBankTransfer] = useState("bank_transfer")
+  const [payment, setBankTransfer] = useState("bank_transfer");
+
+  const {register, formState:{errors}, watch} = useFormContext();
   
   return (
     <section className="w-full bg-white px-0 py-10">
@@ -31,13 +34,24 @@ const PayoutSetup = ({ setActive, personalInfo, buisnessInfo}) => {
           >
             <input
               type="radio"
-              name="payoutMethod"
+              {...register("payoutMethod",{
+                required: "Payout Method is required",
+              })}
+            
               value="bank"
               
               className="sr-only"
             />
+            
             Bank Transfer
           </label>
+          {
+            errors.payoutMethod && (
+              <p className="text-[10px] text-[#ed351d]">
+                {errors.payoutMethod.message}
+              </p>
+            )
+          }
 
           <label
             className={`flex h-[27px] cursor-pointer items-center justify-center text-[10px] font-bold uppercase tracking-[1px] 
@@ -45,12 +59,22 @@ const PayoutSetup = ({ setActive, personalInfo, buisnessInfo}) => {
           >
             <input
               type="radio"
-              name="payoutMethod"
+             
+              {...register("payoutMethod",{
+                required: "Payout Method is required",
+              })}
               value="paypal"
               
            
               className="sr-only"
             />
+            {
+              errors.payoutMethod && (
+                <p className="text-[10px] text-[#ed351d]">
+                  {errors.payoutMethod.message}
+                </p>
+              )
+            }
             PayPal
           </label>
         </div>
@@ -72,7 +96,9 @@ const PayoutSetup = ({ setActive, personalInfo, buisnessInfo}) => {
             </label>
 
             <input
-              name="bankName"
+              {...register("bankName",{
+                required: "Bank Name is required",
+              })}
               
               placeholder="e.g. Chase, Bank of America"
               className="
@@ -81,6 +107,13 @@ const PayoutSetup = ({ setActive, personalInfo, buisnessInfo}) => {
                 focus:ring-1 focus:ring-black
               "
             />
+            {
+              errors.bankName && (
+                <p className="text-[10px] text-[#ed351d]">
+                  {errors.bankName.message}
+                </p>
+              )
+            }
           </div>
 
           {/* Account Holder */}
@@ -90,7 +123,9 @@ const PayoutSetup = ({ setActive, personalInfo, buisnessInfo}) => {
             </label>
 
             <input
-              name="accountHolderName"
+              {...register("accountHolderName",{
+                required: "Account Holder Name is required",
+              })}
              
              
               className="
@@ -98,6 +133,13 @@ const PayoutSetup = ({ setActive, personalInfo, buisnessInfo}) => {
                 text-[9px] outline-none focus:ring-1 focus:ring-black
               "
             />
+            {
+              errors.accountHolderName && (
+                <p className="text-[10px] text-[#ed351d]">
+                  {errors.accountHolderName.message}
+                </p>
+              )
+            }
           </div>
 
           {/* Account + Routing */}
@@ -116,6 +158,13 @@ const PayoutSetup = ({ setActive, personalInfo, buisnessInfo}) => {
                   text-[9px] outline-none focus:ring-1 focus:ring-black
                 "
               />
+              {
+                errors.accountNumber && (
+                  <p className="text-[10px] text-[#ed351d]">
+                    {errors.accountNumber.message}
+                  </p>
+                )
+              }
             </div>
 
             <div>
@@ -125,6 +174,13 @@ const PayoutSetup = ({ setActive, personalInfo, buisnessInfo}) => {
 
               <input
                 name="routingNumber"
+                {...register("routingNumber", {
+                  required: "Routing Number is required",
+                  minLength: {
+                    value: 9,
+                    message: "Routing Number must be 9 digits",
+                  },
+                })}
                 
               
                 className="
@@ -132,6 +188,13 @@ const PayoutSetup = ({ setActive, personalInfo, buisnessInfo}) => {
                   text-[9px] outline-none focus:ring-1 focus:ring-black
                 "
               />
+              {
+                errors.routingNumber && (
+                  <p className="text-[10px] text-[#ed351d]">
+                    {errors.routingNumber.message}
+                  </p>
+                )
+              }
             </div>
           </div>
         </div>
@@ -197,7 +260,9 @@ const PayoutSetup = ({ setActive, personalInfo, buisnessInfo}) => {
           <label className="flex cursor-pointer items-start gap-2">
             <input
               type="checkbox"
-              name="termsAccepted"
+              {...register("termsAccepted",{
+                required: "Please accept terms and conditions",
+              })}
              
               className="mt-[1px] h-[13px] w-[13px] shrink-0 accent-black"
             />

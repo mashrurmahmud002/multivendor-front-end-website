@@ -1,6 +1,34 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 const Personal_info = ({handleChanged,setActive, handleNext,disabled, setDisabled}) => {
+
+  const {register , formState:{errors}, watch} = useFormContext();
+
+  console.log(disabled,"This is disabled");
+
+
+  const email = watch("email");
+  const password = watch("password");
+  const confirmPassword = watch("confirmPassword");
+  const firstName = watch("firstName");
+  const lastName = watch("lastName");
+
+
+  console.log(email,password,confirmPassword,firstName,lastName);
+
+
+  useEffect(()=>{
+    if(email && password && confirmPassword && firstName && lastName){
+      setDisabled(false);
+    }
+  },[email,password,confirmPassword,firstName,lastName,disabled,setDisabled])
+
+
+ 
+  
+
+  
   
     return (
         <section className="w-full bg-white px-5 py-12 sm:px-8 lg:px-10">
@@ -51,11 +79,11 @@ const Personal_info = ({handleChanged,setActive, handleNext,disabled, setDisable
 
               <input
                 id="firstName"
-                name="firstName"
+                {...register("firstName", {required: "First Name is required"})}
                 type="text"
-                onChange={handleChanged}
+               
                 
-                required
+               
                 className="
                   h-[41px]
                   w-full
@@ -70,6 +98,9 @@ const Personal_info = ({handleChanged,setActive, handleNext,disabled, setDisable
                   focus:ring-black
                 "
               />
+              {
+                errors.firstName && <span className='text-[#ed351d] text-[10px]'>{errors.firstName.message}</span>
+              }
             </div>
 
             {/* Last Name */}
@@ -93,11 +124,11 @@ const Personal_info = ({handleChanged,setActive, handleNext,disabled, setDisable
 
               <input
                 id="lastName"
-                name="lastName"
+                {...register("lastName", {required: "Last Name is required"})}
                 type="text"
-                 onChange={handleChanged}
                 
-                required
+                
+                
                 className="
                   h-[41px]
                   w-full
@@ -128,17 +159,17 @@ const Personal_info = ({handleChanged,setActive, handleNext,disabled, setDisable
                 uppercase
                 tracking-[1px]
               "
-               onChange={handleChanged}
+             
             >
               Email Address <span className="text-[#ed351d]">*</span>
             </label>
 
             <input
               id="email"
-              name="email"
+              {...register("email", {required: "Email Address is required"})}
               type="email"
               placeholder="you@example.com"
-               onChange={handleChanged}
+              
              
               required
               className="
@@ -155,6 +186,9 @@ const Personal_info = ({handleChanged,setActive, handleNext,disabled, setDisable
                 focus:ring-black
               "
             />
+            {
+              errors.email && <span className='text-[#ed351d] text-[10px]'>{errors.email.message}</span>
+            }
 
             <p className="mt-2 text-[8px] text-gray-400">
               Used for account login and order notifications.
@@ -173,18 +207,18 @@ const Personal_info = ({handleChanged,setActive, handleNext,disabled, setDisable
                 uppercase
                 tracking-[1px]
               "
-               onChange={handleChanged}
+             
             >
               Phone Number <span className="text-[#ed351d]">*</span>
             </label>
 
             <input
               id="phone"
-              name="phone"
+              {...register("phone", {required: "Phone Number is required"})}
               type="tel"
               placeholder="+1 555 000 0000"
               
-              required
+            
               className="
                 h-[41px]
                 w-full
@@ -198,8 +232,11 @@ const Personal_info = ({handleChanged,setActive, handleNext,disabled, setDisable
                 focus:ring-1
                 focus:ring-black
               "
-               onChange={handleChanged}
+               
             />
+            {
+              errors.phone && <span className='text-[#ed351d] text-[10px]'>{errors.phone.message}</span>
+            }
           </div>
 
           {/* ================= DIVIDER ================= */}
@@ -234,19 +271,19 @@ const Personal_info = ({handleChanged,setActive, handleNext,disabled, setDisable
                   uppercase
                   tracking-[1px]
                 "
-                 onChange={handleChanged}
+               
               >
                 Password <span className="text-[#ed351d]">*</span>
               </label>
 
               <input
                 id="password"
-                name="password"
+               
                 type="password"
-                 onChange={handleChanged}
+                {...register("password", {required: "Password is required", maxLength: 8, minLength: 8})}
               
-                minLength={8}
-                required
+               
+                
                 className="
                   h-[41px]
                   w-full
@@ -260,6 +297,9 @@ const Personal_info = ({handleChanged,setActive, handleNext,disabled, setDisable
                   focus:ring-black
                 "
               />
+            {
+              errors.password && <span className='text-[#ed351d] text-[10px]'>{errors.password.message}</span>
+            }
 
               <p className="mt-2 text-[8px] text-gray-400">
                 Minimum 8 characters
@@ -285,12 +325,11 @@ const Personal_info = ({handleChanged,setActive, handleNext,disabled, setDisable
 
               <input
                 id="confirmPassword"
-                name="confirmPassword"
+                {...register("confirmPassword", {required: "Confirm Password is required"})}
                 type="password"
-                 onChange={handleChanged}
+                 
                
-                minLength={8}
-                required
+                
                 className="
                   h-[41px]
                   w-full
@@ -304,6 +343,9 @@ const Personal_info = ({handleChanged,setActive, handleNext,disabled, setDisable
                   focus:ring-black
                 "
               />
+              {
+                errors.confirmPassword && <span className='text-[#ed351d] text-[10px]'>{errors.confirmPassword.message}</span>
+              }
             </div>
 
           </div>
@@ -311,7 +353,8 @@ const Personal_info = ({handleChanged,setActive, handleNext,disabled, setDisable
           {/* ================= BOTTOM ================= */}
           <div className="mt-9 flex justify-end border-t border-gray-200 pt-7">
             <button
-              
+               type="button"
+               disabled={disabled}
               onClick={handleNext}
               className={`${disabled ? "bg-gray-300" : "bg-black"} px-6 py-2 text-[11px] font-semibold uppercase tracking-[1px] text-white`}
             >

@@ -1,7 +1,8 @@
 
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import StoreIdenty from "./StoreIdenty";
+import { useFormContext } from "react-hook-form";
 
 
 
@@ -14,14 +15,24 @@ import StoreIdenty from "./StoreIdenty";
               "Other",
             ]
 
-const BusinessInfo = ({setActive, businessInfo, handleNext,setBusinessInfo,disabled, setActiveStep}) => {
+const BusinessInfo = ({setActive, businessInfo, setDisabled, handleNext,setBusinessInfo,disabled, setActiveStep}) => {
 
   const [selectedType, setSelectedType] = useState(null);
   const [category, setCategory] = useState(null);
 
-  
-  
+  const {register, formState:{errors}, watch} = useFormContext();
 
+
+  console.log(disabled, "this is buisness info disabled");
+
+  
+  
+  useEffect(()=>{
+     setDisabled(true);
+  },[disabled])
+
+
+  
   
 
   const handleChanged = async(e)=>{
@@ -44,6 +55,25 @@ const BusinessInfo = ({setActive, businessInfo, handleNext,setBusinessInfo,disab
 
 
   }
+
+  const storeName = watch("storeName");
+  const storeUrl = watch("storeUrl");
+  const city = watch("city");
+
+  const country = watch("country");
+
+  const street = watch("street");
+  
+
+  const  zip = watch("zip");
+
+
+  useEffect(()=>{
+
+    if(storeName && storeUrl && city && country && street && zip){
+      setDisabled(false);
+    }
+  })
 
 
   
@@ -78,12 +108,17 @@ const BusinessInfo = ({setActive, businessInfo, handleNext,setBusinessInfo,disab
             <div className="flex gap-4">
               <input
                 type="text"
-                onChange={handleChanged}
-                name="storeName"
+                {...register("storeName",{
+                  required:"Store name is required"
+                })}
+                
                 placeholder="e.g. Kinfolk Studio"
                 className="flex-1 border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:border-black"
                 defaultValue=""
               />
+              {
+                errors.storeName && <span className="text-red-500 text-xs">{errors.storeName.message}</span>
+              }
               {/* Avatar placeholder */}
               <div className="flex flex-col items-center gap-1">
                 <div className="w-14 h-14 bg-black flex items-center justify-center text-white text-xl font-bold">
@@ -110,11 +145,15 @@ const BusinessInfo = ({setActive, businessInfo, handleNext,setBusinessInfo,disab
               </span>
               <input
                 type="text"
-                name="storeUrl"
-                onChange={handleChanged}
+                {...register("storeUrl",{
+                  required:"Store url is required"
+                })}
                 placeholder="your-store-name"
                 className="flex-1 px-3 py-2.5 text-sm focus:outline-none"
               />
+              {
+                errors.storeUrl && <span className="text-red-500 text-xs">{errors.storeUrl.message}</span>
+              }
               <div className="w-10 flex items-center justify-center border-l border-gray-300">
                 <div className="w-4 h-4 rounded-full border border-gray-400" />
               </div>
@@ -252,7 +291,9 @@ const BusinessInfo = ({setActive, businessInfo, handleNext,setBusinessInfo,disab
                   COUNTRY / REGION <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
-                  <select className="w-full border border-gray-300 px-3 py-2.5 text-sm appearance-none focus:outline-none focus:border-black bg-white" name="country" onChange={handleChanged}>
+                  <select {...register("country",{
+                    required: true
+                  })} className="w-full border border-gray-300 px-3 py-2.5 text-sm appearance-none focus:outline-none focus:border-black bg-white" name="country" onChange={handleChanged}>
                      <option value="" disabled>
                        Select Country
                      </option>
@@ -262,6 +303,7 @@ const BusinessInfo = ({setActive, businessInfo, handleNext,setBusinessInfo,disab
                     <option value="india">India</option>
                     <option value="others">Others</option>
                   </select>
+                  {errors.country && <p className="text-red-500 text-xs mt-1">{errors.country.message}</p>}
                   <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
                     <svg
                       className="w-4 h-4 text-gray-500"
@@ -288,7 +330,9 @@ const BusinessInfo = ({setActive, businessInfo, handleNext,setBusinessInfo,disab
                   </label>
                   <input
                     type="text"
-                    name="city" onChange={handleChanged}
+                    {...register("city",{
+                      required: "City is required"
+                    })}
                     className="w-full border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:border-black"
                   />
                 </div>
@@ -297,8 +341,8 @@ const BusinessInfo = ({setActive, businessInfo, handleNext,setBusinessInfo,disab
                     ZIP / POSTAL CODE
                   </label>
                   <input
-                    name="zip"
-                    onChange={handleChanged}
+                    {...register("zip")}
+                   
                     type="text"
                     className="w-full border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:border-black"
                   />
@@ -312,11 +356,15 @@ const BusinessInfo = ({setActive, businessInfo, handleNext,setBusinessInfo,disab
                 </label>
                 <input
                   type="text"
-                  name="buisness_address"
-                  onChange={handleChanged}
+                  {...register("street",{
+                    required: true
+                  })}
                   placeholder="123 Main St, Suite 100"
                   className="w-full border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:border-black"
                 />
+                {
+                  errors.street && <p className="text-red-500 text-xs mt-1">{errors.street.message}</p>
+                }
                 <p className="mt-1.5 text-xs text-gray-500">
                   Not shown publicly — used for tax and compliance purposes only
                 </p>
@@ -348,6 +396,8 @@ const BusinessInfo = ({setActive, businessInfo, handleNext,setBusinessInfo,disab
           </div>
             <div className="mt-9  flex justify-between w-full border-t border-gray-200 pt-7">
             <button
+
+              disabled={disabled}
               
               onClick={handleNext}
               className={`${disabled ? "bg-gray-300" : "bg-red-500"} px-6 py-2 text-[11px] font-semibold uppercase tracking-[1px] text-white`}
