@@ -66,7 +66,7 @@ const Details = () => {
       
         
         
-        setPersonalInfo({...personalInfo,[e.target.name]:e.target.value});
+        
      
         setStoreInfo({...storeInfo,[e.target.name]:e.target.value});
         setPayoutInfo({...payoutInfo,[e.target.name]:e.target.value});
@@ -120,16 +120,16 @@ const Details = () => {
            
               
            {
-             activeStep === 1 && <Personal_info disabled={disabled} setDisabled={setDisabled} setActive={setActive} handleNext={handleNext} handleChanged={handleChanged}/>
+             activeStep === 1 && <Personal_info disabled={disabled} setDisabled={setDisabled} setActive={setActive} handleNext={handleNext} personalInfo={personalInfo} setPersonalInfo={setPersonalInfo} />
            }
            {
              activeStep === 2 && <BusinessInfo disabled={disabled} setActiveStep={setActiveStep} handleNext={handleNext} setBusinessInfo={setBusinessInfo} businessInfo={businessInfo} setDisabled={setDisabled}  />
            }
            {
-            activeStep === 3 && <StoreDetails disabled={disabled}  setActive={setActive} setActiveStep={setActiveStep} handleNext={handleNext} setDisabled={setDisabled} storeInfo={storeInfo} setStoreInfo={setStoreInfo} />
+            activeStep === 3 && <StoreDetails disabled={disabled} storeValidInfo={storeValidInfo}  setActive={setActive} setActiveStep={setActiveStep} handleNext={handleNext} setDisabled={setDisabled} storeInfo={storeInfo} setStoreInfo={setStoreInfo} />
            }
            {
-            activeStep === 4 && <PayoutSetup   setActive={setActive} setActiveStep={setActiveStep} handleChanged={handleChanged}/>
+            activeStep === 4 && <PayoutSetup personalInfo={personalInfo} buisnessInfo={businessInfo} setActive={setActive} setActiveStep={setActiveStep} handleChanged={handleChanged}/>
            }
            
 

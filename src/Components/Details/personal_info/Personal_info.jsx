@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-const Personal_info = ({handleChanged,setActive, handleNext,disabled, setDisabled}) => {
+const Personal_info = ({handleChanged,setActive,personalInfo, setPersonalInfo, handleNext,disabled, setDisabled}) => {
 
   const {register , formState:{errors}, watch} = useFormContext();
 
@@ -22,7 +22,7 @@ const Personal_info = ({handleChanged,setActive, handleNext,disabled, setDisable
     if(email && password && confirmPassword && firstName && lastName){
       setDisabled(false);
     }
-  },[email,password,confirmPassword,firstName,lastName,disabled,setDisabled])
+  },[email,password,confirmPassword,firstName,lastName,disabled])
 
 
  
@@ -79,7 +79,9 @@ const Personal_info = ({handleChanged,setActive, handleNext,disabled, setDisable
 
               <input
                 id="firstName"
-                {...register("firstName", {required: "First Name is required"})}
+                {...register("firstName", {required: "First Name is required",
+                  onChange:(e)=>setPersonalInfo((prev)=>({...prev,[e.target.name]:e.target.value}))
+                })}
                 type="text"
                
                 
@@ -124,7 +126,9 @@ const Personal_info = ({handleChanged,setActive, handleNext,disabled, setDisable
 
               <input
                 id="lastName"
-                {...register("lastName", {required: "Last Name is required"})}
+                {...register("lastName", {required: "Last Name is required",
+                  onChange:(e)=>setPersonalInfo((prev)=>({...prev,[e.target.name]:e.target.value}))
+                })}
                 type="text"
                 
                 
@@ -166,7 +170,9 @@ const Personal_info = ({handleChanged,setActive, handleNext,disabled, setDisable
 
             <input
               id="email"
-              {...register("email", {required: "Email Address is required"})}
+              {...register("email", {required: "Email Address is required",
+                onChange:(e)=>setPersonalInfo((prev)=>({...prev,[e.target.name]:e.target.value}))
+              })}
               type="email"
               placeholder="you@example.com"
               
@@ -214,7 +220,9 @@ const Personal_info = ({handleChanged,setActive, handleNext,disabled, setDisable
 
             <input
               id="phone"
-              {...register("phone", {required: "Phone Number is required"})}
+              name='phone'
+              {...register("phone", {required: "Phone Number is required",
+              onChange:(e)=>setPersonalInfo({...personalInfo,[e.target.name]:e.target.value})})}
               type="tel"
               placeholder="+1 555 000 0000"
               

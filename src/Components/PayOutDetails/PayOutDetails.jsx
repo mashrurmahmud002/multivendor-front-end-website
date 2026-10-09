@@ -2,11 +2,15 @@ import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 
-const PayoutSetup = ({ setActive, personalInfo, buisnessInfo}) => {
+const PayoutSetup = ({ setActive, personalInfo, buisnessInfo,setActiveStep}) => {
 
   const [payment, setBankTransfer] = useState("bank_transfer");
 
   const {register, formState:{errors}, watch} = useFormContext();
+  console.log(personalInfo);
+
+  console.log(buisnessInfo);
+
   
   return (
     <section className="w-full bg-white px-0 py-10">
@@ -239,12 +243,13 @@ const PayoutSetup = ({ setActive, personalInfo, buisnessInfo}) => {
 
           <span className="text-gray-400">Location</span>
           <span className="font-semibold text-black">
-            {buisnessInfo.buisness_address}
+            {buisnessInfo.country.toUpperCase()}
           
           </span>
 
           <span className="text-gray-400">Payout</span>
           <span className="font-semibold capitalize text-black">
+            {payment}
            
           </span>
         </div>
@@ -272,11 +277,21 @@ const PayoutSetup = ({ setActive, personalInfo, buisnessInfo}) => {
               Privacy Policy.
             </span>
           </label>
+          {
+            errors?.termsAccepted && (
+              <p className="text-[10px] text-[#ed351d]">
+                {errors.termsAccepted.message}
+              </p>
+            )
+          }
+
 
           <label className="flex cursor-pointer items-start gap-2">
             <input
               type="checkbox"
-              name="sellerAgreementAccepted"
+              {...register("acceptTerms",{
+                required: "Please accept seller agreement",
+              })}
            
               className="mt-[1px] h-[13px] w-[13px] shrink-0 accent-black"
             />
@@ -286,13 +301,20 @@ const PayoutSetup = ({ setActive, personalInfo, buisnessInfo}) => {
               payout schedules, and prohibited items policy.
             </span>
           </label>
+          {
+            errors?.acceptTerms && (
+              <p className="text-[10px] text-[#ed351d]">
+                {errors.acceptTerms.message}
+              </p>
+            )
+          }
         </div>
       </div>
 
       {/* ================= ACTIONS ================= */}
       <div className="mt-7 flex items-center justify-between border-t border-gray-200 pt-5">
         <button
-          onClick={() => setActive("store_details")}
+          onClick={() => setActiveStep(3)}
           type="button"
           className="
             h-[31px] border border-black bg-white px-5

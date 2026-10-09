@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import StoreIdenty from "./StoreIdenty";
 import { useFormContext } from "react-hook-form";
+import { set } from "zod";
 
 
 
@@ -29,15 +30,15 @@ const BusinessInfo = ({setActive, businessInfo, setDisabled, handleNext,setBusin
   
   useEffect(()=>{
      setDisabled(true);
-  },[disabled])
+  },[])
 
 
-  
+
   
 
   const handleChanged = async(e)=>{
      
-    setBusinessInfo({...businessInfo,[e.target.name]:e.target.value});
+    setBusinessInfo((prev)=>({...prev,[e.target.name]:e.target.value}));
 
   }
 
@@ -70,10 +71,17 @@ const BusinessInfo = ({setActive, businessInfo, setDisabled, handleNext,setBusin
 
   useEffect(()=>{
 
+    setBusinessInfo((prev)=>({...prev,primary_category:category}));
+
+  },[category])
+
+
+  useEffect(()=>{
+
     if(storeName && storeUrl && city && country && street && zip){
       setDisabled(false);
     }
-  })
+  },[storeName, storeUrl, city, country, street, zip])
 
 
   
@@ -109,8 +117,12 @@ const BusinessInfo = ({setActive, businessInfo, setDisabled, handleNext,setBusin
               <input
                 type="text"
                 {...register("storeName",{
-                  required:"Store name is required"
+                  required:"Store name is required",
+                  onChange:(e)=>setBusinessInfo((prev)=>({...prev,storeName:e.target.value}))
                 })}
+                name="storeName"
+                
+
                 
                 placeholder="e.g. Kinfolk Studio"
                 className="flex-1 border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:border-black"
@@ -148,6 +160,8 @@ const BusinessInfo = ({setActive, businessInfo, setDisabled, handleNext,setBusin
                 {...register("storeUrl",{
                   required:"Store url is required"
                 })}
+
+
                 placeholder="your-store-name"
                 className="flex-1 px-3 py-2.5 text-sm focus:outline-none"
               />
@@ -291,8 +305,9 @@ const BusinessInfo = ({setActive, businessInfo, setDisabled, handleNext,setBusin
                   COUNTRY / REGION <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
-                  <select {...register("country",{
-                    required: true
+                  <select name="country" {...register("country",{
+                    required: true,
+                    onChange:(e)=>{setBusinessInfo((prev)=>({...prev,[e.target.name]:e.target.value}))}
                   })} className="w-full border border-gray-300 px-3 py-2.5 text-sm appearance-none focus:outline-none focus:border-black bg-white" name="country" onChange={handleChanged}>
                      <option value="" disabled>
                        Select Country
