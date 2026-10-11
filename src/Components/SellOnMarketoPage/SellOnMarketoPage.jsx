@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import VendorEconomics from "./VendorEconomics";
 import WhyMarketo from "./WhyMarketToSection";
+import VendorToolset from "./VendorToolSet";
 
 // Swap this for your own photo (grayscale is applied via CSS)
 const HERO_IMG =
@@ -106,6 +107,7 @@ export default function VendorProgram() {
      </section>
       <VendorEconomics/>
       <WhyMarketo/>
+      <VendorToolset/>
     </main>
   );
 }
