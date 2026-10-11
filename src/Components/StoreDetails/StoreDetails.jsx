@@ -1,40 +1,29 @@
 
-import React, { useEffect } from "react";
-import { useFormContext } from "react-hook-form";
+import React, { useContext, useEffect } from "react";
+import { useFormContext , useWatch} from "react-hook-form";
 import { set } from "zod";
+import { vendorContext } from "../VendorRegister/VendorContextProvider";
 
 
 
-const StoreDetails = ({ setActive,  handleNext,storeInfo ,setStoreInfo, disabled, setDisabled}) => {
+const StoreDetails = ({ setActive,  handleNext,storeInfo , setStoreInfo, disabled, setDisabled}) => {
 
-  const {register , formState:{errors}, watch} = useFormContext();
+  const {register , formState:{errors}, control} = useFormContext();
+  const [website, instagram, storeDescription, ships, processingTime, returnPolicy] = useWatch({control, name: ["website", "instagram", "storeDescription", "shipsFrom", "processingTime", "returnPolicy"]});
 
   const handleChanged = async(e)=>[
      setStoreInfo({...storeInfo,[e.target.name]:e.target.value})
   ]
 
-  useEffect(()=>{
-     setDisabled(true);
-  },[disabled])
+ const {activeStep, setActiveStep} = useContext(vendorContext);
 
-  const website = watch("website");
-  const instagram = watch("instagram");
-  const storeDescription = watch("storeDescription");
-  const ships = watch("shipsFrom");
-  const processingTime = watch("processingTime");
-  const returnPolicy = watch("returnPolicy");
+ 
 
 
 
 
 
-  useEffect(()=>{
-    if(website && instagram && storeDescription && ships && processingTime && returnPolicy){
-      setDisabled(false);
-    }
-
-    
-  },[website, instagram, storeDescription, ships, processingTime, returnPolicy, disabled, setDisabled])
+ 
 
 
   return (
@@ -404,8 +393,8 @@ const StoreDetails = ({ setActive,  handleNext,storeInfo ,setStoreInfo, disabled
 
         <button
         disabled={disabled}
-        onClick={handleNext}
-          type="submit"
+         onClick={()=>setActiveStep(4)}
+          type="button"
           className={
             `h-[31px]
             min-w-[100px]

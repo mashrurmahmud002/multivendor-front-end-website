@@ -1,9 +1,10 @@
 
 
-import { useEffect, useState } from "react";
-import StoreIdenty from "./StoreIdenty";
-import { useFormContext } from "react-hook-form";
-import { set } from "zod";
+import {  useState } from "react";
+
+import { useFormContext, useWatch } from "react-hook-form";
+
+
 
 
 
@@ -20,17 +21,19 @@ const BusinessInfo = ({setActive, businessInfo, setDisabled, handleNext,setBusin
 
   const [selectedType, setSelectedType] = useState(null);
   const [category, setCategory] = useState(null);
-
-  const {register, formState:{errors}, watch} = useFormContext();
+ 
+  const {register,control, formState:{errors},} = useFormContext();
+  const [storeName, storeUrl, city, street, zip] = useWatch({
+  control,
+  name: ["storeName", "storeUrl", "city", "street", "zip"],
+});
 
 
   console.log(disabled, "this is buisness info disabled");
 
   
   
-  useEffect(()=>{
-     setDisabled(true);
-  },[])
+ 
 
 
 
@@ -49,6 +52,8 @@ const BusinessInfo = ({setActive, businessInfo, setDisabled, handleNext,setBusin
     setBusinessInfo((prev)=>({...prev,primary_category:name}));
   }
 
+
+
   const handleSelectedType = async(name)=>{
 
     setSelectedType(name);
@@ -57,31 +62,23 @@ const BusinessInfo = ({setActive, businessInfo, setDisabled, handleNext,setBusin
 
   }
 
-  const storeName = watch("storeName");
-  const storeUrl = watch("storeUrl");
-  const city = watch("city");
 
-  const country = watch("country");
 
-  const street = watch("street");
+
   
 
-  const  zip = watch("zip");
+
+  const isDisabled = !(
+    storeName &&
+    storeUrl &&
+    city &&
+    
+    street &&
+    zip
+  );
 
 
-  useEffect(()=>{
-
-    setBusinessInfo((prev)=>({...prev,primary_category:category}));
-
-  },[category])
-
-
-  useEffect(()=>{
-
-    if(storeName && storeUrl && city && country && street && zip){
-      setDisabled(false);
-    }
-  },[storeName, storeUrl, city, country, street, zip])
+  console.log("isDisabled",isDisabled);
 
 
   
@@ -118,9 +115,9 @@ const BusinessInfo = ({setActive, businessInfo, setDisabled, handleNext,setBusin
                 type="text"
                 {...register("storeName",{
                   required:"Store name is required",
-                  onChange:(e)=>setBusinessInfo((prev)=>({...prev,storeName:e.target.value}))
+                  
                 })}
-                name="storeName"
+               
                 
 
                 
@@ -307,8 +304,11 @@ const BusinessInfo = ({setActive, businessInfo, setDisabled, handleNext,setBusin
                 <div className="relative">
                   <select name="country" {...register("country",{
                     required: true,
-                    onChange:(e)=>{setBusinessInfo((prev)=>({...prev,[e.target.name]:e.target.value}))}
-                  })} className="w-full border border-gray-300 px-3 py-2.5 text-sm appearance-none focus:outline-none focus:border-black bg-white" name="country" onChange={handleChanged}>
+                   
+                   
+                    
+                  
+                  })} className="w-full border border-gray-300 px-3 py-2.5 text-sm appearance-none focus:outline-none focus:border-black bg-white" >
                      <option value="" disabled>
                        Select Country
                      </option>
@@ -412,14 +412,15 @@ const BusinessInfo = ({setActive, businessInfo, setDisabled, handleNext,setBusin
             <div className="mt-9  flex justify-between w-full border-t border-gray-200 pt-7">
             <button
 
-              disabled={disabled}
+              disabled={isDisabled}
+              type="button"
               
-              onClick={handleNext}
-              className={`${disabled ? "bg-gray-300" : "bg-red-500"} px-6 py-2 text-[11px] font-semibold uppercase tracking-[1px] text-white`}
+              onClick={()=>setActiveStep(3)}
+              className={`${isDisabled ? "bg-gray-300" : "bg-red-500"} px-6 py-2 text-[11px] font-semibold uppercase tracking-[1px] text-white`}
             >
               Continue →
             </button>
-            <button onClick={()=>setActiveStep(1)} className="px-6 py-2 text-[11px] font-semibold uppercase tracking-[1px] text-white bg-black ">
+            <button onClick={()=>setActiveStep(1)} type="button" className="px-6 py-2 text-[11px] font-semibold uppercase tracking-[1px] text-white bg-black ">
               Back
             </button>
           </div>

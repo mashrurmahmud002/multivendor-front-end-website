@@ -177,7 +177,7 @@ const Personal_info = ({handleChanged,setActive,personalInfo, setPersonalInfo, h
               placeholder="you@example.com"
               
              
-              required
+             
               className="
                 h-[41px]
                 w-full

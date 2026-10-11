@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import BusinessInfo from "../BuisnessInfo/BuisnessInfo";
 import Personal_info from "../Details/personal_info/Personal_info";
 import PayoutSetup from "../PayOutDetails/PayOutDetails";
 import StoreDetails from "../StoreDetails/StoreDetails";
 import VendorSteps from "./VendorSteps";
 import { FormProvider, useForm } from "react-hook-form";
+import { vendorRegister } from "../../../Api";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+import  { vendorContext } from "./VendorContextProvider";
 
 
 
@@ -15,9 +19,13 @@ const Details = () => {
    const[storeInfo,setStoreInfo]=useState({});
    const[payoutInfo, setPayoutInfo] = useState({});
    const[active, setActive] = useState('personal_info');
-   const [activeStep, setActiveStep] = useState(1);
+   
    const [disabled, setDisabled] = useState(true);
    const method = useForm();
+   const [acceptTerms, setAcceptTerms] = useState(false);
+   const [termsAccepted, setTermsAccepted] = useState(false);
+   const navigate = useNavigate();
+   const {activeStep, setActiveStep,countryName, setCountryName, handleNext} = useContext(vendorContext);
 
 
    
@@ -75,10 +83,6 @@ const Details = () => {
 
     }
 
-    const handleNext = () => {
-        
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      };
 
 
     const handleSubmit = async()=>{
@@ -102,6 +106,31 @@ const Details = () => {
 
   const onsubmit = async(data)=>{
     console.log(data);
+    const final_data = {
+       acceptTerms,
+       termsAccepted,
+       ...data
+    }
+
+    try{
+
+      const response = await vendorRegister(final_data);
+      if(response){
+         Swal.fire({
+            position: "center",
+            icon: "success",
+            title: response?.data?.message,
+            showConfirmButton: false,
+            timer: 1500
+         })
+      }
+      navigate('/');
+
+
+    }catch(error){
+       console.log(error);
+    }
+    
 
   }
 
@@ -113,7 +142,7 @@ const Details = () => {
  
     return (
         <>
-        
+       
          <VendorSteps activeStep={activeStep} setActiveStep={setActiveStep} disabled={disabled} />
           <FormProvider {...method}>
           <form action="" onSubmit={method.handleSubmit(onsubmit, onError)}>
@@ -129,7 +158,8 @@ const Details = () => {
             activeStep === 3 && <StoreDetails disabled={disabled} storeValidInfo={storeValidInfo}  setActive={setActive} setActiveStep={setActiveStep} handleNext={handleNext} setDisabled={setDisabled} storeInfo={storeInfo} setStoreInfo={setStoreInfo} />
            }
            {
-            activeStep === 4 && <PayoutSetup personalInfo={personalInfo} buisnessInfo={businessInfo} setActive={setActive} setActiveStep={setActiveStep} handleChanged={handleChanged}/>
+            activeStep === 4 && <PayoutSetup personalInfo={personalInfo} buisnessInfo={businessInfo} setActive={setActive} acceptTerms={acceptTerms}  setAcceptTerms={setAcceptTerms} termsAccepted={termsAccepted}
+            setTermsAccepted={setTermsAccepted} setActiveStep={setActiveStep} handleChanged={handleChanged}/>
            }
            
 
@@ -137,6 +167,7 @@ const Details = () => {
            
           </form>
           </FormProvider>
+        
         </>
          
     );

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 
-const PayoutSetup = ({ setActive, personalInfo, buisnessInfo,setActiveStep}) => {
-
+const PayoutSetup = ({ setActive, personalInfo, buisnessInfo,setActiveStep,acceptTerms,setAcceptTerms,termsAccepted,setTermsAccepted}) => {
+  
   const [payment, setBankTransfer] = useState("bank_transfer");
 
   const {register, formState:{errors}, watch} = useFormContext();
@@ -156,7 +156,13 @@ const PayoutSetup = ({ setActive, personalInfo, buisnessInfo,setActiveStep}) => 
               <input
                 name="accountNumber"
                
-              
+               {...register("accountNumber",{
+                required: "Account Number is required",
+                minLength: {
+                  value: 10,
+                  message: "Account Number must be 10 digits",
+                },
+               })}
                 className="
                   h-[28px] w-full border border-black bg-white px-3
                   text-[9px] outline-none focus:ring-1 focus:ring-black
@@ -237,13 +243,13 @@ const PayoutSetup = ({ setActive, personalInfo, buisnessInfo,setActiveStep}) => 
 
           <span className="text-gray-400">Category</span>
           <span className="font-semibold text-black">
-            {buisnessInfo.primary_category}
+            
            
           </span>
 
           <span className="text-gray-400">Location</span>
           <span className="font-semibold text-black">
-            {buisnessInfo.country.toUpperCase()}
+            
           
           </span>
 
@@ -265,6 +271,7 @@ const PayoutSetup = ({ setActive, personalInfo, buisnessInfo,setActiveStep}) => 
           <label className="flex cursor-pointer items-start gap-2">
             <input
               type="checkbox"
+              onChange={()=>setTermsAccepted(!termsAccepted)}
               {...register("termsAccepted",{
                 required: "Please accept terms and conditions",
               })}
@@ -288,6 +295,7 @@ const PayoutSetup = ({ setActive, personalInfo, buisnessInfo,setActiveStep}) => 
 
           <label className="flex cursor-pointer items-start gap-2">
             <input
+              onChange={()=>setAcceptTerms(!acceptTerms)}
               type="checkbox"
               {...register("acceptTerms",{
                 required: "Please accept seller agreement",

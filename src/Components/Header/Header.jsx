@@ -13,7 +13,9 @@ const navLinks = [
 const utilityLinks = [
   { label: "SELL ON MARKETO", to: "#" },
   { label: "HELP", to: "#" },
+  {label: "Vendor Login", to: "/vendor-login"},
   { label: "SIGN IN", to: "/auth/signin" },
+
 ];
 
 const focusRing =
@@ -102,8 +104,18 @@ const Header = () => {
           FREE SHIPPING ON ORDERS OVER $75 · 190+ COUNTRIES
         </p>
 
-        <div className="hidden shrink-0 items-center gap-6 md:flex lg:gap-8">
-          {utilityLinks.map((l) => (
+        <div className="hidden shrink-0  items-center gap-6 md:flex lg:gap-8">
+          {utilityLinks.map((l,i) =>{
+
+            return i === 2 ?(
+            <SmartLink
+              key={l.label}
+              to={l.to}
+              className="text-[10px] font-medium border-r border-black border-l px-2 tracking-[1.5px] transition-colors hover:text-gray-500"
+            >
+              {l.label}
+            </SmartLink>
+          ):(
             <SmartLink
               key={l.label}
               to={l.to}
@@ -111,7 +123,9 @@ const Header = () => {
             >
               {l.label}
             </SmartLink>
-          ))}
+          )
+
+          } )}
         </div>
       </div>
 
@@ -244,18 +258,31 @@ const Header = () => {
                 ))}
               </ul>
 
-              <ul className="mt-6 flex flex-col gap-4">
-                {utilityLinks.map((l) => (
-                  <li key={l.label}>
+              <ul className="mt-6 flex flex-col gap-4 ">
+                {utilityLinks.map((l,i) =>{
+                 return l === "Vendor Login" ? (
+                    <li key={l.label} className=" ">
+                      <SmartLink
+                        to={l.to}
+                        onClick={close}
+                        className="block py-4 text-[13px] font-semibold tracking-[1.5px]  "
+                      >
+                        {l.label}
+                      </SmartLink>
+                    </li>
+                   ) : (
+                  <li className=" " key={l.label}>
                     <SmartLink
                       to={l.to}
                       onClick={close}
-                      className="text-[11px] font-medium tracking-[1.5px] text-gray-600"
+                      className="text-[11px] font-medium tracking-[1.5px] text-gray-600 "
                     >
                       {l.label}
                     </SmartLink>
                   </li>
-                ))}
+                )
+
+                } )}
               </ul>
             </nav>
           </div>

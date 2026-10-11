@@ -21,6 +21,8 @@ import ProductContextProvider from './Components/ProductUploadForm/ProductContex
 import AuthContextProvider from './Components/AuthContext/AuthContextProvider'
 import ProductDetails from './Components/ProductDetails/ProductDetails'
 import About from './Components/About/About'
+import VendorContextProvider from './Components/VendorRegister/VendorContextProvider'
+import VendorLogin from './Components/VendorLogin/VendorLogin'
 
 
 
@@ -36,6 +38,8 @@ function App() {
         <Route path='/' element={<HomeLayOut/>} >
           <Route path='/' element={<Home/>} />
           <Route path='/about' element={<About/>}/>
+          <Route path='/vendor-login' element={<VendorLogin/>}/>
+        
            
         </Route>
         <Route path="/shop" element={<ShopLayOut/>} >
@@ -44,7 +48,7 @@ function App() {
         
         </Route>
         <Route path='/vendor' element={<VendorformLayout/>}>
-        <Route path='/vendor/vendor-register' element={<Details/>}/>
+        <Route path='/vendor/vendor-register' element={<VendorContextProvider><Details/></VendorContextProvider>}/>
         
          
          

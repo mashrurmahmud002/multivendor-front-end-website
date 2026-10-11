@@ -6,6 +6,7 @@ import { Outlet } from 'react-router-dom';
 import VendorProviderContext from '../Components/VendorProviderContext/VendorProviderContext';
 
 const VendorUplodedProductLayout = () => {
+    
     return (
         <div>
             <Header/>

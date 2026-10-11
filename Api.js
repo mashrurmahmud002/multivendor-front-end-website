@@ -1,5 +1,5 @@
 import axios from "axios"
-import { authInstance, axiosInstance, productInstance } from "./client"
+import { authInstance, axiosInstance, productInstance, vendorAuthInstance } from "./client"
 
 
 export const categories = async()=>{
@@ -57,4 +57,18 @@ export const getProducts = async()=>{
         console.log(error);
     }
  }
+
+ export const vendorRegister = async(data)=>{
+    try{
+        const response = await vendorAuthInstance.post("/create-vendor-register", data);
+        return response
+    }catch(error){
+        console.log(error);
+        
+    }
+
+
+    }
+
+ 
 
