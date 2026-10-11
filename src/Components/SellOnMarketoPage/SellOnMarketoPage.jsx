@@ -3,6 +3,8 @@ import VendorEconomics from "./VendorEconomics";
 import WhyMarketo from "./WhyMarketToSection";
 import VendorToolset from "./VendorToolSet";
 import BellLanding from "./BellLanding";
+import WhoThrivesHere from "./WhoThrivesThere";
+import FaqSection from "./FaqQuestions";
 
 // Swap this for your own photo (grayscale is applied via CSS)
 const HERO_IMG =
@@ -110,6 +112,8 @@ export default function VendorProgram() {
       <WhyMarketo/>
       <VendorToolset/>
       <BellLanding/>
+      <WhoThrivesHere/>
+      <FaqSection/>
       
     </main>
   );
