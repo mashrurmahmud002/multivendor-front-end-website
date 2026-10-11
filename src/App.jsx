@@ -23,6 +23,7 @@ import ProductDetails from './Components/ProductDetails/ProductDetails'
 import About from './Components/About/About'
 import VendorContextProvider from './Components/VendorRegister/VendorContextProvider'
 import VendorLogin from './Components/VendorLogin/VendorLogin'
+import VendorProgram from './Components/SellOnMarketoPage/SellOnMarketoPage'
 
 
 
@@ -39,6 +40,7 @@ function App() {
           <Route path='/' element={<Home/>} />
           <Route path='/about' element={<About/>}/>
           <Route path='/vendor-login' element={<VendorLogin/>}/>
+          <Route path='/sell-on-markerto' element={<VendorProgram/>}/>
         
            
         </Route>

@@ -11,7 +11,7 @@ const navLinks = [
 ];
 
 const utilityLinks = [
-  { label: "SELL ON MARKETO", to: "#" },
+  { label: "SELL ON MARKETO", to: "/sell-on-markerto" },
   { label: "HELP", to: "#" },
   {label: "Vendor Login", to: "/vendor-login"},
   { label: "SIGN IN", to: "/auth/signin" },
