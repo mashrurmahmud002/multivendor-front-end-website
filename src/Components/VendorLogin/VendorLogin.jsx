@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { vendorLogin } from "../../../Api";
+import Swal from "sweetalert2";
 
 // Swap this for your own photo (grayscale is applied via CSS)
 const HERO_IMG =
@@ -18,32 +21,76 @@ const inputBase =
   "h-11 w-full border border-black bg-white px-3 text-base text-black placeholder:text-neutral-400 sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#e3300f]/50";
 
 export default function VendorLogin() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  
   const [show, setShow] = useState(false);
   const [keep, setKeep] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const {register, handleSubmit, formState:{errors}} = useForm();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
+  const navigate = useNavigate();
 
-    if (!email.trim() || !password) {
-      setError("Enter your business email and password.");
-      return;
+
+
+  const onError = async (data) => {
+    console.log(data);
+
+    const finalData = {
+        ...data,
+        keep
     }
+    try{
+      const response = await vendorLogin(finalData);
+      if(response){
 
-    setLoading(true);
-    try {
-      // TODO: replace with your real vendor login request
-      console.log({ email, password, keep });
-    } catch {
-      setError("We couldn't sign you in. Check your details and try again.");
-    } finally {
-      setLoading(false);
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: response?.data?.message,
+          showConfirmButton: false,
+          timer: 1500
+        });
+
+        
+         
+      }  
+
+    }catch(err){
+        console.log(err);
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: err?.response?.data?.message,
+          showConfirmButton: false,
+          timer: 1500
+        })
     }
   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setError("");
+
+//     if (!email.trim() || !password) {
+//       setError("Enter your business email and password.");
+//       return;
+//     }
+
+//     setLoading(true);
+//     try {
+//       // TODO: replace with your real vendor login request
+//       console.log({ email, password, keep });
+//     } catch {
+//       setError("We couldn't sign you in. Check your details and try again.");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+
+const onsubmit = async (data) => {
+  console.log(data);
+};
 
   return (
     <div
@@ -113,7 +160,7 @@ export default function VendorLogin() {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} noValidate className="mt-7">
+          <form onSubmit={handleSubmit(onsubmit, onError)} noValidate className="mt-7">
             {error && (
               <div
                 role="alert"
@@ -129,15 +176,21 @@ export default function VendorLogin() {
               </label>
               <input
                 id="email"
-                name="email"
+                {...register("email", { required: "Email is required" })}
                 type="email"
                 autoComplete="username"
                 inputMode="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                
                 placeholder="owner@yourstore.com"
                 className={inputBase}
               />
+              {
+                errors.email && (
+                  <p className="mt-1 text-xs text-[#b02407]">
+                    {errors.email.message}
+                  </p>
+                )
+              }
             </div>
 
             <div className="mt-5">
@@ -155,14 +208,24 @@ export default function VendorLogin() {
               <div className="flex h-11 border border-black bg-white focus-within:ring-2 focus-within:ring-[#e3300f]/50">
                 <input
                   id="password"
-                  name="password"
+                  {
+                    ...register("password", {
+                      required: "Password is required",
+                    })
+                  }
                   type={show ? "text" : "password"}
                   autoComplete="current-password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  
                   placeholder="Enter your password"
                   className="min-w-0 flex-1 bg-transparent px-3 text-base placeholder:text-neutral-400 focus:outline-none sm:text-sm"
                 />
+                {
+                  errors.password && (
+                    <p className="mt-1 text-xs text-[#b02407]">
+                      {errors.password.message}
+                    </p>
+                  )
+                }
                 <button
                   type="button"
                   onClick={() => setShow((s) => !s)}

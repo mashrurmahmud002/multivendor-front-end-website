@@ -70,5 +70,17 @@ export const getProducts = async()=>{
 
     }
 
+
+    export const vendorLogin = async(data)=>{
+        try{
+            const response = await vendorAuthInstance.post("/vendor-login", data);
+            return response
+        }catch(error){
+            console.log(error);
+            
+        }
+    
+        }
+
  
 
