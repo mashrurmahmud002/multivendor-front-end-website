@@ -1,5 +1,6 @@
 import { Heart } from "lucide-react";
 import { useGetProducts } from "../../../Hook";
+import { Link } from "react-router-dom";
 
 
 
@@ -158,17 +159,18 @@ const MostWanted = () => {
               </p>
 
               {/* Product Name */}
-              <h3
+             <Link to={`/shop/product-details/${product?._id}`}> <h3
                 className="
                   mt-1
                   text-[20px]
                   font-bold
                   leading-tight
                   text-black
+                  cursor-pointer
                 "
               >
                 {product.title}
-              </h3>
+              </h3></Link> 
 
               {/* Price + Button */}
               <div className="mt-3 flex items-end justify-between">

@@ -82,5 +82,31 @@ export const getProducts = async()=>{
     
         }
 
+
+
+        export const vendorGroups = async()=>{
+            try{
+
+                const response = await vendorAuthInstance.get("/top-vendor");
+                return response
+
+            }catch(error){
+                console.log(error);
+                
+            }
+        }
+
+
+
+        export const getProductsInfo = (id)=>{
+            try{
+                const response = productInstance.get(`/products/${id}`);
+                return response
+            }catch(error){
+                console.log(error);
+                
+            }
+        }
+
  
 

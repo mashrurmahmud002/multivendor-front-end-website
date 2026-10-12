@@ -1,10 +1,25 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { useGetProductsInfo } from "../../../Hook";
+
 
 const ProductDetails = () => {
-  const [selectedImage, setSelectedImage] = useState(0);
-  const [selectedColor, setSelectedColor] = useState("Chalk White");
-  const [selectedSize, setSelectedSize] = useState("Standard (600ml)");
-  const [quantity, setQuantity] = useState(1);
+  // const [selectedImage, setSelectedImage] = useState(0);
+  // const [selectedColor, setSelectedColor] = useState("Chalk White");
+  // const [selectedSize, setSelectedSize] = useState("Standard (600ml)");
+  // const [quantity, setQuantity] = useState(1);
+
+  const {id} = useParams();
+  console.log(id);
+
+  const {data} = useGetProductsInfo(id);
+
+  const {imageArray, title,description, price,generateSKu} = data?.data?.products || {};
+
+  const [selectedImage, setSelectedImage] = useState([imageArray?.[0]]);
+ 
+
+  
 
   const images = [
     "/products/coffee-1.jpg",
@@ -36,56 +51,44 @@ const ProductDetails = () => {
 
               {/* Image */}
               <div className="flex h-full w-full items-center justify-center">
-                <img
-                  src={images[selectedImage]}
-                  alt="Ceramic Pour-Over Coffee Set"
-                  className="h-full w-full object-contain"
-                  onError={(e) => {
-                    e.currentTarget.style.display = "none";
-                  }}
-                />
+               
+                
+                  <div className="w-full h-full">
+                    <img
+                      src={selectedImage || ""}
+                      alt={`Product ${imageArray?.[0]|| ""}`}
+                      className={`h-full w-full object-contain`}
+                      onError={(e) => {
+                        e.currentTarget.style.display = "none";
+                      }}
+                    />
+                    
+                  </div>
+               
+               
+
+               <div>
+                  {}
+               </div>
 
                 {/* Placeholder if image doesn't exist */}
                 <div className="absolute flex h-10 w-10 items-center justify-center border border-gray-300 text-gray-300">
-                  <span className="text-xl">▧</span>
+                 
                 </div>
               </div>
 
               {/* Image Counter */}
               <div className="absolute bottom-3 right-3 border border-gray-300 bg-white px-2 py-1 text-[8px] tracking-wider text-gray-500">
-                IMAGE {selectedImage + 1} / {images.length}
+                IMAGE { + 1} / {images.length}
               </div>
             </div>
 
             {/* Thumbnail Section */}
-            <div className="mt-2 grid grid-cols-4">
-              {images.map((image, index) => (
-                <button
-                  key={index}
-                  onClick={() => setSelectedImage(index)}
-                  className={`relative h-[100px] border border-black bg-[#f5f5f5] sm:h-[130px] ${
-                    selectedImage === index
-                      ? "bg-black"
-                      : "bg-[#f5f5f5]"
-                  }`}
-                >
-                  <img
-                    src={image}
-                    alt={`Product ${index + 1}`}
-                    className={`h-full w-full object-contain ${
-                      selectedImage === index ? "opacity-30" : ""
-                    }`}
-                    onError={(e) => {
-                      e.currentTarget.style.display = "none";
-                    }}
-                  />
-
-                  <span className="absolute inset-0 flex items-center justify-center text-gray-300">
-                    ▧
-                  </span>
-                </button>
-              ))}
-            </div>
+           <div className="mt-2 grid grid-cols-4">
+            {
+              imageArray.length > 0 ? imageArray.map((img, i) => <img key={i} src={img} alt={`Product ${i}`} className="h-[200px] w-[200px] object-cover" />):""
+            }
+            </div> 
           </div>
 
           {/* ================= PRODUCT INFO ================= */}
@@ -104,7 +107,7 @@ const ProductDetails = () => {
 
             {/* Title */}
             <h1 className="mt-5 max-w-[420px] text-[25px] font-black uppercase leading-[1.05] tracking-tight sm:text-[28px]">
-              Ceramic Pour-Over Coffee Set
+              {title}
             </h1>
 
             {/* Rating */}
@@ -126,7 +129,7 @@ const ProductDetails = () => {
               </span>
 
               <span className="text-[8px] uppercase tracking-wider text-gray-400">
-                SKU: CERAM-4821
+                SKU: {generateSKu}
               </span>
             </div>
 
@@ -135,7 +138,7 @@ const ProductDetails = () => {
             {/* Price */}
             <div className="flex items-center gap-3">
               <span className="text-[32px] font-black tracking-tight">
-                $64
+                ${price}
               </span>
 
               <span className="text-[13px] text-gray-400 line-through">
@@ -157,7 +160,7 @@ const ProductDetails = () => {
                 </span>
 
                 <span className="text-[9px] font-medium">
-                  {selectedColor}
+                  
                 </span>
               </div>
 
@@ -165,12 +168,7 @@ const ProductDetails = () => {
                 {colors.map((color) => (
                   <button
                     key={color}
-                    onClick={() => setSelectedColor(color)}
-                    className={`border border-black px-3 py-2 text-[8px] uppercase tracking-wider ${
-                      selectedColor === color
-                        ? "bg-black font-bold text-white"
-                        : "bg-white"
-                    }`}
+                    
                   >
                     {color}
                   </button>
@@ -186,7 +184,7 @@ const ProductDetails = () => {
                 </span>
 
                 <span className="text-[9px] font-medium">
-                  {selectedSize}
+                  
                 </span>
               </div>
 
@@ -194,12 +192,8 @@ const ProductDetails = () => {
                 {sizes.map((size) => (
                   <button
                     key={size}
-                    onClick={() => setSelectedSize(size)}
-                    className={`border border-black px-3 py-2 text-[8px] uppercase tracking-wider ${
-                      selectedSize === size
-                        ? "bg-black font-bold text-white"
-                        : "bg-white"
-                    }`}
+                   
+                    className={`border border-black px-3 py-2 text-[8px] uppercase tracking-wider $`}
                   >
                     {size}
                   </button>
@@ -213,20 +207,18 @@ const ProductDetails = () => {
               {/* Quantity */}
               <div className="flex h-[32px] border border-black">
                 <button
-                  onClick={() =>
-                    setQuantity((prev) => Math.max(1, prev - 1))
-                  }
+                 
                   className="w-8 text-sm"
                 >
                   −
                 </button>
 
                 <div className="flex w-8 items-center justify-center border-x border-black text-[10px]">
-                  {quantity}
+                
                 </div>
 
                 <button
-                  onClick={() => setQuantity((prev) => prev + 1)}
+                 
                   className="w-8 text-sm"
                 >
                   +
