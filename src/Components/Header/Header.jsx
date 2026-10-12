@@ -6,7 +6,7 @@ const navLinks = [
   { label: "SHOP", to: "/shop" },
   { label: "VENDORS", to: "/vendor/vendor-register" },
   { label: "DEALS", to: "/deals/deals-products" },
-  { label: "NEW ARRIVALS", to: "#" },
+  { label: "NEW ARRIVALS", to: "/new-arrivals" },
   { label: "ABOUT", to: "/about" },
 ];
 
@@ -81,18 +81,18 @@ const Header = () => {
   }, [menuOpen]);
 
   // Close on Escape, and when the viewport grows past the drawer breakpoint
-  useEffect(() => {
-    if (!menuOpen) return;
-    const onKey = (e) => e.key === "Escape" && setMenuOpen(false);
-    const mq = window.matchMedia("(min-width: 1024px)");
-    const onChange = (e) => e.matches && setMenuOpen(false);
-    window.addEventListener("keydown", onKey);
-    mq.addEventListener("change", onChange);
-    return () => {
-      window.removeEventListener("keydown", onKey);
-      mq.removeEventListener("change", onChange);
-    };
-  }, [menuOpen]);
+  // useEffect(() => {
+  //   if (!menuOpen) return;
+  //   const onKey = (e) => e.key === "Escape" && setMenuOpen(false);
+  //   const mq = window.matchMedia("(min-width: 1024px)");
+  //   const onChange = (e) => e.matches && setMenuOpen(false);
+  //   window.addEventListener("keydown", onKey);
+  //   mq.addEventListener("change", onChange);
+  //   return () => {
+  //     window.removeEventListener("keydown", onKey);
+  //     mq.removeEventListener("change", onChange);
+  //   };
+  // }, [menuOpen]);
 
   const close = () => setMenuOpen(false);
 
@@ -228,6 +228,8 @@ const Header = () => {
             onClick={close}
             className="absolute inset-0 bg-black/40"
           />
+
+          
 
           <div className="absolute left-0 top-0 flex h-full w-[85%] max-w-[340px] flex-col bg-white shadow-xl">
             <div className="flex h-[64px] shrink-0 items-center justify-between border-b border-black px-5">
