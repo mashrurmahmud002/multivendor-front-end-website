@@ -5,6 +5,7 @@ import VendorToolset from "./VendorToolSet";
 import BellLanding from "./BellLanding";
 import WhoThrivesHere from "./WhoThrivesThere";
 import FaqSection from "./FaqQuestions";
+import CtaSection from "./CTAsection";
 
 // Swap this for your own photo (grayscale is applied via CSS)
 const HERO_IMG =
@@ -114,6 +115,7 @@ export default function VendorProgram() {
       <BellLanding/>
       <WhoThrivesHere/>
       <FaqSection/>
+      <CtaSection/>
       
     </main>
   );
