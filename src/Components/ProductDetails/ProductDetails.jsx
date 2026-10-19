@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGetProductsInfo } from "../../../Hook";
+import ProductTabs from "./ProductDescription";
 
 
 const ProductDetails = () => {
@@ -14,9 +15,14 @@ const ProductDetails = () => {
 
   const {data} = useGetProductsInfo(id);
 
-  const {imageArray, title,description, price,generateSKu} = data?.data?.products || {};
+  const {imageArray, title,description, price,generateSKu,weight} = data?.data?.products || {};
 
-  const [selectedImage, setSelectedImage] = useState([imageArray?.[0]]);
+  console.log("this is weight ",weight)
+  console.log(data)
+
+  const [selectImage, setSelectImage] = useState("");
+
+  
  
 
   
@@ -55,8 +61,8 @@ const ProductDetails = () => {
                 
                   <div className="w-full h-full">
                     <img
-                      src={selectedImage || ""}
-                      alt={`Product ${imageArray?.[0]|| ""}`}
+                      src={imageArray?.[0] || ""}
+                      alt={`Product ${imageArray?.[0] || selectImage}`}
                       className={`h-full w-full object-contain`}
                       onError={(e) => {
                         e.currentTarget.style.display = "none";
@@ -86,7 +92,7 @@ const ProductDetails = () => {
             {/* Thumbnail Section */}
            <div className="mt-2 grid grid-cols-4">
             {
-              imageArray.length > 0 ? imageArray.map((img, i) => <img key={i} src={img} alt={`Product ${i}`} className="h-[200px] w-[200px] object-cover" />):""
+              imageArray?.length > 0 ? imageArray.map((img, i) => <img key={i} src={img} alt={`Product ${i}`} className="h-[200px] w-[200px] object-cover" />):""
             }
             </div> 
           </div>
@@ -295,8 +301,12 @@ const ProductDetails = () => {
         {/* Bottom line from screenshot */}
         <div className="mt-8 border-t border-black" />
       </div>
+      <ProductTabs description={description} weight={weight} generateSKu={generateSKu} />
     </div>
   );
 };
 
 export default ProductDetails;
+
+
+
