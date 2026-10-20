@@ -108,5 +108,18 @@ export const getProducts = async()=>{
             }
         }
 
+        export const getSearchProducts = async(data)=>{
+            console.log(data,"THis is search data")
+            try{
+                const response = await productInstance.get(`/search-products?title=${data}`);
+                console.log("I am search data", response?.data?.products);
+                return response
+
+            }catch(err){
+                console.log(err)
+            }
+
+        }
+
  
 

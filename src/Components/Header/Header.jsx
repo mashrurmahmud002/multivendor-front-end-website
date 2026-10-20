@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Heart, ShoppingCart, Menu, X } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
+import { getSearchProducts } from "../../../Api";
+
 
 const navLinks = [
   { label: "SHOP", to: "/shop" },
@@ -43,7 +45,18 @@ function SmartLink({ to, className, onClick, children }) {
   );
 }
 
-function SearchBox({ className, buttonClass, inputClass }) {
+const SAMPLE = [
+  { id: 1, code: "CP", name: "Ceramic Pour-Over Set", brand: "Kinfolk Studio", category: "Home", price: 64 },
+  { id: 2, code: "WO", name: "Wool Merino Overshirt", brand: "Atelier Nord", category: "Fashion", price: 128 },
+  { id: 3, code: "WE", name: "Wireless Earbuds Pro", brand: "Volt Electronics", category: "Tech", price: 149 },
+  { id: 4, code: "RS", name: "Retinol Night Serum", brand: "Roots & Remedy", category: "Beauty", price: 54 },
+];
+
+function SearchBox({ className, buttonClass, inputClass,search,setSearch,searchBox, setSearchBox }) {
+  
+  const [activeIndex, setActiveIndex] = useState(null);
+  
+  
   return (
     <form
       role="search"
@@ -56,6 +69,7 @@ function SearchBox({ className, buttonClass, inputClass }) {
       <input
         id="site-search"
         type="search"
+        onChange={(e)=>setSearch(e.target.value)}
         placeholder="Search products, vendors, brands..."
         className={`min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-gray-400 ${inputClass}`}
       />
@@ -65,12 +79,87 @@ function SearchBox({ className, buttonClass, inputClass }) {
       >
         SEARCH
       </button>
+       <div className={search.length > 0 ?"absolute z-2 shadow-lg  top-13 w-full left-0":" hidden"} >
+           <ul className="w-full  rounded-lg p-3">
+          
+           {
+             search.length > 0 ? searchBox?.length > 0 ? searchBox?.map((item, index) => (
+              <li  role="option" aria-selected={activeIndex === index} >
+              <button
+                type="button"
+               
+                className={`flex w-full items-center rounded-lg gap-4 border-t border-neutral-200 px-5 py-3 text-left transition-colors ${
+                  activeIndex === index ? "bg-neutral-50" : "bg-white"
+                }`}
+              >
+                <img  src={item?.imageArray?.[0]}  className="flex h-14 w-14 shrink-0 items-center justify-center border border-neutral-200 bg-neutral-100 text-[13px] font-bold"/>
+                  
+                
+
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-[17px] font-bold leading-tight">
+                    {item.name}
+                  </span>
+                  <span className="mt-1 block truncate text-[11px] font-semibold uppercase tracking-[0.14em] text-stone-400">
+                    {item.brand} / {item.category}
+                  </span>
+                </span>
+
+                <span className="text-[17px] font-bold tabular-nums">${item.price}</span>
+              </button>
+            </li>
+               
+             )): (<div className="flex justify-center items-center">
+               <p>No products match “{search}”.</p>
+             </div>) : " "
+             
+           
+           }
+          
+        </ul>
+        </div>
     </form>
   );
 }
 
+
+
+
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [search, setSearch] = useState('');
+  const [searchBox, setSearchBox] = useState([]);
+
+
+
+
+  const handleGetSearch = async()=>{
+    console.log("hello  I am getSearch")
+
+    try{
+
+      const response = await getSearchProducts(search);
+      console.log(response?.data?.products);
+
+      setSearchBox(response?.data?.products)
+
+    }catch(err){
+      console.log(err)
+    }
+
+  }
+
+useEffect(() => {
+  if (!search.trim()) {
+    setSearchBox([]);
+    return;
+  }
+
+  handleGetSearch();
+}, [search]);
+  
+
+ 
 
   // Lock body scroll while the mobile menu is open
   useEffect(() => {
@@ -79,6 +168,9 @@ const Header = () => {
       document.body.style.overflow = "";
     };
   }, [menuOpen]);
+
+
+ 
 
   // Close on Escape, and when the viewport grows past the drawer breakpoint
   // useEffect(() => {
@@ -95,6 +187,8 @@ const Header = () => {
   // }, [menuOpen]);
 
   const close = () => setMenuOpen(false);
+
+  console.log(search)
 
   return (
     <header className="w-full bg-white text-black">
@@ -166,10 +260,15 @@ const Header = () => {
 
         {/* Desktop / tablet search */}
         <SearchBox
-          className="ml-auto hidden h-[44px] max-w-[647px] min-w-0 flex-1 md:flex"
+          search={search}
+          setSearch={setSearch}
+          searchBox={searchBox}
+          setSearchBox={setSearchBox}
+          className="ml-auto hidden relative h-[44px] max-w-[647px] min-w-0 flex-1 md:flex"
           inputClass="px-4"
           buttonClass="w-[84px] text-[11px] tracking-[1.5px] lg:w-[100px]"
         />
+       
 
         {/* Actions */}
         <div className="ml-auto flex shrink-0 items-center gap-1 sm:gap-2 md:ml-0">
@@ -210,6 +309,9 @@ const Header = () => {
           className="h-[44px]"
           inputClass="px-3"
           buttonClass="w-[84px] text-[10px] tracking-[1px]"
+          
+          search={search}
+          setSearch={setSearch}
         />
       </div>
 
