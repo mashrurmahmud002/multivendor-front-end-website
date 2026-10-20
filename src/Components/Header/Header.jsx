@@ -97,15 +97,15 @@ function SearchBox({ className, buttonClass, inputClass,search,setSearch,searchB
                 
 
                 <span className="min-w-0 flex-1">
-                  <span className="block truncate text-[17px] font-bold leading-tight">
-                    {item.name}
-                  </span>
+                  <Link to={`/shop/product-details/${item?._id}`} className="block truncate text-[17px] font-bold leading-tight">
+                    {item.title}
+                  </Link>
                   <span className="mt-1 block truncate text-[11px] font-semibold uppercase tracking-[0.14em] text-stone-400">
-                    {item.brand} / {item.category}
+                    {item?.brand} / {item?.category}
                   </span>
                 </span>
 
-                <span className="text-[17px] font-bold tabular-nums">${item.price}</span>
+                <span className="text-[17px] font-bold tabular-nums">${item?.price}</span>
               </button>
             </li>
                
