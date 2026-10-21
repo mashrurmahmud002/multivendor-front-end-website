@@ -1,11 +1,13 @@
 import React from 'react';
 import NewArrivalsHeroBanner from './NewArrivalsBanner';
+import FeaturedDrop from './FeaturedDrop';
 
 const NewArrivals = () => {
     return (
-        <div>
+        <div className='mx-auto container'>
 
             <NewArrivalsHeroBanner/>
+            <FeaturedDrop/>
             
         </div>
     );
