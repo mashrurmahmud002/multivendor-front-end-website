@@ -191,7 +191,7 @@ useEffect(() => {
   console.log(search)
 
   return (
-    <header className="w-full bg-white text-black">
+    <header className="w-full container mx-auto bg-white text-black">
       {/* Top bar */}
       <div className="flex h-[38px] items-center justify-between gap-4 border-b border-black px-4 sm:px-6 lg:px-8">
         <p className="truncate text-[9px] font-medium tracking-[1.5px] text-gray-600 sm:text-[10px] md:text-[11px] md:tracking-[2px]">
