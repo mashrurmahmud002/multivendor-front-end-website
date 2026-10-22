@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
-import { ShopContext } from '../ShopCategoryContext/ShopCateGoryContextProvider';
+
 import { useGetNewProducts } from '../../../Hook';
 import { Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
+import { ShopContext } from '../../Context/ShopContext';
 
 const NewArrivalCard = () => {
     const {category_name, setCategory_name} = useContext(ShopContext);
