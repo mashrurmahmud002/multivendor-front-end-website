@@ -1,7 +1,8 @@
 import { useContext, useEffect, useState } from 'react';
 import { categories } from '../../Api';
-import { ShopContext } from '../Components/ShopCategoryContext/ShopCateGoryContextProvider';
+
 import { useGetNewProducts } from '../../Hook';
+import { ShopContext } from '../Context/ShopContext';
 
 const Shop_category = () => {
   const [category, setCategory] = useState([]);
