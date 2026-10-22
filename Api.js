@@ -121,5 +121,19 @@ export const getProducts = async()=>{
 
         }
 
+       
+       
+        export const getNewProductsByQuery = async(data)=>{
+            console.log(data,"THis is search data")
+            try{
+                const response = await productInstance.get(`/query-products-new?category=${data}`);
+                return response
+            }
+            catch(err){
+                console.log(err?.response.data.message)
+            }
+
+        }
+
  
 
