@@ -48,7 +48,7 @@ function App() {
            
         </Route>
         <Route path="/shop" element={<ShopLayOut/>} >
-         <Route path='/shop' element={<Shop/>}/>
+         <Route path='/shop' element={<ShopCateGoryContextProvider><Shop/> </ShopCateGoryContextProvider>}/>
          <Route path='/shop/product-details/:id' element={<ProductDetails/>}/>
         
         </Route>

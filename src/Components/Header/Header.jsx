@@ -188,7 +188,7 @@ useEffect(() => {
 
   const close = () => setMenuOpen(false);
 
-  console.log(search)
+ 
 
   return (
     <header className="w-full container mx-auto bg-white text-black">

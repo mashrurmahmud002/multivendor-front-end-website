@@ -7,11 +7,11 @@ import { ShopContext } from '../Context/ShopContext';
 const Shop_category = () => {
   const [category, setCategory] = useState([]);
   const [active, setActive] = useState(null);
+
+
+ 
+
   const {category_name, setCategory_name} = useContext(ShopContext);
-
-  const {data} = useGetNewProducts(category_name);
-
-  console.log(data);
 
  
 
