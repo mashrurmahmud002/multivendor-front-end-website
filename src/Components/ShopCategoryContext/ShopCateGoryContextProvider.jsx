@@ -9,7 +9,7 @@ import { ShopContext } from '../../Context/ShopContext';
 
 const ShopCateGoryContextProvider = ({children}) => {
 
-    const [category_name, setCategory_name] = useState({});
+    const [category_name, setCategory_name] = useState('all');
 
     const shopInfo ={
         category_name,
