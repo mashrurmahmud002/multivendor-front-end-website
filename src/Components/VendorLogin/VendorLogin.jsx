@@ -35,36 +35,7 @@ export default function VendorLogin() {
   const onError = async (data) => {
     console.log(data);
 
-    const finalData = {
-        ...data,
-        keep
-    }
-    try{
-      const response = await vendorLogin(finalData);
-      if(response){
-
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: response?.data?.message,
-          showConfirmButton: false,
-          timer: 1500
-        });
-
-        
-         
-      }  
-
-    }catch(err){
-        console.log(err);
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: err?.response?.data?.message,
-          showConfirmButton: false,
-          timer: 1500
-        })
-    }
+    
   };
 
 //   const handleSubmit = async (e) => {
@@ -90,7 +61,41 @@ export default function VendorLogin() {
 
 const onsubmit = async (data) => {
   console.log(data);
-};
+  const email = data?.email.trim();
+  const password = data?.password.trim();
+  const finalData = {
+        email,
+        password,
+        keep
+    }
+    try{
+      const response = await vendorLogin(finalData);
+      if(response){
+        console.log("Hello I am response")
+
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: response?.data?.message,
+          showConfirmButton: false,
+          timer: 1500
+        });
+
+        
+         
+      }  
+
+    }catch(err){
+        console.log(err,"Helo I am error");
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Something went wrong",
+          showConfirmButton: false,
+          timer: 1500
+        })
+    }
+     };
 
   return (
     <div

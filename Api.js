@@ -1,5 +1,6 @@
 import axios from "axios"
 import { authInstance, axiosInstance, productInstance, vendorAuthInstance } from "./client"
+import Swal from "sweetalert2";
 
 
 export const categories = async()=>{
@@ -63,7 +64,14 @@ export const getProducts = async()=>{
         const response = await vendorAuthInstance.post("/create-vendor-register", data);
         return response
     }catch(error){
-        console.log(error);
+        console.log(error,"Helo I am error");
+                Swal.fire({
+                  position: "center",
+                  icon: "error",
+                  title: "Something went wrong",
+                  showConfirmButton: false,
+                  timer: 1500
+                })
         
     }
 
@@ -72,11 +80,19 @@ export const getProducts = async()=>{
 
 
     export const vendorLogin = async(data)=>{
+        console.log("I am vendor login", data)
         try{
             const response = await vendorAuthInstance.post("/vendor-login", data);
             return response
         }catch(error){
             console.log(error);
+            Swal.fire({
+                  position: "center",
+                  icon: "error",
+                  title: "Something went wrong",
+                  showConfirmButton: false,
+                  timer: 1500
+                })
             
         }
     

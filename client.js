@@ -23,7 +23,7 @@ export const authInstance = axios.create({
     },
 });
 
-export const vendorAuthInstance = axios.create({
+export const vendorAuthInstance = axios.create({                   
     baseURL:import.meta.env.VITE_AUTH_VENDOR_REGISTRATION,
     headers: {
         "Content-Type": "application/json",
