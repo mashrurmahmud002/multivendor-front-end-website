@@ -44,7 +44,8 @@ export const loginUser = async(data)=>{
         const response = await authInstance.post("/login",data);
         return response
     }catch(error){
-       console.log(error); 
+        
+       console.log(error?.message); 
     }
 }
 
