@@ -36,6 +36,8 @@ export default function MarketoLogin() {
         if(!response){
             return
         }
+
+        setUser(response?.data?.user);
        
         navigate("/");
         
