@@ -2,7 +2,7 @@
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { createUser } from "../../../Api";
-import { AuthContext } from "../AuthContext/AuthContextProvider";
+
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
@@ -10,7 +10,7 @@ export default function MarketoSignup() {
   const [showPassword, setShowPassword] = useState(false);
   const [agreed, setAgreed] = useState(false);
 
-  const { user, setUser } = useContext(AuthContext);
+
 
   const {
     register,
@@ -36,7 +36,7 @@ export default function MarketoSignup() {
         timer: 1500,
       });
 
-      setUser(response?.data?.data?.user);
+    
 
       navigate("/");
     } catch (err) {

@@ -44,7 +44,7 @@ export const loginUser = async(data)=>{
         const response = await authInstance.post("/login",data);
         return response
     }catch(error){
-        
+
        console.log(error?.message); 
     }
 }
@@ -58,6 +58,33 @@ export const getProducts = async()=>{
     }catch(error){
         console.log(error);
     }
+ }
+
+
+ export const logOutUser = async()=>{
+    try{
+        const response = await authInstance.post("/logout");
+        return response
+    }catch(error){
+        console.log(error);
+        Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Something went wrong",
+        showConfirmButton: false,
+        timer: 1500
+                })
+    }
+ }
+
+ export const  getUserInfo = async()=>{
+     try{
+        const response = await authInstance.get("/get-user-exist");
+        return response
+     }catch(error){
+         console.log(error?.message);
+     }
+     
  }
 
  export const vendorRegister = async(data)=>{

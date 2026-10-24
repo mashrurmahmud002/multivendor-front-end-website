@@ -4,20 +4,29 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../../Api";
 import Swal from "sweetalert2";
-import { AuthContext } from "../AuthContext/AuthContextProvider";
+import { AuthContext } from "../../Context/AuthContext";
+
 
 export default function MarketoLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
+
   const {user, setUser} = useContext(AuthContext);
+
+  
+
+  
+ 
+
   const navigate = useNavigate()
 
   const {register, handleSubmit, formState:{errors}} = useForm();
 
   const onsubmit = async(data)=>{
+    
    
      
-
+   
 
      try{
         const response = await loginUser(data);
@@ -31,10 +40,12 @@ export default function MarketoLogin() {
         timer: 1500
         });
         
-        setUser(response?.data?.data?.user);
+       
         navigate("/");
+        setUser(response?.data?.data?.user);
 
      }catch(err){
+        console.log(err?.message);
         
      }
 
@@ -43,6 +54,7 @@ export default function MarketoLogin() {
   }
 
   const onError = async(data)=>{
+    console.log(data);
     
   }
 

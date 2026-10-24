@@ -1,33 +1,24 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Heart, ShoppingCart, Menu, X } from "lucide-react";
-import { Link, NavLink } from "react-router-dom";
-import { getSearchProducts } from "../../../Api";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { getSearchProducts, logOutUser } from "../../../Api";
+import Swal from "sweetalert2";
+import { AuthContext } from "../../Context/AuthContext";
 
 
-const navLinks = [
-  { label: "SHOP", to: "/shop" },
-  { label: "VENDORS", to: "/vendor/vendor-register" },
-  { label: "DEALS", to: "/deals/deals-products" },
-  { label: "NEW ARRIVALS", to: "/new-arrivals" },
-  { label: "ABOUT", to: "/about" },
-];
 
-const utilityLinks = [
-  { label: "SELL ON MARKETO", to: "/sell-on-markerto" },
-  { label: "HELP", to: "#" },
-  {label: "Vendor Login", to: "/vendor-login"},
-  { label: "SIGN IN", to: "/auth/signin" },
 
-];
+
+
 
 const focusRing =
   "focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2";
 
 /** Renders a router link for "/paths" and a plain anchor for "#" placeholders. */
-function SmartLink({ to, className, onClick, children }) {
+function SmartLink({ to, className, onClick, children ,user}) {
   if (to.startsWith("/")) {
     return (
-      <NavLink
+      user?._id ? (<button className={className}>Logout</button>):( <NavLink
         to={to}
         onClick={onClick}
         className={({ isActive }) =>
@@ -35,7 +26,7 @@ function SmartLink({ to, className, onClick, children }) {
         }
       >
         {children}
-      </NavLink>
+      </NavLink>)
     );
   }
   return (
@@ -129,6 +120,22 @@ const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [searchBox, setSearchBox] = useState([]);
+  const {user, setUser} = useContext(AuthContext);
+  const navigate = useNavigate();
+  const navLinks = [
+  { label: "SHOP", to: "/shop" },
+  { label: "VENDORS", to: "/vendor/vendor-register" },
+  { label: "DEALS", to: "/deals/deals-products" },
+  { label: "NEW ARRIVALS", to: "/new-arrivals" },
+  { label: "ABOUT", to: "/about" },
+];
+const utilityLinks = [
+  { label: "SELL ON MARKETO", to: "/sell-on-markerto" },
+  { label: "HELP", to: "#" },
+  {label: "Vendor Login", to: "/vendor-login"},
+  { label: user?._id ? "LOGOUT" : "LOGIN", to: user?._id ? "" : "/auth/signin" },
+
+];
 
 
 
@@ -168,6 +175,23 @@ useEffect(() => {
       document.body.style.overflow = "";
     };
   }, [menuOpen]);
+
+
+  const handleLogOut = async()=>{
+     try{
+      const response =  await logOutUser();
+       Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: response?.data?.message,
+              showConfirmButton: false,
+              timer: 1500
+              });
+      navigate("/login")
+     }catch(err){
+      console.log(err)
+     }
+  }
 
 
  
@@ -211,6 +235,7 @@ useEffect(() => {
             </SmartLink>
           ):(
             <SmartLink
+              user={user}
               key={l.label}
               to={l.to}
               className="text-[10px] font-medium tracking-[1.5px] transition-colors hover:text-gray-500"
