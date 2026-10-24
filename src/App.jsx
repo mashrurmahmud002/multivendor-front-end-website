@@ -26,6 +26,7 @@ import VendorLogin from './Components/VendorLogin/VendorLogin'
 import VendorProgram from './Components/SellOnMarketoPage/SellOnMarketoPage'
 import NewArrivals from './Components/NewArrivals/NewArrivals'
 import ShopCateGoryContextProvider from './Components/ShopCategoryContext/ShopCateGoryContextProvider'
+import VendorDashBoardLayOut from './LayOut/VendorDashBoardLayOut'
 
 
 
@@ -70,6 +71,10 @@ function App() {
          <Route path="/auth" element={<AuthLayOut/>}>
           <Route path="/auth/signin" element={<MarketoLogin/>}/>
           <Route path='/auth/signup' element={<MarketoSignup/>}/>
+         </Route>
+         {/* vendeor Dashboard */}
+         <Route path="/vendor-dashboard" element={<VendorDashBoardLayOut/>}>
+
          </Route>
       </Routes>
      </BrowserRouter>
