@@ -40,12 +40,21 @@ export const createUser = async(data)=>{
     }
    
 export const loginUser = async(data)=>{
+
+    console.log("Hello I am Here loginUser", data)
     try{
         const response = await authInstance.post("/login",data);
         return response
     }catch(error){
-
+       console.log("You are in log error message")
        console.log(error?.message); 
+        Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Invalid Credentials!",
+        showConfirmButton: false,
+        timer: 1500
+        })
     }
 }
 

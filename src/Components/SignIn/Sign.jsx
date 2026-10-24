@@ -24,25 +24,21 @@ export default function MarketoLogin() {
 
   const onsubmit = async(data)=>{
     
-   
+
      
+     
+     console.log(data);
    
 
      try{
         const response = await loginUser(data);
-
         
-        Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: response?.data?.message,
-        showConfirmButton: false,
-        timer: 1500
-        });
-        
+        if(!response){
+            return
+        }
        
         navigate("/");
-        setUser(response?.data?.data?.user);
+        
 
      }catch(err){
         console.log(err?.message);
