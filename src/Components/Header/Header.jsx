@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Heart, ShoppingCart, Menu, X } from "lucide-react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { getSearchProducts, logOutUser } from "../../../Api";
+import { getSearchProducts, getUserInfo, logOutUser } from "../../../Api";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../Context/AuthContext";
 
@@ -121,6 +121,13 @@ const Header = () => {
   const [search, setSearch] = useState('');
   const [searchBox, setSearchBox] = useState([]);
   const {user, setUser} = useContext(AuthContext);
+
+  useEffect(()=>{
+    getUserInfo();
+  },[user])
+
+  
+  console.log(user,"user from authCOntext")
   const navigate = useNavigate();
   const navLinks = [
   { label: "SHOP", to: "/shop" },
@@ -133,7 +140,7 @@ const utilityLinks = [
   { label: "SELL ON MARKETO", to: "/sell-on-markerto" },
   { label: "HELP", to: "#" },
   {label: "Vendor Login", to: "/vendor-login"},
-  { label: user?._id ? "LOGOUT" : "LOGIN", to: user?._id ? "" : "/auth/signin" },
+  { label: user ? "LOGOUT" : "LOGIN", to: user ? "" : "/auth/signin" },
 
 ];
 

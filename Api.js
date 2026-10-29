@@ -44,6 +44,15 @@ export const loginUser = async(data)=>{
     console.log("Hello I am Here loginUser", data)
     try{
         const response = await authInstance.post("/login",data);
+        if(response){
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Login Successfully!",
+                showConfirmButton: false,
+                timer: 1500
+                })
+        }
         return response
     }catch(error){
        console.log("You are in log error message")
