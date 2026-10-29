@@ -4,6 +4,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { getSearchProducts, getUserInfo, logOutUser } from "../../../Api";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../Context/AuthContext";
+import CartDropdown from "../CartDropDown/CartDropDown";
 
 
 
@@ -121,6 +122,7 @@ const Header = () => {
   const [search, setSearch] = useState('');
   const [searchBox, setSearchBox] = useState([]);
   const {user, setUser} = useContext(AuthContext);
+   const [open, setOpen] = useState(false);
 
   useEffect(()=>{
     getUserInfo();
@@ -145,7 +147,9 @@ const utilityLinks = [
 ];
 
 
-
+  const handleCartDropDown = () => {
+    setOpen(!open);
+  };
 
   const handleGetSearch = async()=>{
     console.log("hello  I am getSearch")
@@ -324,7 +328,10 @@ useEffect(() => {
             aria-label="Cart, 3 items"
             className={`flex h-10 items-center gap-2 px-2 ${focusRing}`}
           >
-            <ShoppingCart size={21} strokeWidth={1.5} />
+            <ShoppingCart onClick={handleCartDropDown} size={21} strokeWidth={1.5} />
+            {
+               open ? <CartDropdown open={open} setOpen={setOpen}/> : null
+            }
             <span className="hidden text-[10px] font-semibold tracking-[1.5px] xl:block">
               CART
             </span>
