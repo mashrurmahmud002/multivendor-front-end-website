@@ -5,6 +5,8 @@ import { getSearchProducts, getUserInfo, logOutUser } from "../../../Api";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../Context/AuthContext";
 import CartDropdown from "../CartDropDown/CartDropDown";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import { set } from "zod";
 
 
 
@@ -121,15 +123,20 @@ const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [searchBox, setSearchBox] = useState([]);
-  const {user, setUser} = useContext(AuthContext);
-   const [open, setOpen] = useState(false);
+  const {user, setUser, loading, setLoading} = useContext(AuthContext);
+  const [open, setOpen] = useState(false);
 
-  useEffect(()=>{
-    getUserInfo();
-  },[user])
+
+
+
+      useEffect(() => {
+            getUserInfo()
+        }, [user]);
 
   
-  console.log(user,"user from authCOntext")
+
+  
+  
   const navigate = useNavigate();
   const navLinks = [
   { label: "SHOP", to: "/shop" },
@@ -220,6 +227,8 @@ useEffect(() => {
   //     mq.removeEventListener("change", onChange);
   //   };
   // }, [menuOpen]);
+
+
 
   const close = () => setMenuOpen(false);
 

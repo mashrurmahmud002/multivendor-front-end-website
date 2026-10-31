@@ -1,6 +1,7 @@
 import axios from "axios"
-import { authInstance, axiosInstance, productInstance, vendorAuthInstance } from "./client"
+import { authInstance, axiosInstance, cartInstance, productInstance, vendorAuthInstance } from "./client"
 import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 
 export const categories = async()=>{
@@ -98,7 +99,7 @@ export const getProducts = async()=>{
  export const  getUserInfo = async()=>{
      try{
         const response = await authInstance.get("/get-user-exist");
-        return response
+        return response;
      }catch(error){
          console.log(error?.message);
      }
@@ -123,6 +124,8 @@ export const getProducts = async()=>{
 
 
     }
+
+    
 
 
     export const vendorLogin = async(data)=>{
@@ -194,6 +197,30 @@ export const getProducts = async()=>{
             catch(err){
                 console.log(err?.response.data.message)
             }
+
+        }
+
+
+        export const addtoCart = async(userId)=>{
+
+           try{
+             const response = await cartInstance.post('/add-to-cart', userId);
+            if(response){
+                toast.success('Hey 👋!', {
+                position: 'top-right',
+              });
+            }
+            return response
+           }catch(err){
+
+            console.log(err.message)
+
+             toast.error('Something went wrong', {
+             position: 'top-right',
+             });
+             
+           }
+
 
         }
 

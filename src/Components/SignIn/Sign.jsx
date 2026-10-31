@@ -5,13 +5,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../../Api";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../Context/AuthContext";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 
 export default function MarketoLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
 
-  const {user, setUser} = useContext(AuthContext);
+  const {user, setUser, loading, setLoading} = useContext(AuthContext);
+
+
+  
 
   
 
@@ -31,13 +35,17 @@ export default function MarketoLogin() {
    
 
      try{
+       
         const response = await loginUser(data);
+        setLoading(true);
         
         if(!response){
             return
         }
 
-        setUser(response?.data?.user);
+        setUser(response?.data?.data?.user);
+        
+           
        
         navigate("/");
         
@@ -45,6 +53,8 @@ export default function MarketoLogin() {
      }catch(err){
         console.log(err?.message);
         
+     }finally{
+        setLoading(false);
      }
 
 

@@ -4,6 +4,7 @@ import './index.css'
 import App from "./App"
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import AuthContextProvider from './Components/AuthContextProvider/AuthContextProvider'
+import { ToastContainer } from 'react-toastify'
 
 
 
@@ -12,7 +13,7 @@ createRoot(document.getElementById('root')).render(
   <QueryClientProvider client={queryClient}>
  <AuthContextProvider>
   <StrictMode>
-   
+    <ToastContainer/>
     <App />
   
   </StrictMode>

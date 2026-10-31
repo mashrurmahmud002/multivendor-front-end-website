@@ -14,34 +14,41 @@ const AuthContextProvider = ({children}) => {
     }
 
 
-    useEffect(() => {
-    const checkUser = async () => {
-      try {
-        setLoading(true);
-        const  response = await getUserInfo();
-        console.log(response,"I am asked to check user");
-        setUser(response);
-      } catch (error) {
+    
+   useEffect(() => {
+       const checkUser = async () => {
+         try {
+           setLoading(true);
+           const  response = await getUserInfo();
+           console.log(response,"I am asked to check user");
+           setLoading(false);
+           setUser(response?.data?.user);
+         } catch (error) {
+   
+           console.log(error?.response?.data?.message);
+           setUser(null);
+           setLoading(false);
+           
+           
+         } finally {
+           setLoading(false);
+         }
+       };
+   
+       checkUser();
+     }, []);
 
-        console.log(error?.response?.data?.message);
-        setUser(null);
-        setLoading(false);
-        
-      } finally {
-        setLoading(false);
-      }
-    };
+  
 
-    checkUser();
-  }, []);
+  if(loading){
+      
+       return <LoadingSpinner/>
+  }
    
 
  
 
 
-     if(loading){
-        return <LoadingSpinner/>
-    }
     return <AuthContext.Provider value={userInfo}>
         {children}
     </AuthContext.Provider>;

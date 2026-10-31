@@ -1,6 +1,8 @@
 import { Heart } from "lucide-react";
-import { useGetProducts } from "../../../Hook";
+import { useCreateAddtoCardProducts, useGetProducts } from "../../../Hook";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../Context/AuthContext";
 
 
 
@@ -12,6 +14,22 @@ const MostWanted = () => {
 
 
   const {data} = useGetProducts();
+
+  const {user} = useContext(AuthContext);
+
+
+  const createCartItem = useCreateAddtoCardProducts();
+
+
+  const handleAddtoCart = async(userId, productId) => {
+    try{
+       const response = await  createCartItem.mutateAsync({userId, productId});
+    console.log(response)
+    console.log("response done");
+    }catch(err){
+       console.log("Something went wrong");
+    }
+  };
 
   
 
@@ -188,6 +206,7 @@ const MostWanted = () => {
                 </div>
 
                 <button
+                onClick={() => handleAddtoCart(user?._id,product._id)}
                   className="
                     h-[24px]
                     min-w-[147px]
