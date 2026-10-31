@@ -18,12 +18,12 @@ const focusRing =
   "focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2";
 
 /** Renders a router link for "/paths" and a plain anchor for "#" placeholders. */
-function SmartLink({ to, className, onClick, children ,user}) {
+function SmartLink({ to, className, handleLogOut,  children }) {
   if (to.startsWith("/")) {
     return (
-      user?._id ? (<button className={className}>Logout</button>):( <NavLink
+     ( <NavLink
         to={to}
-        onClick={onClick}
+        
         className={({ isActive }) =>
           `${className} ${isActive ? "underline underline-offset-8" : ""}`
         }
@@ -33,9 +33,9 @@ function SmartLink({ to, className, onClick, children ,user}) {
     );
   }
   return (
-    <a href={to} onClick={onClick} className={className}>
-      {children}
-    </a>
+    <>
+     <button onClick={handleLogOut} className={className}>Log out </button>
+    </>
   );
 }
 
@@ -134,7 +134,7 @@ const Header = () => {
         }, [user]);
 
   
-
+   
   
   
   const navigate = useNavigate();
@@ -147,9 +147,9 @@ const Header = () => {
 ];
 const utilityLinks = [
   { label: "SELL ON MARKETO", to: "/sell-on-markerto" },
-  { label: "HELP", to: "#" },
+  { label: "HELP", to: "/" },
   {label: "Vendor Login", to: "/vendor-login"},
-  { label: user ? "LOGOUT" : "LOGIN", to: user ? "" : "/auth/signin" },
+  { label: user?._id ? "LOGOUT" : "LOGIN", to: user?._id ? "" : "/auth/signin" },
 
 ];
 
@@ -199,13 +199,15 @@ useEffect(() => {
      try{
       const response =  await logOutUser();
        Swal.fire({
-              position: "top-end",
+              position: "center",
               icon: "success",
               title: response?.data?.message,
               showConfirmButton: false,
               timer: 1500
               });
-      navigate("/login")
+
+      setUser(null)        
+      navigate("/auth/signin");
      }catch(err){
       console.log(err)
      }
@@ -258,6 +260,7 @@ useEffect(() => {
               user={user}
               key={l.label}
               to={l.to}
+              handleLogOut={handleLogOut}
               className="text-[10px] font-medium tracking-[1.5px] transition-colors hover:text-gray-500"
             >
               {l.label}
