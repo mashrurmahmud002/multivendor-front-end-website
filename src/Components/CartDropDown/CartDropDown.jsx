@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   ShoppingCart,
   X,
@@ -8,6 +8,10 @@ import {
   Trash2,
   ArrowRight,
 } from "lucide-react";
+import { useGetCartProducts } from "../../../Hook";
+import { AuthContext } from "../../Context/AuthContext";
+import { Link } from "react-router-dom";
+
 
 const initialCart = [
   {
@@ -35,6 +39,16 @@ const initialCart = [
 export default function CartDropdown({open, setOpen}) {
 
   const [cartItems, setCartItems] = useState(initialCart);
+
+  const {user} = useContext(AuthContext);
+
+
+
+   const {data} =  useGetCartProducts();
+   console.log(data?.data?.data?.cart);
+  
+
+   
 
   const cartCount = cartItems.reduce(
     (total, item) => total + item.quantity,
@@ -80,7 +94,9 @@ export default function CartDropdown({open, setOpen}) {
             className="fixed inset-0 z-40 cursor-default bg-black/30 sm:hidden"
             onClick={() => setOpen(false)}
             aria-label="Close cart"
-          />
+          >
+            Close button
+          </button>  
 
           <div className="fixed inset-x-3 top-20 z-50 max-h-[80vh] overflow-y-auto border border-gray-200 bg-white shadow-xl sm:absolute sm:left-auto sm:right-0 sm:top-10 sm:w-[410px] sm:max-h-[75vh]">
             {/* Header */}
@@ -105,7 +121,7 @@ export default function CartDropdown({open, setOpen}) {
 
             {/* Cart Products */}
             <div className="px-5">
-              {cartItems.length === 0 ? (
+              {data?.data?.data?.cart.length === 0 ? (
                 <div className="py-12 text-center">
                   <ShoppingCart
                     size={32}
@@ -126,14 +142,17 @@ export default function CartDropdown({open, setOpen}) {
                   </button>
                 </div>
               ) : (
-                cartItems.map((item) => (
+               data?.data?.data?.cart?.map((item, index) => {
+
+               return item?.userId === user ? (
                   <div
-                    key={item.id}
+                    key={index}
                     className="flex gap-4 border-b border-gray-100 py-5"
                   >
                     {/* Product Image */}
                     <img
-                      src={item.image}
+                      src={item?.productId?.imageArray?.[0]}
+
                       alt={item.name}
                       className="h-24 w-20 shrink-0 bg-gray-100 object-cover"
                     />
@@ -146,13 +165,12 @@ export default function CartDropdown({open, setOpen}) {
                             {item.vendor}
                           </p>
 
-                          <h3 className="mt-1 text-sm font-semibold text-black">
-                            {item.name}
+                         <Link to={`/shop/product-details/${item.productId?._id} `}> <h3 className="mt-1 text-sm font-semibold text-black">
+                            {item.productId?.title}
                           </h3>
+                          </Link>
 
-                          <p className="mt-1 text-xs text-gray-500">
-                            Color: {item.color}
-                          </p>
+                         
                         </div>
 
                         <button
@@ -178,7 +196,7 @@ export default function CartDropdown({open, setOpen}) {
                           </button>
 
                           <span className="min-w-7 text-center text-xs">
-                            {item.quantity}
+                            {item?.productId?.quantity}
                           </span>
 
                           <button
@@ -193,13 +211,40 @@ export default function CartDropdown({open, setOpen}) {
                         </div>
 
                         <p className="text-sm font-bold">
-                          ${(item.price * item.quantity).toFixed(2)}
+                          ${item.productId?.price.toFixed(2)}
                         </p>
                       </div>
                     </div>
                   </div>
-                ))
+               ) : <> 
+                 <div className="py-12 text-center">
+                  <ShoppingCart
+                    size={32}
+                    className="mx-auto mb-4 text-gray-400"
+                  />
+                  <p className="text-sm font-semibold">
+                    Your cart is empty
+                  </p>
+                  <p className="mt-2 text-xs text-gray-500">
+                    Discover something you love.
+                  </p>
+
+                  <button
+                    onClick={() => setOpen(false)}
+                    className="mt-5 bg-black px-6 py-3 text-xs font-semibold tracking-wider text-white hover:bg-red-600"
+                  >
+                    CONTINUE SHOPPING
+                  </button>
+                </div>
+               
+               </>
+
+
+               
+                 
+             })
               )}
+              {/* hello from cart */}
             </div>
 
             {/* Subtotal and Checkout */}

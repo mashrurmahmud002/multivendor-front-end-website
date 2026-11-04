@@ -149,7 +149,7 @@ const utilityLinks = [
   { label: "SELL ON MARKETO", to: "/sell-on-markerto" },
   { label: "HELP", to: "/" },
   {label: "Vendor Login", to: "/vendor-login"},
-  { label: user?._id ? "LOGOUT" : "LOGIN", to: user?._id ? "" : "/auth/signin" },
+  { label: user ? "LOGOUT" : "LOGIN", to: user ? "" : "/auth/signin" },
 
 ];
 
@@ -206,8 +206,8 @@ useEffect(() => {
               timer: 1500
               });
 
-      setUser(null)        
-      navigate("/auth/signin");
+              setUser(null)        
+              navigate("/auth/signin");
      }catch(err){
       console.log(err)
      }
@@ -334,13 +334,15 @@ useEffect(() => {
               WISHLIST
             </span>
           </button>
+          {/* jrsgfioer */}
 
           <button
             type="button"
             aria-label="Cart, 3 items"
             className={`flex h-10 items-center gap-2 px-2 ${focusRing}`}
+            onClick={handleCartDropDown}
           >
-            <ShoppingCart onClick={handleCartDropDown} size={21} strokeWidth={1.5} />
+            <ShoppingCart  size={21} strokeWidth={1.5} />
             {
                open ? <CartDropdown open={open} setOpen={setOpen}/> : null
             }

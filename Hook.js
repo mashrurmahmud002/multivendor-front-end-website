@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { addtoCart, getNewProductsByQuery, getProducts, getProductsInfo, vendorGroups } from "./Api"
+import { addtoCart, getCartItems, getNewProductsByQuery, getProducts, getProductsInfo, vendorGroups } from "./Api"
 
 
 
@@ -68,4 +68,18 @@ export const useCreateAddtoCardProducts = ()=>{
     })
     
    
+}
+
+
+export const useGetCartProducts = ()=>{
+
+   return  useQuery({
+    queryKey:['getCartProducts'],
+    queryFn:async()=>{
+      const res = await getCartItems();
+      console.log(res,"THis is from hook response");
+      return res
+    }
+})
+
 }

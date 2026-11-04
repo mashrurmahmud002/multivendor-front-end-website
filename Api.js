@@ -201,12 +201,12 @@ export const getProducts = async()=>{
         }
 
 
-        export const addtoCart = async(userId)=>{
+        export const addtoCart = async(data)=>{
 
            try{
-             const response = await cartInstance.post('/add-to-cart', userId);
+             const response = await cartInstance.post('/add-to-cart', data);
             if(response){
-                toast.success('Hey 👋!', {
+                toast.success('Product added to cart', {
                 position: 'top-right',
               });
             }
@@ -222,6 +222,17 @@ export const getProducts = async()=>{
            }
 
 
+        }
+
+
+        export const getCartItems = async()=>{
+            try{
+                const response = await cartInstance.get('/get-user-cart');
+                console.log(response, "THis is from response");
+                return response
+            }catch(err){
+                console.log(err?.message);
+            }
         }
 
  
