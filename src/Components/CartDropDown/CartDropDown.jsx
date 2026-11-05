@@ -44,11 +44,13 @@ export default function CartDropdown({open, setOpen}) {
 
 
 
-   const {data} =  useGetCartProducts();
+   const {data, isLoading} =  useGetCartProducts();
    console.log(data?.data?.data?.cart);
   
 
-   
+   if(isLoading){
+    return <h1>Loading...</h1>
+   }
 
   const cartCount = cartItems.reduce(
     (total, item) => total + item.quantity,

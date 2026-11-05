@@ -33,6 +33,9 @@ export const vendorAuthInstance = axios.create({
 })
 
 
+
+
+
 export const cartInstance = axios.create({
     baseURL: import.meta.env.VITE_CART,
     headers: {
@@ -40,3 +43,4 @@ export const cartInstance = axios.create({
     },
     withCredentials: true
 })
+
