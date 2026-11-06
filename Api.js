@@ -229,9 +229,37 @@ export const getProducts = async()=>{
             try{
                 const response = await cartInstance.get('/get-user-cart');
                 console.log(response, "THis is from response");
+               
                 return response
             }catch(err){
                 console.log(err?.message);
+            }
+        }
+
+        export const getQueryProducts = async(data)=>{
+            try{
+                const response = await productInstance.get(`/query-products?category=${data}`);
+                return response;
+            }catch(err){
+                console.log(err?.message);
+            }
+        }
+
+        export const deleteProductsFromCart = async(data)=>{
+            try{
+                const response = await cartInstance.delete(`/delete-from-cart/${data}` );
+                if(response){
+                    toast.success('Product deleted from cart', {
+                    position: 'top-right',
+                    });
+                }
+                return response
+
+            }catch(err){
+                console.log(err?.message);
+                toast.error('Something went wrong', {
+                    position: 'top-right',
+                })
             }
         }
 

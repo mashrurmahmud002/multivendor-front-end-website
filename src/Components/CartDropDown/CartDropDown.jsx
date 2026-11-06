@@ -8,7 +8,7 @@ import {
   Trash2,
   ArrowRight,
 } from "lucide-react";
-import { useGetCartProducts } from "../../../Hook";
+import { useDeleteProductsFromCart, useGetCartProducts } from "../../../Hook";
 import { AuthContext } from "../../Context/AuthContext";
 import { Link } from "react-router-dom";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
@@ -48,6 +48,8 @@ export default function CartDropdown({open, setOpen}) {
 
 
    const {data, isLoading} =  useGetCartProducts(user);
+
+   const deleteProduct = useDeleteProductsFromCart();
    console.log(data?.data?.data?.cart);
   
 
@@ -82,11 +84,18 @@ export default function CartDropdown({open, setOpen}) {
     );
   };
 
-  const removeItem = (id) => {
-    setCartItems((items) =>
-      items.filter((item) => item.id !== id)
-    );
-  };
+  const handleDeleteProductFromCart = async(id) => {
+    console.log("product delete id from cart", id);
+    
+   try{
+     const res = await deleteProduct.mutateAsync(id);
+    return res
+   }catch(err){
+     console.log(err?.message);
+   }
+  }
+
+  
 
   return (
     <div className="relative">
@@ -172,7 +181,7 @@ export default function CartDropdown({open, setOpen}) {
                             {item.vendor}
                           </p>
 
-                         <Link to={`/shop/product-details/${item.productId?._id} `}> <h3 className="mt-1 text-sm font-semibold text-black">
+                         <Link to={`/shop/product-details/${item?.productId?._id} `}> <h3 className="mt-1 text-sm font-semibold text-black">
                             {item?.productId?.title}
                           </h3>
                           </Link>
@@ -181,7 +190,7 @@ export default function CartDropdown({open, setOpen}) {
                         </div>
 
                         <button
-                          onClick={() => removeItem(item.id)}
+                          onClick={() => handleDeleteProductFromCart(item?._id)}
                           className="text-gray-400 hover:text-red-600"
                           aria-label={`Remove ${item.name}`}
                         >

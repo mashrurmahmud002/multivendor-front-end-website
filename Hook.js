@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { addtoCart, getCartItems, getNewProductsByQuery, getProducts, getProductsInfo, vendorGroups } from "./Api"
+import { addtoCart, deleteProductsFromCart, getCartItems, getNewProductsByQuery, getProducts, getProductsInfo, vendorGroups } from "./Api"
 
 
 
@@ -13,6 +13,18 @@ import { addtoCart, getCartItems, getNewProductsByQuery, getProducts, getProduct
         },
         
     })
+}
+
+export const useDeleteProductsFromCart = ()=>{
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data) => {
+      return await deleteProductsFromCart(data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['getCartProducts']);
+    },
+  })
 }
 
 export const useGetProductsInfo = (id)=>{
@@ -87,4 +99,13 @@ export const useGetCartProducts = (userId)=>{
   
 })
 
+}
+
+export const useGetProductsByQuery = ()=>{
+  return useQuery({
+    queryKey:['getProductsByQuery'],
+    queryFn:async()=>{
+      return await getNewProductsByQuery()
+    }
+  })
 }
