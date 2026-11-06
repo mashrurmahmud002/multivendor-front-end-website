@@ -272,5 +272,18 @@ export const getProducts = async()=>{
            }
         }
 
+
+
+
+
+        export const getVendorStoresName = async()=>{
+            try{
+                const response = await vendorAuthInstance.get('/get-vendor-store-name');
+                return response
+            }catch(err){
+                console.log(err?.message);
+            }
+        }
+
  
 

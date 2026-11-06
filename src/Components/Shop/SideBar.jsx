@@ -1,10 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { getVendorStoresName } from '../../../Api';
 
 const SideBar = () => {
-    const [selectedVendor, setSelectedVendor] = useState("All Vendors");
+const [selectedVendor, setSelectedVendor] = useState("All Vendors");
  const [maxPrice, setMaxPrice] = useState(300);
  const [onSaleOnly, setOnSaleOnly] = useState(false);
  const [showFilters, setShowFilters] = useState(false);
+
+ const [vendorStoreName, setVendorStoreName] = useState([]);
+
+
+
+
+
+
+ const handleVendorStoreName = async()=>{
+     try{
+        const res = await getVendorStoresName();
+      console.log(res?.data?.vendors);
+      setVendorStoreName(res?.data?.vendors);
+     }catch(err){
+        console.log(err);
+     }
+ }
+
+
+ useEffect(()=>{
+
+    handleVendorStoreName();
+   
+ },[])
  const vendors = [
  "Kinfolk Studio",
  "Volt Electronics",
@@ -14,8 +39,8 @@ const SideBar = () => {
  "Lunar Goods",
  ];
    return (
-       <div>
-           <aside
+ <div>
+<aside
  className={`w-full shrink-0 bg-white px-1 py-2 text- md:block md:w-56 lg:w-60
  ${showFilters ? "block" : "hidden"}`}
  >
@@ -35,7 +60,11 @@ const SideBar = () => {
    >
   All Vendors
    </button>
-  {vendors.map((vendor) => (
+   
+  {
+     vendorStoreName?.length > 0 ?
+     <>
+    {vendorStoreName.map((vendor) => (
   <button
   key={vendor}
       onClick={() => setSelectedVendor(vendor)}
@@ -45,9 +74,12 @@ const SideBar = () => {
        : "text-[#52647e]"
       }`}
  >
-    {vendor}
+    {vendor?.storeName}
     </button>
     ))}
+     
+     </>:<></>
+  }
      </div>
     </section>
     {/* Price filter */}
