@@ -10,7 +10,8 @@ import { addtoCart, getCartItems, getNewProductsByQuery, getProducts, getProduct
         queryFn:async()=>{
           return  await getProducts()
 
-        }
+        },
+        
     })
 }
 
@@ -71,15 +72,19 @@ export const useCreateAddtoCardProducts = ()=>{
 }
 
 
-export const useGetCartProducts = ()=>{
+export const useGetCartProducts = (userId)=>{
+  console.log(userId,"THis is from hook userId");
 
    return  useQuery({
-    queryKey:['getCartProducts'],
+    queryKey:['getCartProducts', userId],
     queryFn:async()=>{
       const res = await getCartItems();
       console.log(res,"THis is from hook response");
       return res
-    }
+    },
+    enabled: !!userId,
+    staleTime:0
+  
 })
 
 }

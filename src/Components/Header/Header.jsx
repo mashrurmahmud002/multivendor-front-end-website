@@ -127,11 +127,11 @@ const Header = () => {
   const [open, setOpen] = useState(false);
 
 
+ 
 
-
-      useEffect(() => {
-            getUserInfo()
-        }, [user]);
+  useEffect(() => {
+      getUserInfo()
+  }, [user,loading]);
 
   
    

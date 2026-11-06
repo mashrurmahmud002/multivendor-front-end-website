@@ -11,6 +11,7 @@ import {
 import { useGetCartProducts } from "../../../Hook";
 import { AuthContext } from "../../Context/AuthContext";
 import { Link } from "react-router-dom";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 
 const initialCart = [
@@ -42,9 +43,11 @@ export default function CartDropdown({open, setOpen}) {
 
   const {user} = useContext(AuthContext);
 
+ 
 
 
-   const {data, isLoading} =  useGetCartProducts();
+
+   const {data, isLoading} =  useGetCartProducts(user);
    console.log(data?.data?.data?.cart);
   
 
@@ -56,6 +59,8 @@ export default function CartDropdown({open, setOpen}) {
     (total, item) => total + item.quantity,
     0
   );
+
+
 
   const subtotal = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
@@ -146,7 +151,7 @@ export default function CartDropdown({open, setOpen}) {
               ) : (
                data?.data?.data?.cart?.map((item, index) => {
 
-               return item?.userId === user ? (
+               return item?.userId === user && (
                   <div
                     key={index}
                     className="flex gap-4 border-b border-gray-100 py-5"
@@ -168,7 +173,7 @@ export default function CartDropdown({open, setOpen}) {
                           </p>
 
                          <Link to={`/shop/product-details/${item.productId?._id} `}> <h3 className="mt-1 text-sm font-semibold text-black">
-                            {item.productId?.title}
+                            {item?.productId?.title}
                           </h3>
                           </Link>
 
@@ -213,33 +218,12 @@ export default function CartDropdown({open, setOpen}) {
                         </div>
 
                         <p className="text-sm font-bold">
-                          ${item.productId?.price.toFixed(2)}
+                          ${item?.productId?.price.toFixed(2)}
                         </p>
                       </div>
                     </div>
                   </div>
-               ) : <> 
-                 <div className="py-12 text-center">
-                  <ShoppingCart
-                    size={32}
-                    className="mx-auto mb-4 text-gray-400"
-                  />
-                  <p className="text-sm font-semibold">
-                    Your cart is empty
-                  </p>
-                  <p className="mt-2 text-xs text-gray-500">
-                    Discover something you love.
-                  </p>
-
-                  <button
-                    onClick={() => setOpen(false)}
-                    className="mt-5 bg-black px-6 py-3 text-xs font-semibold tracking-wider text-white hover:bg-red-600"
-                  >
-                    CONTINUE SHOPPING
-                  </button>
-                </div>
-               
-               </>
+               ) 
 
 
                

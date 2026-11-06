@@ -14,6 +14,7 @@ const MostWanted = () => {
 
 
   const {data} = useGetProducts();
+  console.log(data);
 
 
   const {user} = useContext(AuthContext);
@@ -189,7 +190,7 @@ const MostWanted = () => {
                   cursor-pointer
                 "
               >
-                {product.title}
+                {product?.title}
               </h3></Link> 
 
               {/* Price + Button */}
@@ -197,12 +198,12 @@ const MostWanted = () => {
 
                 <div className="flex items-center gap-1.5">
                   <span className="text-[10px] font-black">
-                    {product.price}
+                    {product?.price}
                   </span>
 
                   {product.comparePrice && (
                     <span className="text-[10px] text-gray-400 line-through">
-                      {product.comparePrice}
+                      {product?.comparePrice}
                     </span>
                   )}
                 </div>

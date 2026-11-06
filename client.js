@@ -29,6 +29,7 @@ export const vendorAuthInstance = axios.create({
     headers: {
         "Content-Type": "application/json",
     },
+    
 
 })
 
