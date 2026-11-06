@@ -263,5 +263,14 @@ export const getProducts = async()=>{
             }
         }
 
+        export const cartLength = async()=>{
+           try{
+             const response = await cartInstance.get('/get-cart-length');
+            return response
+           }catch(err){
+            console.log(err?.message);
+           }
+        }
+
  
 

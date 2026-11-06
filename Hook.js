@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { addtoCart, deleteProductsFromCart, getCartItems, getNewProductsByQuery, getProducts, getProductsInfo, vendorGroups } from "./Api"
+import { addtoCart, cartLength, deleteProductsFromCart, getCartItems, getNewProductsByQuery, getProducts, getProductsInfo, vendorGroups } from "./Api"
 
 
 
@@ -25,6 +25,18 @@ export const useDeleteProductsFromCart = ()=>{
       queryClient.invalidateQueries(['getCartProducts']);
     },
   })
+}
+
+export const useGetCartLength = (userId)=>{
+  
+    return useQuery({
+        queryKey:['getCartProducts', userId],
+        queryFn:async()=>{
+          return  await cartLength()
+        },
+        enabled: !!userId,
+        staleTime:0
+    })
 }
 
 export const useGetProductsInfo = (id)=>{

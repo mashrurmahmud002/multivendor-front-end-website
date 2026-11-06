@@ -1,12 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import { Heart, ShoppingCart, Menu, X } from "lucide-react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { getSearchProducts, getUserInfo, logOutUser } from "../../../Api";
+import { cartLength, getSearchProducts, getUserInfo, logOutUser } from "../../../Api";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../Context/AuthContext";
 import CartDropdown from "../CartDropDown/CartDropDown";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import { set } from "zod";
+import { useGetCartLength } from "../../../Hook";
 
 
 
@@ -125,6 +126,17 @@ const Header = () => {
   const [searchBox, setSearchBox] = useState([]);
   const {user, setUser, loading, setLoading} = useContext(AuthContext);
   const [open, setOpen] = useState(false);
+  const {data} = useGetCartLength(user);
+
+  console.log(data?.data?.data?.cartItemLength,"the cart length")
+ 
+
+
+
+
+
+
+  
 
 
  
@@ -350,7 +362,7 @@ useEffect(() => {
               CART
             </span>
             <span className="flex h-[19px] min-w-[19px] items-center justify-center bg-black px-1 text-[10px] font-bold text-white">
-              3
+              {data?.data?.data?.cartItemLength|| null} 
             </span>
           </button>
         </div>
