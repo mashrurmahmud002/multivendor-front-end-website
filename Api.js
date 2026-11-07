@@ -237,6 +237,7 @@ export const getProducts = async()=>{
         }
 
         export const getQueryProducts = async(data)=>{
+            console.log(data,"THis is search data from getQueryProducts ")
             try{
                 const response = await productInstance.get(`/query-products?category=${data}`);
                 return response;

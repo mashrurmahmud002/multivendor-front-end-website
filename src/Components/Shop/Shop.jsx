@@ -1,7 +1,8 @@
 import ShopCategorBanner from '../ShopeCategoryBanner/ShopCategorBanner';
 import Shop_category from '../../shop-Category/Shop_category';
 import SideBar from './SideBar';
-import NewArrivalCard from '../NewArrivals/NewArrivalCard';
+
+import ShopItems from './ShopItems';
 
 const Shop = () => {
     return (
@@ -21,7 +22,7 @@ const Shop = () => {
   <div className="min-w-0 flex-1">
     {/* তোমার existing product content এখানে রাখবে */}
 
-    <NewArrivalCard />
+        <ShopItems/>
   </div>
 </div>
            
