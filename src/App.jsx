@@ -27,6 +27,9 @@ import VendorProgram from './Components/SellOnMarketoPage/SellOnMarketoPage'
 import NewArrivals from './Components/NewArrivals/NewArrivals'
 import ShopCateGoryContextProvider from './Components/ShopCategoryContext/ShopCateGoryContextProvider'
 import VendorDashBoardLayOut from './LayOut/VendorDashBoardLayOut'
+import { Router } from 'lucide-react'
+import VendorDashBoard from './Components/VendorDashBoard/VendorDashBoard'
+
 
 
 
@@ -74,6 +77,8 @@ function App() {
          </Route>
          {/* vendeor Dashboard */}
          <Route path="/vendor-dashboard" element={<VendorDashBoardLayOut/>}>
+
+        <Route path="/vendor-dashboard" element={<VendorDashBoard/>}/>
 
          </Route>
       </Routes>
