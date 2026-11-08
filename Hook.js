@@ -138,9 +138,11 @@ export const useGetAllProductsByQuery = (category)=>{
 export const useGetAllProductsByPagnation = (data) =>{
 
   return useQuery({
-    queryKey:['getAllProductsByPagnation'],
+    queryKey:['getAllProductsByPagnation', data],
     queryFn:async()=>{
       return await  getProductsByPagination(data);
-    }
+    },
+    enabled:!!data,
+    staleTime:0
   })
 }
