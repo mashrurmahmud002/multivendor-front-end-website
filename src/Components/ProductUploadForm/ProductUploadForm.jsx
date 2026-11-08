@@ -75,7 +75,7 @@ export default function ProductUploadForm() {
   const onsubmit = async(data)=>{
 
 
-    console.log("hello")
+    
     
     
     
@@ -102,7 +102,7 @@ export default function ProductUploadForm() {
       })
     );
 
-    console.log("Uploaded variants:", varient);
+    
   } catch (err) {
     console.error("Error processing variants/images:", err);
     Swal.fire({
@@ -114,7 +114,7 @@ export default function ProductUploadForm() {
   }
     
 
-  console.log("are you there")
+  
 
 
      
@@ -123,7 +123,7 @@ export default function ProductUploadForm() {
     
   
 
-    console.log("I am here ")
+    
     const finaldata = {
        imageArray,
        ...data,
@@ -140,12 +140,12 @@ export default function ProductUploadForm() {
     };
 
 
-    console.log(finaldata)
+    
 
     try{
 
       const response = await productInstance.post("/product-upload",finaldata);
-      console.log(response);
+      
       Swal.fire({
         position: "center",
         icon: "success",
@@ -155,7 +155,7 @@ export default function ProductUploadForm() {
       });
       
     }catch(err){
-      console.log(err);
+      
        
     }
 
@@ -171,7 +171,7 @@ export default function ProductUploadForm() {
 
     const onInvalid = (errors)=>{
 
-      console.log(errors);
+      
       
       
 

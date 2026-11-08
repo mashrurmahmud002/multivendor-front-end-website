@@ -33,7 +33,7 @@ export default function VendorLogin() {
 
 
   const onError = async (data) => {
-    console.log(data);
+    
 
     
   };
@@ -50,7 +50,7 @@ export default function VendorLogin() {
 //     setLoading(true);
 //     try {
 //       // TODO: replace with your real vendor login request
-//       console.log({ email, password, keep });
+//       
 //     } catch {
 //       setError("We couldn't sign you in. Check your details and try again.");
 //     } finally {
@@ -60,7 +60,7 @@ export default function VendorLogin() {
 
 
 const onsubmit = async (data) => {
-  console.log(data);
+  
   const email = data?.email.trim();
   const password = data?.password.trim();
   const finalData = {
@@ -71,7 +71,7 @@ const onsubmit = async (data) => {
     try{
       const response = await vendorLogin(finalData);
       if(response){
-        console.log("Hello I am response")
+        
 
         Swal.fire({
           position: "center",
@@ -86,7 +86,7 @@ const onsubmit = async (data) => {
       }  
 
     }catch(err){
-        console.log(err,"Helo I am error");
+        
         Swal.fire({
           position: "center",
           icon: "error",

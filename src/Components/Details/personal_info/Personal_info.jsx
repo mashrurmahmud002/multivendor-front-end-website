@@ -5,7 +5,7 @@ const Personal_info = ({handleChanged,setActive,personalInfo, setPersonalInfo, h
 
   const {register , formState:{errors}, watch} = useFormContext();
 
-  console.log(disabled,"This is disabled");
+  
 
 
   const email = watch("email");
@@ -15,7 +15,7 @@ const Personal_info = ({handleChanged,setActive,personalInfo, setPersonalInfo, h
   const lastName = watch("lastName");
 
 
-  console.log(email,password,confirmPassword,firstName,lastName);
+  
 
 
   useEffect(()=>{

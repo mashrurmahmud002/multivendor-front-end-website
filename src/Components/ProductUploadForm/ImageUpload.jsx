@@ -18,7 +18,7 @@ const ImageUpload = ({imageerror}) => {
 
      }]);
 
-     console.log(imageArray)
+     
      
    
      
@@ -62,7 +62,7 @@ const ImageUpload = ({imageerror}) => {
     
 
    const  handleTriggerFilePicker = ()=>{
-         console.log("trigger")
+         
          document.getElementById("div-hidden-file-input").click();
         
        

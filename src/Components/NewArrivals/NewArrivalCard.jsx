@@ -10,7 +10,7 @@ const NewArrivalCard = () => {
     const {category_name, setCategory_name} = useContext(ShopContext);
 
     const {data, isError, isLoading} = useGetNewProducts(category_name);
-    console.log(data);
+    
 
     if(isLoading){
         return <LoadingSpinner/>

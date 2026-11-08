@@ -105,7 +105,7 @@ const Details = () => {
   
 
   const onsubmit = async(data)=>{
-    console.log(data);
+    
     const final_data = {
        acceptTerms,
        termsAccepted,
@@ -128,14 +128,14 @@ const Details = () => {
 
 
     }catch(error){
-       console.log(error);
+       
     }
     
 
   }
 
   const onError = async(err)=>{
-      console.log(err);    
+          
   }
 
 

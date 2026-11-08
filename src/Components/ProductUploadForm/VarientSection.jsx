@@ -53,7 +53,7 @@ const VariantsSection = () => {
 
 
    
-   console.log(variantOptions);
+   
     
 
     const handleTriggerImage = () => {
@@ -117,7 +117,7 @@ const VariantsSection = () => {
            }
 
         }catch(error){
-            console.log(error);
+            
             
         }
 
@@ -138,7 +138,7 @@ const VariantsSection = () => {
     const handleImageChange = async(e, index)=>{
 
 
-        console.log("index",index);
+        
         
 
         

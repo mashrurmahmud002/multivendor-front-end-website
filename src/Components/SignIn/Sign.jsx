@@ -31,7 +31,7 @@ export default function MarketoLogin() {
 
      
      
-     console.log(data);
+     
    
 
      try{
@@ -51,7 +51,7 @@ export default function MarketoLogin() {
         
 
      }catch(err){
-        console.log(err?.message);
+        
         
      }finally{
         setLoading(false);
@@ -62,7 +62,7 @@ export default function MarketoLogin() {
   }
 
   const onError = async(data)=>{
-    console.log(data);
+    
     
   }
 

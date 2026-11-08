@@ -11,7 +11,7 @@ export const categories = async()=>{
         return response
 
     }catch(error){
-        console.log(error);
+        
         
     }
 }
@@ -22,7 +22,7 @@ export const productUpload = async(data)=>{
         const response = await productInstance.post("/product-upload",data);
         return response
     }catch(error){
-        console.log(error);
+        
         
     }
 }
@@ -32,7 +32,7 @@ export const createUser = async(data)=>{
         const response = await authInstance.post("/create-account",data);
         return response
     }catch(error){
-        console.log(error);
+        
        
     }
 
@@ -42,7 +42,7 @@ export const createUser = async(data)=>{
    
 export const loginUser = async(data)=>{
 
-    console.log("Hello I am Here loginUser", data)
+    
     try{
         const response = await authInstance.post("/login",data);
         if(response){
@@ -56,8 +56,8 @@ export const loginUser = async(data)=>{
         }
         return response
     }catch(error){
-       console.log("You are in log error message")
-       console.log(error?.message); 
+       
+        
         Swal.fire({
         position: "center",
         icon: "error",
@@ -72,10 +72,10 @@ export const loginUser = async(data)=>{
 export const getProducts = async()=>{
     try{
         const response = await productInstance.get("/products");
-        console.log(response,"the response from api.js");
+        
         return response
     }catch(error){
-        console.log(error);
+        
     }
  }
 
@@ -85,7 +85,7 @@ export const getProducts = async()=>{
         const response = await authInstance.post("/logout");
         return response
     }catch(error){
-        console.log(error);
+        
         Swal.fire({
         position: "center",
         icon: "error",
@@ -101,7 +101,7 @@ export const getProducts = async()=>{
         const response = await authInstance.get("/get-user-exist");
         return response;
      }catch(error){
-         console.log(error?.message);
+         
      }
      
  }
@@ -111,7 +111,7 @@ export const getProducts = async()=>{
         const response = await vendorAuthInstance.post("/create-vendor-register", data);
         return response
     }catch(error){
-        console.log(error,"Helo I am error");
+        
                 Swal.fire({
                   position: "center",
                   icon: "error",
@@ -129,12 +129,12 @@ export const getProducts = async()=>{
 
 
     export const vendorLogin = async(data)=>{
-        console.log("I am vendor login", data)
+        
         try{
             const response = await vendorAuthInstance.post("/vendor-login", data);
             return response
         }catch(error){
-            console.log(error);
+            
             Swal.fire({
                   position: "center",
                   icon: "error",
@@ -156,7 +156,7 @@ export const getProducts = async()=>{
                 return response
 
             }catch(error){
-                console.log(error);
+                
                 
             }
         }
@@ -168,20 +168,20 @@ export const getProducts = async()=>{
                 const response = productInstance.get(`/products/${id}`);
                 return response
             }catch(error){
-                console.log(error);
+                
                 
             }
         }
 
         export const getSearchProducts = async(data)=>{
-            console.log(data,"THis is search data")
+            
             try{
                 const response = await productInstance.get(`/search-products?title=${data}`);
-                console.log("I am search data", response?.data?.products);
+                
                 return response
 
             }catch(err){
-                console.log(err)
+                
             }
 
         }
@@ -189,13 +189,13 @@ export const getProducts = async()=>{
        
        
         export const getNewProductsByQuery = async(data)=>{
-            console.log(data,"THis is search data")
+            
             try{
                 const response = await productInstance.get(`/query-products-new?category=${data}`);
                 return response
             }
             catch(err){
-                console.log(err?.response.data.message)
+                
             }
 
         }
@@ -213,7 +213,7 @@ export const getProducts = async()=>{
             return response
            }catch(err){
 
-            console.log(err.message)
+            
 
              toast.error('Something went wrong', {
              position: 'top-right',
@@ -228,21 +228,21 @@ export const getProducts = async()=>{
         export const getCartItems = async()=>{
             try{
                 const response = await cartInstance.get('/get-user-cart');
-                console.log(response, "THis is from response");
+                
                
                 return response
             }catch(err){
-                console.log(err?.message);
+                
             }
         }
 
         export const getQueryProducts = async(data)=>{
-            console.log(data,"THis is search data from getQueryProducts ")
+            
             try{
                 const response = await productInstance.get(`/query-products?category=${data}`);
                 return response;
             }catch(err){
-                console.log(err?.message);
+                
             }
         }
 
@@ -257,7 +257,7 @@ export const getProducts = async()=>{
                 return response
 
             }catch(err){
-                console.log(err?.message);
+                
                 toast.error('Something went wrong', {
                     position: 'top-right',
                 })
@@ -269,7 +269,7 @@ export const getProducts = async()=>{
              const response = await cartInstance.get('/get-cart-length');
             return response
            }catch(err){
-            console.log(err?.message);
+            
            }
         }
 
@@ -282,7 +282,7 @@ export const getProducts = async()=>{
                 const response = await vendorAuthInstance.get('/get-vendor-store-name');
                 return response
             }catch(err){
-                console.log(err?.message);
+                
             }
         }
 
@@ -291,7 +291,7 @@ export const getProducts = async()=>{
                 const response = await productInstance.get(`/get-all-products-by-pagnation?page=${data}&category=${category}`);
                 return response
             }catch(err){
-                console.log(err);
+                
             }
          }
         

@@ -61,7 +61,7 @@ export const useGetVendorGroups = ()=>{
 }
 
 export const useGetNewProducts = (data)=>{
-    console.log(data,"the use get new products");
+    
     return useQuery({
         queryKey:['getNewProducts', data],
         queryFn:async()=>{
@@ -70,7 +70,7 @@ export const useGetNewProducts = (data)=>{
         onError: (error) => {
       // Catch backend error messages cleanly
       const message = error.response?.data?.message || 'Something went wrong';
-      console.log(message)
+      
     },
         
     })
@@ -97,13 +97,13 @@ export const useCreateAddtoCardProducts = ()=>{
 
 
 export const useGetCartProducts = (userId)=>{
-  console.log(userId,"THis is from hook userId");
+  
 
    return  useQuery({
     queryKey:['getCartProducts', userId],
     queryFn:async()=>{
       const res = await getCartItems();
-      console.log(res,"THis is from hook response");
+      
       return res
     },
     enabled: !!userId,
@@ -123,7 +123,7 @@ export const useGetProductsByQuery = ()=>{
 }
 
 export const useGetAllProductsByQuery = (category)=>{
-  console.log(category);
+  
   return useQuery({
     queryKey:['getAllProductsByQuery', category],
     queryFn:async()=>{

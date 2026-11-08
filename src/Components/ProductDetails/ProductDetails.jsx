@@ -11,14 +11,14 @@ const ProductDetails = () => {
   // const [quantity, setQuantity] = useState(1);
 
   const {id} = useParams();
-  console.log(id);
+  
 
   const {data} = useGetProductsInfo(id);
 
   const {imageArray, title,description, price,generateSKu,weight} = data?.data?.products || {};
 
-  console.log("this is weight ",weight)
-  console.log(data)
+  
+  
 
   const [selectImage, setSelectImage] = useState("");
 

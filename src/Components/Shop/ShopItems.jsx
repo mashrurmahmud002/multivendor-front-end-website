@@ -14,7 +14,7 @@ const ShopItems = () => {
   const totalPages = pagination?.data?.totalPages || 0;
 
   const handleCurrentPage = (currentPage) => {
-    console.log(currentPage);
+    
     setPage(currentPage);
   };
 

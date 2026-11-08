@@ -20,12 +20,12 @@ const AuthContextProvider = ({children}) => {
          try {
            setLoading(true);
            const  response = await getUserInfo();
-           console.log(response,"I am asked to check user");
+           
            setLoading(false);
            setUser(response?.data?.user);
          } catch (error) {
    
-           console.log(error?.response?.data?.message);
+           
            setUser(null);
            setLoading(false);
            

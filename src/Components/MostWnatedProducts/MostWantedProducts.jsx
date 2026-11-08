@@ -14,7 +14,7 @@ const MostWanted = () => {
 
 
   const {data} = useGetProducts();
-  console.log(data);
+  
 
 
   const {user} = useContext(AuthContext);
@@ -24,13 +24,13 @@ const MostWanted = () => {
 
 
   const handleAddtoCart = async(userId, productId) => {
-    console.log(userId, productId, "hello are you there");
+    
     try{
        const response = await  createCartItem.mutateAsync({userId:userId, productId:productId});
-        console.log(response)
-        console.log("response done");
+        
+        
     }catch(err){
-       console.log("Something went wrong", err);
+       
     }
   };
 

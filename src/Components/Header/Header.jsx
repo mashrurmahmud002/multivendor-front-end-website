@@ -128,7 +128,7 @@ const Header = () => {
   const [open, setOpen] = useState(false);
   const {data} = useGetCartLength(user);
 
-  console.log(data?.data?.data?.cartItemLength,"the cart length")
+ 
  
 
 
@@ -171,17 +171,17 @@ const utilityLinks = [
   };
 
   const handleGetSearch = async()=>{
-    console.log("hello  I am getSearch")
+    
 
     try{
 
       const response = await getSearchProducts(search);
-      console.log(response?.data?.products);
+      
 
       setSearchBox(response?.data?.products)
 
     }catch(err){
-      console.log(err)
+      
     }
 
   }
@@ -221,7 +221,7 @@ useEffect(() => {
               setUser(null)        
               navigate("/auth/signin");
      }catch(err){
-      console.log(err)
+      
      }
   }
 

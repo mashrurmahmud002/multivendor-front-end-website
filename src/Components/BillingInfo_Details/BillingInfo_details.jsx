@@ -9,7 +9,7 @@ const BillingInfo = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log("Billing Information:", data);
+    
   };
 
   const inputClass =

@@ -7,9 +7,9 @@ const PayoutSetup = ({ setActive, personalInfo, buisnessInfo,setActiveStep,accep
   const [payment, setBankTransfer] = useState("bank_transfer");
 
   const {register, formState:{errors}, watch} = useFormContext();
-  console.log(personalInfo);
+  
 
-  console.log(buisnessInfo);
+  
 
   
   return (

@@ -17,10 +17,10 @@ const [selectedVendor, setSelectedVendor] = useState("All Vendors");
  const handleVendorStoreName = async()=>{
      try{
         const res = await getVendorStoresName();
-      console.log(res?.data?.vendors);
+      
       setVendorStoreName(res?.data?.vendors);
      }catch(err){
-        console.log(err);
+        
      }
  }
 

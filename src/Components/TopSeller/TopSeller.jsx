@@ -38,7 +38,7 @@ const vendors = [
 const TopSeller = () => {
 
   const {data} = useGetVendorGroups();
-  console.log(data);
+  
 
   return (
     <section className="w-full bg-white px-4 py-10 sm:px-6 lg:px-8">

@@ -29,7 +29,7 @@ const BusinessInfo = ({setActive, businessInfo, setDisabled, handleNext,setBusin
 });
 
 
-  console.log(disabled, "this is buisness info disabled");
+  
 
   
   
@@ -78,7 +78,7 @@ const BusinessInfo = ({setActive, businessInfo, setDisabled, handleNext,setBusin
   );
 
 
-  console.log("isDisabled",isDisabled);
+  
 
 
   

@@ -21,7 +21,7 @@ const Shop_category = () => {
       setCategory(response.data?.categories ?? []);
     } catch (error) {
       console.error('Failed to load categories', error);
-      console.log(error.response.data.message);
+      
     }
   };
 

@@ -50,7 +50,7 @@ export default function CartDropdown({open, setOpen}) {
    const {data, isLoading} =  useGetCartProducts(user);
 
    const deleteProduct = useDeleteProductsFromCart();
-   console.log(data?.data?.data?.cart);
+   
   
 
    if(isLoading){
@@ -85,13 +85,13 @@ export default function CartDropdown({open, setOpen}) {
   };
 
   const handleDeleteProductFromCart = async(id) => {
-    console.log("product delete id from cart", id);
+    
     
    try{
      const res = await deleteProduct.mutateAsync(id);
     return res
    }catch(err){
-     console.log(err?.message);
+     
    }
   }
 

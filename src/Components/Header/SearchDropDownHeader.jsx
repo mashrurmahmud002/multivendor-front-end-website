@@ -47,8 +47,8 @@ export default function SearchDropdown({
   results = SAMPLE,
   activeIndex = -1, // highlighted row; results.length = "view all" row
   onHover = () => {},
-  onSelect = (p) => console.log("select", p),
-  onViewAll = (q) => console.log("view all", q),
+  onSelect = (p) => ,
+  onViewAll = (q) => ,
 }) {
   const viewAllIndex = results.length;
 
