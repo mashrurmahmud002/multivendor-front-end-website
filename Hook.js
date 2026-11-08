@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { addtoCart, cartLength, deleteProductsFromCart, getCartItems, getNewProductsByQuery, getProducts, getProductsInfo, getQueryProducts, vendorGroups } from "./Api"
+import { addtoCart, cartLength, deleteProductsFromCart, getCartItems, getNewProductsByQuery, getProducts, getProductsByPagination, getProductsInfo, getQueryProducts, vendorGroups } from "./Api"
 
 
 
@@ -131,5 +131,16 @@ export const useGetAllProductsByQuery = (category)=>{
     },
     enabled:!!category,
     staleTime:0
+  })
+}
+
+
+export const useGetAllProductsByPagnation = (data) =>{
+
+  return useQuery({
+    queryKey:['getAllProductsByPagnation'],
+    queryFn:async()=>{
+      return await  getProductsByPagination(data);
+    }
   })
 }
