@@ -29,6 +29,8 @@ import ShopCateGoryContextProvider from './Components/ShopCategoryContext/ShopCa
 import VendorDashBoardLayOut from './LayOut/VendorDashBoardLayOut'
 import { Router } from 'lucide-react'
 import VendorDashBoard from './Components/VendorDashBoard/VendorDashBoard'
+import ShopCartLayOut from './LayOut/ShopCartLayOut'
+import ShopCart from './Components/ShopCart/ShopCart'
 
 
 
@@ -80,6 +82,12 @@ function App() {
 
         <Route path="/vendor-dashboard" element={<VendorDashBoard/>}/>
 
+         </Route>
+
+         <Route path="/shop-cart" element={<ShopCartLayOut/>}>
+          
+          <Route path='/shop-cart' element={<ShopCart/>}/>
+         
          </Route>
       </Routes>
      </BrowserRouter>

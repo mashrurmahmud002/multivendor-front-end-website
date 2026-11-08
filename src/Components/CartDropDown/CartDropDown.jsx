@@ -259,7 +259,8 @@ export default function CartDropdown({open, setOpen}) {
                   Shipping and taxes calculated at checkout.
                 </p>
 
-                <button
+               <div className="flex flex-col gap-2">
+                 <button
                   onClick={() =>
                     alert("Connect this button to your checkout page.")
                   }
@@ -268,6 +269,19 @@ export default function CartDropdown({open, setOpen}) {
                   PROCEED TO CHECKOUT
                   <ArrowRight size={16} />
                 </button>
+
+                 <button
+                  onClick={() =>
+                    alert("Connect this button to your checkout page.")
+                  }
+                  className="flex w-full items-center justify-center gap-2 bg-black px-5 py-4 text-xs font-bold tracking-[0.15em] text-white transition hover:bg-red-600"
+                >
+                  Go to Cart 
+                  <ArrowRight size={16} />
+                </button>
+                
+                
+               </div>
 
                 <button
                   onClick={() => setOpen(false)}
