@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useGetAllProductsByPagnation } from '../../../Hook';
 import { Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -6,10 +6,10 @@ import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import { ShopContext } from '../../Context/ShopContext';
 
 const ShopItems = () => {
-  const { category_name, setCategory_name } = useContext(ShopContext);
-  const [page, setPage] = useState(1);
+  const { category_name, setCategory_name, page, setPage } = useContext(ShopContext);
+  
 
-  const { data: pagination, isLoading } = useGetAllProductsByPagnation(page);
+  const { data: pagination, isLoading } = useGetAllProductsByPagnation(page, category_name);
 
   const totalPages = pagination?.data?.totalPages || 0;
 
@@ -17,6 +17,10 @@ const ShopItems = () => {
     console.log(currentPage);
     setPage(currentPage);
   };
+
+  useEffect(()=>{
+    setPage(1)
+  },[category_name])
 
   if (isLoading) {
     return <LoadingSpinner />;

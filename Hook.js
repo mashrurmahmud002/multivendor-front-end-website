@@ -135,14 +135,15 @@ export const useGetAllProductsByQuery = (category)=>{
 }
 
 
-export const useGetAllProductsByPagnation = (data) =>{
+export const useGetAllProductsByPagnation = (data, category) =>{
 
   return useQuery({
-    queryKey:['getAllProductsByPagnation', data],
+    queryKey:['getAllProductsByPagnation', data, category],
     queryFn:async()=>{
-      return await  getProductsByPagination(data);
+      return await  getProductsByPagination(data, category);
     },
     enabled:!!data,
+   
     staleTime:0
   })
 }

@@ -286,9 +286,9 @@ export const getProducts = async()=>{
             }
         }
 
-        export const getProductsByPagination = async(data)=>{
+        export const getProductsByPagination = async(data, category)=>{
             try{
-                const response = await productInstance.get(`/get-all-products-by-pagnation?page=${data}`);
+                const response = await productInstance.get(`/get-all-products-by-pagnation?page=${data}&category=${category}`);
                 return response
             }catch(err){
                 console.log(err);
