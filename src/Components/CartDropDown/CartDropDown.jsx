@@ -43,6 +43,7 @@ export default function CartDropdown({open, setOpen}) {
   const navigate = useNavigate();
 
   const {user} = useContext(AuthContext);
+  
 
  
   const handleGoTOCart = async()=>{
@@ -52,6 +53,7 @@ export default function CartDropdown({open, setOpen}) {
 
 
    const {data, isLoading} =  useGetCartProducts(user);
+   
 
   
 

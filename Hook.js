@@ -15,6 +15,21 @@ import { addtoCart, cartLength, deleteProductsFromCart, getCartItems, getNewProd
     })
 }
 
+
+export const useGetUpdatedCart = ()=>{
+   const queryClient = useQueryClient();
+   return useMutation({
+    mutationFn: async (quantity, price) => {
+      return await addtoCart(quantity, price);
+    },
+    onSuccess:()=>{
+
+      queryClient.invalidateQueries(['getCartProducts']);
+
+    }
+   })
+}
+
 export const useDeleteProductsFromCart = ()=>{
   const queryClient = useQueryClient();
   return useMutation({
@@ -26,6 +41,8 @@ export const useDeleteProductsFromCart = ()=>{
     },
   })
 }
+
+
 
 export const useGetCartLength = (userId)=>{
 

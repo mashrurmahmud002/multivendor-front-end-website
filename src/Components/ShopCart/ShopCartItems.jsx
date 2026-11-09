@@ -38,7 +38,9 @@ const ShoppingCartItems = () => {
   const {user} = useContext(AuthContext);
 
   const {data} = useGetCartProducts(user);
-  console.log(data?.data?.data?.cart);
+
+  
+  
 
   // Increase or decrease product quantity
   const updateQuantity = (id, amount) => {
@@ -79,11 +81,16 @@ const ShoppingCartItems = () => {
         </p>
       </div>
 
+      
+      
+
       {/* Product List */}
       <div>
-        {data?.data?.data?.cart.map((product, index) => (
+        {
+          data?.data?.data?.cart?.length > 0 ?
+         data?.data?.data?.cart.map((product, index) => (
           <div
-            key={product.id}
+            key={product?._id}
             className="grid grid-cols-1 md:grid-cols-[1.5fr_1fr_0.7fr] items-center gap-5 md:gap-0 px-5 py-7 border-b border-black"
           >
 
@@ -176,7 +183,16 @@ const ShoppingCartItems = () => {
             </div>
 
           </div>
-        ))}
+        ))
+          
+          
+          
+          :(<div className="flex justify-center items-center min-h-[60vh]">
+
+            <h1>No Items</h1>
+          </div>)
+        }
+       
       </div>
 
       {/* Empty Cart */}

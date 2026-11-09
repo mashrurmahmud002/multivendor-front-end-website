@@ -275,6 +275,23 @@ export const getProducts = async()=>{
            }
         }
 
+        export const updateCartQuantity = async(quantity, price)=>{
+            try{
+                const response = await cartInstance.put(`/update-cart-product-quantity`,{
+                    quantity,
+                    price
+                });
+                if(response){
+                     toast.success('Product quantity updated', {
+                        position: 'top-right',
+                     })
+                }
+                return response
+            }catch(err){
+              console.log(err);   
+            }
+        }
+
 
 
 
