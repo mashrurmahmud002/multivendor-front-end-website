@@ -8,9 +8,9 @@ import {
   Trash2,
   ArrowRight,
 } from "lucide-react";
-import { useDeleteProductsFromCart, useGetCartProducts } from "../../../Hook";
+import { useDeleteProductsFromCart, useGetCartLength, useGetCartProducts } from "../../../Hook";
 import { AuthContext } from "../../Context/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 
@@ -40,14 +40,20 @@ const initialCart = [
 export default function CartDropdown({open, setOpen}) {
 
   const [cartItems, setCartItems] = useState(initialCart);
+  const navigate = useNavigate();
 
   const {user} = useContext(AuthContext);
 
  
-
+  const handleGoTOCart = async()=>{
+    setOpen(false);
+    navigate("/shop-cart");
+  }
 
 
    const {data, isLoading} =  useGetCartProducts(user);
+
+  
 
    const deleteProduct = useDeleteProductsFromCart();
    
@@ -91,6 +97,7 @@ export default function CartDropdown({open, setOpen}) {
      const res = await deleteProduct.mutateAsync(id);
     return res
    }catch(err){
+      console.log(err);
      
    }
   }
@@ -137,7 +144,7 @@ export default function CartDropdown({open, setOpen}) {
 
             {/* Cart Products */}
             <div className="px-5">
-              {data?.data?.data?.cart.length === 0 ? (
+              {data?.data?.data?.cart?.length === 0 ? (
                 <div className="py-12 text-center">
                   <ShoppingCart
                     size={32}
@@ -271,8 +278,8 @@ export default function CartDropdown({open, setOpen}) {
                 </button>
 
                  <button
-                  onClick={() =>
-                    alert("Connect this button to your checkout page.")
+                  onClick={ 
+                    handleGoTOCart
                   }
                   className="flex w-full items-center justify-center gap-2 bg-black px-5 py-4 text-xs font-bold tracking-[0.15em] text-white transition hover:bg-red-600"
                 >

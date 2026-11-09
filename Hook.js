@@ -28,6 +28,8 @@ export const useDeleteProductsFromCart = ()=>{
 }
 
 export const useGetCartLength = (userId)=>{
+
+   console.log(userId, 'userId');
   
     return useQuery({
         queryKey:['getCartProducts', userId],

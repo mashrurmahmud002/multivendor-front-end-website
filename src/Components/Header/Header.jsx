@@ -126,7 +126,9 @@ const Header = () => {
   const [searchBox, setSearchBox] = useState([]);
   const {user, setUser, loading, setLoading} = useContext(AuthContext);
   const [open, setOpen] = useState(false);
-  const {data} = useGetCartLength(user);
+ 
+
+  
 
  
  
@@ -144,6 +146,9 @@ const Header = () => {
   useEffect(() => {
       getUserInfo()
   }, [user,loading]);
+
+
+
 
   
    
@@ -362,7 +367,7 @@ useEffect(() => {
               CART
             </span>
             <span className="flex h-[19px] min-w-[19px] items-center justify-center bg-black px-1 text-[10px] font-bold text-white">
-              {data?.data?.data?.cartItemLength|| null} 
+              3
             </span>
           </button>
         </div>
