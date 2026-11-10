@@ -1,7 +1,8 @@
 
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Context/AuthContext";
-import { useGetCartProducts } from "../../../Hook";
+import { useGetCartProducts, useGetUpdatedCart } from "../../../Hook";
+import ShopCartContext from "../../Context/ShopCartContext";
 
 const initialProducts = [
   {
@@ -37,23 +38,40 @@ const ShoppingCartItems = () => {
   const [products, setProducts] = useState(initialProducts);
   const {user} = useContext(AuthContext);
 
+  const[count, setCount] = useState(1);
+
   const {data} = useGetCartProducts(user);
+
+  const [update, setUpdate] = useState(0);
+
+  const [grab, setgrab] = useState(null);
+  const {cartproducts, setCartProducts} = useContext(ShopCartContext);
+
+  const updateCartQuantity = useGetUpdatedCart(); 
+
+
+
+  const cartList = data?.data?.data?.cart;
+  
+
+
+ 
 
   
   
 
   // Increase or decrease product quantity
-  const updateQuantity = (id, amount) => {
-    setProducts((prev) =>
-      prev.map((product) =>
-        product.id === id
-          ? {
-              ...product,
-              quantity: Math.max(1, product.quantity + amount),
-            }
-          : product
-      )
-    );
+
+
+  
+  const updateQuantity = (cartId, currentQty, change, availableStock) => {
+
+    const newQty = currentQty + change;
+    if(newQty < 0 || newQty > availableStock){
+        return;
+    }
+    updateCartQuantity.mutateAsync({_id:cartId, quantity:newQty});
+      
   };
 
   // Remove product from cart
@@ -61,6 +79,21 @@ const ShoppingCartItems = () => {
     setProducts((prev) =>
       prev.filter((product) => product.id !== id)
     );
+  };
+
+  const handleQuantityChange = (productId, value, maxStock) => {
+    const newQty = parseInt(value);
+
+    if(isNaN(newQty)){
+       return 
+    }
+
+    const finalQty = newQty > maxStock ? maxStock : newQty;
+    updateCartQuantity.mutateAsync({_id:productId, quantity: finalQty});
+   
+
+
+   
   };
 
   return (
@@ -87,10 +120,15 @@ const ShoppingCartItems = () => {
       {/* Product List */}
       <div>
         {
-          data?.data?.data?.cart?.length > 0 ?
-         data?.data?.data?.cart.map((product, index) => (
-          <div
-            key={product?._id}
+         cartList?.length > 0 ?
+         cartList?.map((product, index) => {
+
+            const cartQty = product?.quantity || 1;
+            const price = product?.productId?.price || 0;
+            const availableStock = product?.productId?.quantity || 1;
+            return (
+             <div
+            key={index}
             className="grid grid-cols-1 md:grid-cols-[1.5fr_1fr_0.7fr] items-center gap-5 md:gap-0 px-5 py-7 border-b border-black"
           >
 
@@ -147,19 +185,29 @@ const ShoppingCartItems = () => {
               <div className="flex border border-black h-11">
 
                 <button
-                  onClick={() => updateQuantity(product.id, -1)}
+                  onClick={() => updateQuantity(product?._id, cartQty, -1, availableStock)}
                   className="w-11 border-r border-black hover:bg-black hover:text-white transition"
                   aria-label="Decrease quantity"
                 >
                   −
                 </button>
 
-                <span className="w-11 flex items-center justify-center text-sm font-semibold">
-                  {product.quantity}
-                </span>
+               {
+                  product?._id && (
+                    <input
+                     value={cartQty}
+                      type="text"
+                      className="w-14 text-center outline-none"
+
+                      
+                      
+                      onChange={(e) => handleQuantityChange(product?._id, e.target.value, availableStock)}
+                    />
+                  )
+               }
 
                 <button
-                  onClick={() => updateQuantity(product.id, 1)}
+                  onClick={() => updateQuantity(product?._id, cartQty, 1, availableStock)}
                   className="w-11 border-l border-black hover:bg-black hover:text-white transition"
                   aria-label="Increase quantity"
                 >
@@ -177,17 +225,16 @@ const ShoppingCartItems = () => {
               </span>
 
               <p className="text-xl font-extrabold text-black">
-                ${product?.productId?.price}
+                ${price * cartQty}
               </p>
 
             </div>
 
           </div>
-        ))
+            )
           
           
-          
-          :(<div className="flex justify-center items-center min-h-[60vh]">
+         }):(<div className="flex justify-center items-center min-h-[60vh]">
 
             <h1>No Items</h1>
           </div>)

@@ -31,6 +31,7 @@ import { Router } from 'lucide-react'
 import VendorDashBoard from './Components/VendorDashBoard/VendorDashBoard'
 import ShopCartLayOut from './LayOut/ShopCartLayOut'
 import ShopCart from './Components/ShopCart/ShopCart'
+import ShopCartProvider from './Components/ShopCartContexTProvider/ShopCartProvider'
 
 
 
@@ -84,7 +85,7 @@ function App() {
 
          </Route>
 
-         <Route path="/shop-cart" element={<ShopCartLayOut/>}>
+         <Route path="/shop-cart" element={<ShopCartProvider><ShopCartLayOut/></ShopCartProvider>}>
           
           <Route path='/shop-cart' element={<ShopCart/>}/>
          

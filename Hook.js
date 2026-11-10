@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { addtoCart, cartLength, deleteProductsFromCart, getCartItems, getNewProductsByQuery, getProducts, getProductsByPagination, getProductsInfo, getQueryProducts, vendorGroups } from "./Api"
+import { addtoCart, cartLength, deleteProductsFromCart, getCartItems, getNewProductsByQuery, getProducts, getProductsByPagination, getProductsInfo, getQueryProducts, updateCartQuantity, vendorGroups } from "./Api"
 
 
 
@@ -19,8 +19,8 @@ import { addtoCart, cartLength, deleteProductsFromCart, getCartItems, getNewProd
 export const useGetUpdatedCart = ()=>{
    const queryClient = useQueryClient();
    return useMutation({
-    mutationFn: async (quantity, price) => {
-      return await addtoCart(quantity, price);
+    mutationFn: async (data) => {
+      return await updateCartQuantity(data);
     },
     onSuccess:()=>{
 
