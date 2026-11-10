@@ -321,12 +321,23 @@ export const getProducts = async()=>{
             try{
 
                const response = await orderInstance.post('/create-order', data); 
-               toast.success('Order added successfully', {
+              
+                 toast.success('Order added successfully', {
                 position: 'top-right',
                })
-               return response;
+
+                  return response;
+               
+              
+              
 
             }catch(err){
+
+                toast.error('Order already exist', {
+                    position: 'top-right',
+                })
+
+             
 
                 console.log(err);
                 
