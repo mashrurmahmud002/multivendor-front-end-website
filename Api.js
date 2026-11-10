@@ -1,5 +1,5 @@
 import axios from "axios"
-import { authInstance, axiosInstance, cartInstance, productInstance, vendorAuthInstance } from "./client"
+import { authInstance, axiosInstance, cartInstance, orderInstance, productInstance, vendorAuthInstance } from "./client"
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 
@@ -305,11 +305,30 @@ export const getProducts = async()=>{
             }
         }
 
+        
+
         export const getProductsByPagination = async(data, category)=>{
             try{
                 const response = await productInstance.get(`/get-all-products-by-pagnation?page=${data}&category=${category}`);
                 return response
             }catch(err){
+                
+            }
+         }
+
+
+         export const createOrders = async(data)=>{
+            try{
+
+               const response = await orderInstance.post('/create-order', data); 
+               toast.success('Order added successfully', {
+                position: 'top-right',
+               })
+               return response;
+
+            }catch(err){
+
+                console.log(err);
                 
             }
          }

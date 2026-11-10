@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useGetProductsInfo } from "../../../Hook";
+import { useCreateOrders, useGetProductsInfo } from "../../../Hook";
 import ProductTabs from "./ProductDescription";
+import { AuthContext } from "../../Context/AuthContext";
 
 
 const ProductDetails = () => {
@@ -14,16 +15,125 @@ const ProductDetails = () => {
   
 
   const {data} = useGetProductsInfo(id);
+  const {user} = useContext(AuthContext);
 
-  const {imageArray, title,description, price,generateSKu,weight} = data?.data?.products || {};
+  const {imageArray, title,description, price,generateSKu,weight,_id, quantity} = data?.data?.products || {};
 
   
   
 
   const [selectImage, setSelectImage] = useState("");
+  const [cartQty, setCartQty] = useState(1);
+  const [items, setItems] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0);
+ 
+
+
+
+
+  const createOrders = useCreateOrders();
+
+
+
+  const handleQuantityChange = (id, value, availablestock)=>{
+    const newQty = parseInt(value);
+    if(isNaN(newQty)){
+       return newQty
+    }
+    const finalQty = newQty > availablestock ? availablestock : newQty;
+    setCartQty(finalQty);
+    if(finalQty > 0){
+      handleOrders(id);
+    }
+
+  }
+
+
+  const handleNumberIncrease = async(quantity)=>{
+     const newQty = parseInt(quantity);
+
+     const count = newQty + 1;
+
+     setCartQty(count);
+
+     const totalPrice = count * price;
+
+     setTotalAmount(totalPrice);
+
+
+     const item ={
+        productId: _id,
+        quantity:count,
+        price:price,
+        
+      
+     }
+
+     setItems(()=>{
+      return [...items, item]
+     })
+
+
+     
+
+    // try{
+    //   const response = await createOrders.mutateAsync({
+
+      
+        
+
+
+    //   })
+
+    //   console.log(response,"response from product details to order box");
+
+    // }catch(err){
+    //   console.log(err)
+
+    // }
+
+
+  }
+
+
+
+ console.log(totalAmount)
+  
+ const handleOrders = async(id, addQuantity)=>{
+
 
   
- 
+  const totalPrice = addQuantity * price;
+
+  setTotalAmount(totalPrice);
+   const item ={
+        productId: id,
+        quantity:addQuantity,
+        price:price,
+        
+      
+     }
+
+     setItems(()=>{
+         return [...items, item]
+     })
+   
+  try{
+    const response = await createOrders.mutateAsync({
+        userId: user,
+     
+        items:items,
+        totalAmount:totalPrice,
+
+    });
+
+    console.log(response);
+  }catch(err){
+     console.log(err)
+  }
+
+
+ }
 
   
 
@@ -144,7 +254,7 @@ const ProductDetails = () => {
             {/* Price */}
             <div className="flex items-center gap-3">
               <span className="text-[32px] font-black tracking-tight">
-                ${price}
+                ${price * cartQty}
               </span>
 
               <span className="text-[13px] text-gray-400 line-through">
@@ -194,7 +304,7 @@ const ProductDetails = () => {
                 </span>
               </div>
 
-              <div className="flex">
+              <div className="flex gap-2">
                 {sizes.map((size) => (
                   <button
                     key={size}
@@ -204,6 +314,8 @@ const ProductDetails = () => {
                     {size}
                   </button>
                 ))}
+
+               
               </div>
             </div>
 
@@ -220,11 +332,24 @@ const ProductDetails = () => {
                 </button>
 
                 <div className="flex w-8 items-center justify-center border-x border-black text-[10px]">
-                
-                </div>
+                 {
+                 _id && (
+                    <input
+                     value={cartQty}
+                      type="text"
+                      className="w-14 text-center outline-none"
 
+                      
+                      
+                      onChange={(e) => handleQuantityChange(_id, e.target.value, quantity)}
+                    />
+                  )
+               }
+                </div>
+              
+              
                 <button
-                 
+                  onClick={()=>handleNumberIncrease(cartQty)}
                   className="w-8 text-sm"
                 >
                   +
@@ -235,6 +360,11 @@ const ProductDetails = () => {
               <button className="h-[32px] flex-1 bg-[#f23513] text-[9px] font-bold uppercase tracking-wider text-white transition hover:bg-[#d92d0e]">
                 Add to Cart →
               </button>
+              
+
+               <button onClick={()=>handleOrders(_id, cartQty)} className="h-[32px] flex-1 bg-[#f23513] text-[9px] font-bold uppercase tracking-wider text-white transition hover:bg-[#d92d0e]">BUY NOW</button>
+
+
 
               {/* Wishlist */}
               <button className="flex h-[32px] w-[38px] items-center justify-center border border-black text-lg">

@@ -1,5 +1,6 @@
 
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { AuthContext } from "../../Context/AuthContext";
 
 const OrderSummary = ({
   subtotal = 341,
@@ -12,6 +13,15 @@ const OrderSummary = ({
   const [message, setMessage] = useState("");
 
   const total = subtotal + shipping + tax - discount;
+
+  const {user} = useContext(AuthContext);
+
+
+  
+
+  
+
+  
 
   // Apply promo code
   const handleApplyPromo = () => {

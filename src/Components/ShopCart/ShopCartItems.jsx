@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Context/AuthContext";
 import { useGetCartProducts, useGetUpdatedCart } from "../../../Hook";
 import ShopCartContext from "../../Context/ShopCartContext";
+import { Link } from "react-router-dom";
 
 const initialProducts = [
   {
@@ -53,6 +54,8 @@ const ShoppingCartItems = () => {
 
   const cartList = data?.data?.data?.cart;
   
+
+
 
 
  
@@ -156,10 +159,10 @@ const ShoppingCartItems = () => {
                   
                 </p>
 
-                <h3 className="text-lg md:text-xl font-bold text-black">
+                <Link to={`/shop/product-details/${product?.productId?._id}`}><h3 className="text-lg md:text-xl font-bold text-black">
                   {product?.productId?.title}
  
-                </h3>
+                </h3></Link>
 
                 <p className="text-sm text-gray-600">
                  

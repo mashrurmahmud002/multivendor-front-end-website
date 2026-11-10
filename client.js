@@ -45,3 +45,11 @@ export const cartInstance = axios.create({
     withCredentials: true
 })
 
+export const orderInstance = axios.create({
+    baseURL: import.meta.env.VITE_ORDER,
+    headers: {
+        "Content-Type": "application/json",
+    },
+    withCredentials: true
+})
+
