@@ -1,7 +1,7 @@
 
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Context/AuthContext";
-import { useGetCartProducts, useGetUpdatedCart } from "../../../Hook";
+import { useDeleteProductsFromCart, useGetCartProducts, useGetUpdatedCart } from "../../../Hook";
 import ShopCartContext from "../../Context/ShopCartContext";
 import { Link } from "react-router-dom";
 
@@ -50,6 +50,8 @@ const ShoppingCartItems = () => {
 
   const updateCartQuantity = useGetUpdatedCart(); 
 
+  const deleteCart = useDeleteProductsFromCart();
+
 
 
   const cartList = data?.data?.data?.cart;
@@ -78,10 +80,15 @@ const ShoppingCartItems = () => {
   };
 
   // Remove product from cart
-  const removeProduct = (id) => {
-    setProducts((prev) =>
-      prev.filter((product) => product.id !== id)
-    );
+  const removeProduct = async(id) => {
+
+    try{
+      const res = await deleteCart.mutateAsync(id);
+      return res;
+    }catch(err){
+       console.log(err);
+    }
+     
   };
 
   const handleQuantityChange = (productId, value, maxStock) => {
@@ -169,7 +176,7 @@ const ShoppingCartItems = () => {
                 </p>
 
                 <button
-                  onClick={() => removeProduct(product.id)}
+                  onClick={() => removeProduct(product?._id)}
                   className="text-[11px] uppercase tracking-[1.5px] border-b border-black pb-0.5 hover:text-gray-500 hover:border-gray-500 transition"
                 >
                   Remove

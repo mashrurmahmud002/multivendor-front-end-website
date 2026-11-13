@@ -242,6 +242,7 @@ export const getProducts = async()=>{
                 const response = await productInstance.get(`/query-products?category=${data}`);
                 return response;
             }catch(err){
+                console.log(err?.message);
                 
             }
         }
