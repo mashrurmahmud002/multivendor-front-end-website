@@ -145,7 +145,7 @@ const Header = () => {
 
   useEffect(() => {
       getUserInfo()
-  }, [user,loading]);
+  }, [user]);
 
 
 
@@ -376,12 +376,13 @@ useEffect(() => {
       {/* Mobile search (below md) */}
       <div className="px-4 pb-4 sm:px-6 md:hidden">
         <SearchBox
-          className="h-[44px]"
-          inputClass="px-3"
-          buttonClass="w-[84px] text-[10px] tracking-[1px]"
-          
           search={search}
           setSearch={setSearch}
+          searchBox={searchBox}
+          setSearchBox={setSearchBox}
+          className="ml-auto hidden relative h-[44px] max-w-[647px] min-w-0 flex-1 md:flex"
+          inputClass="px-4"
+          buttonClass="w-[84px] text-[11px] tracking-[1.5px] lg:w-[100px]"
         />
       </div>
 

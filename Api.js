@@ -301,6 +301,7 @@ export const getProducts = async()=>{
                 const response = await vendorAuthInstance.get('/get-vendor-store-name');
                 return response
             }catch(err){
+                console.log(err?.message)
                 
             }
         }
@@ -312,6 +313,8 @@ export const getProducts = async()=>{
                 const response = await productInstance.get(`/get-all-products-by-pagnation?page=${data}&category=${category}`);
                 return response
             }catch(err){
+                console.log(err);
+                console.log(err?.message)
                 
             }
          }
