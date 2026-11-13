@@ -74,6 +74,8 @@ const ProductDetails = () => {
      })
 
 
+
+
      
 
     // try{
@@ -95,6 +97,18 @@ const ProductDetails = () => {
 
   }
 
+
+  const handleNumberDecrease = async(quantity)=>{
+    const newQty = parseInt(quantity);
+    const count = newQty - 1;
+
+    if(count < 1){
+      return;
+    }
+    setCartQty(count);
+    const totalPrice = count * price;
+    setTotalAmount(totalPrice);
+  }
 
 
  console.log(totalAmount)
@@ -325,7 +339,7 @@ const ProductDetails = () => {
               {/* Quantity */}
               <div className="flex h-[32px] border border-black">
                 <button
-                 
+                  onClick={()=>handleNumberDecrease(cartQty)}
                   className="w-8 text-sm"
                 >
                   −
